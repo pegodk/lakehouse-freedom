@@ -29,6 +29,7 @@ nav = [
     { "Freedom Benchmark" = "freedom-benchmark.md" },
     { "Freedom Day" = "freedom-day.md" },
     { "Freedom Score" = "freedom-score.md" },
+    { "Platform capability coverage" = "platform-capability-coverage.md" },
     { "Latest Freedom Report" = "report.md" },
   ] },
   { "Platforms" = [

@@ -12,6 +12,8 @@ from pathlib import Path
 
 import yaml
 
+from freedom.assessment.feature_coverage import load as load_feature_matrix
+from freedom.assessment.feature_coverage import summarize as summarize_features
 from freedom.assessment.inventory import measure
 from freedom.assessment.scanner import scan
 from freedom.reporting.score import bar, components, freedom_score
@@ -51,6 +53,7 @@ def render(scale_factor: float) -> str:
     comps = components(sf)
     score = freedom_score(comps)
     inv = measure()
+    feature_matrix = load_feature_matrix()
     env = (ol_run or {}).get("environment", {})
     prefer = [("databricks", "spark"), ("openlakehouse", "spark")]
     classes = {k: compare.classify(p, e, sf, prefer) for k, (p, e) in {
@@ -262,7 +265,49 @@ def render(scale_factor: float) -> str:
         w("")
 
     # 9
-    w("## 9. Known limitations")
+    w("## 9. Platform capability coverage")
+    w("")
+    w("This broader, curated comparison is separate from the Freedom Score: it includes important managed "
+      "features even when this workload does not use them. Outcome coverage includes native capabilities, "
+      "alternatives and workarounds; native parity counts only substantially equivalent capabilities. "
+      f"Matrix as of **{feature_matrix['as_of']}**.")
+    w("")
+    for profile in feature_matrix["profiles"]:
+        summary = summarize_features(profile)
+        w(f"### {profile['component']}")
+        w("")
+        w(f"`{profile['source']}` → `{profile['target']}`")
+        w("")
+        w("```")
+        w("Outcome coverage  " + bar(summary["outcome_coverage"]) +
+          f"   ({summary['covered']}/{summary['total']})")
+        w("Native parity     " + bar(summary["native_parity"]) +
+          f"   ({summary['native']}/{summary['total']})")
+        w("```")
+        w("")
+        counts = summary["counts"]
+        w(f"Native **{counts['NATIVE']}** · alternatives **{counts['ALTERNATIVE']}** · "
+          f"workarounds **{counts['WORKAROUND']}** · missing **{counts['MISSING']}** · "
+          f"not assessed **{counts['NOT_ASSESSED']}** · workload-required coverage "
+          f"**{summary['required_covered']}/{summary['required_total']}**")
+        w("")
+        w("<details markdown=\"1\"><summary>Every capability and gap</summary>")
+        w("")
+        rows = []
+        for feature in profile["features"]:
+            detail = feature.get("gap") or feature.get("alternative") or "—"
+            rows.append([feature["area"], feature["capability"], f"**{feature['status']}**",
+                         "yes" if feature["workload"] == "required" else "no", detail,
+                         feature["evidence"]])
+        w(_table(["Area", "Capability", "Status", "Required here", "Gap or alternative", "Evidence"], rows))
+        w("")
+        w("</details>")
+        w("")
+    w("Definitions and maintenance rules: `docs/platform-capability-coverage.md`.")
+    w("")
+
+    # 10
+    w("## 10. Known limitations")
     w("")
     lim = []
     if not dbx_run:
@@ -289,8 +334,8 @@ def render(scale_factor: float) -> str:
         w(f"- {item}")
     w("")
 
-    # 10
-    w("## 10. Freedom Score")
+    # 11
+    w("## 11. Freedom Score")
     w("")
     w("```")
     w("LAKEHOUSE FREEDOM REPORT")
@@ -310,8 +355,8 @@ def render(scale_factor: float) -> str:
       "`freedom/reporting/score.py`.")
     w("")
 
-    # 11
-    w("## 11. Conclusions")
+    # 12
+    w("## 12. Conclusions")
     w("")
     w(_conclusions(comps, classes, day, probe, dbx_run))
     w("")

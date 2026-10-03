@@ -1,6 +1,6 @@
 # 🗽 Lakehouse Freedom Report
 
-Scale factor **10** (`sf10`) · generated 2026-10-03 23:33 UTC by `make freedom-report SCALE=10`
+Scale factor **10** (`sf10`) · generated 2026-10-03 23:52 UTC by `make freedom-report SCALE=10`
 
 > **Scope of this report.** The Databricks side of the workload has not been run for this scale factor, so every comparison below uses the OpenLakehouse run, the official TPC-H answers (where they exist) and independent DuckDB oracles. Databricks columns are marked *not run*. Run the bundle in `platforms/databricks/` and `make databricks-fetch-results` to complete it.
 
@@ -255,7 +255,360 @@ Catalog probe (live, against UC OSS):
 | Volumes for raw files | yes | 1 volume(s) listed |
 | Grants (GRANT USE SCHEMA ... TO principal) | **no** | grant read back: []; server.authorization is 'disable' in the OpenLakehouse default config |
 
-## 9. Known limitations
+## 9. Platform capability coverage
+
+This broader, curated comparison is separate from the Freedom Score: it includes important managed features even when this workload does not use them. Outcome coverage includes native capabilities, alternatives and workarounds; native parity counts only substantially equivalent capabilities. Matrix as of **2026-10-04**.
+
+### Table format and transactions
+
+`Databricks Delta Lake` → `Delta Lake OSS 4.3.1`
+
+```
+Outcome coverage  ████████████████░░░░   80%   (8/10)
+Native parity     ██████████████░░░░░░   70%   (7/10)
+```
+
+Native **7** · alternatives **1** · workarounds **0** · missing **2** · not assessed **0** · workload-required coverage **3/3**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Core format | ACID transaction log | **NATIVE** | yes | — | measured:freedom_day |
+| Core format | Schema enforcement and evolution | **NATIVE** | yes | — | measured:schema |
+| Core format | Time travel and table history | **NATIVE** | no | — | documented |
+| DML | MERGE / UPDATE / DELETE | **NATIVE** | yes | — | measured:scd2 |
+| DML | Change Data Feed | **NATIVE** | no | — | documented |
+| Advanced format | Deletion vectors | **NATIVE** | no | — | documented |
+| Advanced format | Row tracking | **NATIVE** | no | — | documented |
+| Layout | Liquid clustering | **MISSING** | no | Databricks-managed clustering is not available in this stack. | documented |
+| Maintenance | Predictive optimization | **ALTERNATIVE** | no | Scheduled OPTIMIZE and VACUUM jobs. | documented |
+| Transactions | Catalog-managed coordinated commits | **MISSING** | no | Open reads are validated for external Delta tables; catalog-managed commit parity is not claimed. | documented |
+
+</details>
+
+### Batch compute
+
+`Databricks Runtime and serverless compute` → `Apache Spark 4.1.0 standalone`
+
+```
+Outcome coverage  ██████████████░░░░░░   70%   (7/10)
+Native parity     ████████░░░░░░░░░░░░   40%   (4/10)
+```
+
+Native **4** · alternatives **1** · workarounds **2** · missing **3** · not assessed **0** · workload-required coverage **4/4**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Runtime | Spark SQL and DataFrame execution | **NATIVE** | yes | — | measured:spark_executable |
+| Runtime | PySpark and Spark Connect | **NATIVE** | yes | — | measured:spark_executable |
+| Runtime | Delta Lake integration | **NATIVE** | yes | — | measured:freedom_day |
+| Runtime | Cluster libraries and custom code | **NATIVE** | yes | — | measured:transformations |
+| Elasticity | Autoscaling workers | **WORKAROUND** | no | Requires an external cluster manager; the tested stack has fixed workers. | documented |
+| Operations | Serverless provisioning | **MISSING** | no | Compute must be provisioned and operated by the user. | documented |
+| Performance | Photon vectorized engine | **MISSING** | no | Photon is proprietary; Spark uses its OSS execution engine. | documented |
+| Operations | Runtime-managed upgrades and patching | **MISSING** | no | Image and dependency lifecycle belongs to the operator. | documented |
+| Elasticity | Spot/preemptible instance orchestration | **ALTERNATIVE** | no | Cloud or Kubernetes cluster-manager configuration. | documented |
+| Governance | Managed compute policies | **WORKAROUND** | no | Must be implemented with infrastructure policy and deployment controls. | documented |
+
+</details>
+
+### SQL analytics
+
+`Databricks SQL` → `Spark SQL and DuckDB`
+
+```
+Outcome coverage  ████████████████░░░░   80%   (8/10)
+Native parity     ████░░░░░░░░░░░░░░░░   20%   (2/10)
+```
+
+Native **2** · alternatives **4** · workarounds **2** · missing **2** · not assessed **0** · workload-required coverage **3/3**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Query | ANSI SQL query execution | **NATIVE** | yes | — | measured:tpch_results |
+| Query | Delta table queries | **NATIVE** | yes | — | measured:tpch_results |
+| Connectivity | JDBC/ODBC connectivity | **ALTERNATIVE** | no | Spark Thrift Server or a compatible query service. | documented |
+| Query | Multi-engine local analytics | **ALTERNATIVE** | yes | DuckDB reads the same Delta storage. | measured:duckdb_access |
+| Operations | Serverless SQL warehouses | **MISSING** | no | No managed serverless warehouse is included. | documented |
+| Operations | Warehouse autoscaling and auto-stop | **WORKAROUND** | no | Requires deployment-level automation. | documented |
+| Performance | Result cache and managed query acceleration | **WORKAROUND** | no | Engine caches differ and are not managed as a single service. | documented |
+| Observability | Query history and profiles | **ALTERNATIVE** | no | Spark event logs and engine-specific profiling. | documented |
+| Automation | SQL alerts and scheduled queries | **ALTERNATIVE** | no | Airflow scheduling and alert integrations. | documented |
+| BI | Integrated dashboards | **MISSING** | no | An external BI tool is required. | documented |
+
+</details>
+
+### Streaming and file ingestion
+
+`Auto Loader and Databricks Structured Streaming` → `Apache Spark Structured Streaming and Kafka`
+
+```
+Outcome coverage  ██████████████████░░   90%   (9/10)
+Native parity     ████████░░░░░░░░░░░░   40%   (4/10)
+```
+
+Native **4** · alternatives **2** · workarounds **3** · missing **1** · not assessed **0** · workload-required coverage **0/0**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Processing | Micro-batch streaming | **NATIVE** | no | — | planned:challenge-2 |
+| Processing | Exactly-once checkpointed processing | **NATIVE** | no | — | documented |
+| Connectivity | Kafka source and sink | **NATIVE** | no | — | documented |
+| Files | File source ingestion | **NATIVE** | no | — | planned:challenge-2 |
+| Files | Incremental file discovery at cloud scale | **WORKAROUND** | no | OSS file listing does not reproduce Auto Loader notification and discovery behavior. | planned:challenge-2 |
+| Schema | Managed schema inference and schema location | **WORKAROUND** | no | Requires explicit schema state and evolution handling. | planned:challenge-2 |
+| Schema | Rescued data column for unexpected input | **ALTERNATIVE** | no | Parse permissively and retain corrupt or unknown fields explicitly. | planned:challenge-2 |
+| Operations | Managed file notification setup | **MISSING** | no | Cloud queues events and permissions must be provisioned separately. | documented |
+| Operations | Auto Loader backfill controls | **WORKAROUND** | no | Requires custom discovery state or batch backfill orchestration. | planned:challenge-2 |
+| Observability | Integrated streaming operational UI | **ALTERNATIVE** | no | Spark UI metrics and external monitoring. | documented |
+
+</details>
+
+### Catalog and governance
+
+`Databricks managed Unity Catalog` → `Unity Catalog OSS 0.5.0`
+
+```
+Outcome coverage  █████████████░░░░░░░   67%   (12/18)
+Native parity     ██████░░░░░░░░░░░░░░   28%   (5/18)
+```
+
+Native **5** · alternatives **2** · workarounds **5** · missing **6** · not assessed **0** · workload-required coverage **5/5**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Metadata | Catalog and schema hierarchy | **NATIVE** | yes | — | measured:catalog_probe.namespaces |
+| Metadata | External Delta table registration | **NATIVE** | yes | — | measured:catalog_probe.external_table |
+| Metadata | Volumes | **NATIVE** | yes | — | measured:catalog_probe.volume |
+| Interoperability | REST catalog API | **NATIVE** | yes | — | measured:catalog_probe.rest_registration |
+| Interoperability | Iceberg REST interoperability | **NATIVE** | no | — | documented |
+| Storage | Storage credentials and credential vending | **WORKAROUND** | yes | Vended credentials omit the custom S3 endpoint used by SeaweedFS. | measured:duckdb_access |
+| Authorization | Object privileges and grants | **WORKAROUND** | no | Supported by UC OSS but disabled in the tested stack and requires identity integration. | measured:catalog_probe.grants |
+| Identity | Enterprise identity federation | **WORKAROUND** | no | OAuth/OIDC integration must be configured and operated. | documented |
+| Governance | Governed tags | **MISSING** | no | No equivalent governed tag control plane is implemented. | documented |
+| Authorization | Tag-driven ABAC policies | **MISSING** | no | Requires a policy service plus catalog and engine integration. | documented |
+| Fine-grained access | Row filters | **MISSING** | no | UC OSS grants do not inject row predicates into every query engine. | documented |
+| Fine-grained access | Column masks | **MISSING** | no | UC OSS grants do not rewrite protected columns in every query engine. | documented |
+| Fine-grained access | Dynamic views for security | **ALTERNATIVE** | no | Engine views with carefully controlled base-table and storage access. | documented |
+| Isolation | Workspace bindings | **MISSING** | no | The OSS server has no Databricks workspace boundary. | documented |
+| Observability | Automatic lineage | **ALTERNATIVE** | no | OpenLineage with a compatible backend. | planned:challenge-8 |
+| Observability | Audit and system tables | **WORKAROUND** | no | Logs must be collected and normalized separately. | planned:challenge-8 |
+| Discovery | Catalog search and discovery UI | **WORKAROUND** | no | UC OSS UI is less complete than the managed governance experience. | documented |
+| Federation | Lakehouse federation | **MISSING** | no | Cross-system query federation is not supplied by UC OSS. | documented |
+
+</details>
+
+### Declarative data pipelines
+
+`Lakeflow Spark Declarative Pipelines` → `Apache Spark Declarative Pipelines 4.1`
+
+```
+Outcome coverage  ████████████████░░░░   79%   (11/14)
+Native parity     █████████░░░░░░░░░░░   43%   (6/14)
+```
+
+Native **6** · alternatives **2** · workarounds **3** · missing **3** · not assessed **0** · workload-required coverage **0/0**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Authoring | Declarative table and view definitions | **NATIVE** | no | — | planned:challenge-3 |
+| Authoring | Python authoring | **NATIVE** | no | — | documented |
+| Authoring | SQL authoring | **NATIVE** | no | — | documented |
+| Planning | Dependency graph construction | **NATIVE** | no | — | documented |
+| Processing | Batch and streaming flows | **NATIVE** | no | — | documented |
+| Processing | Materialized views and streaming tables | **NATIVE** | no | — | documented |
+| Quality | Data-quality expectations | **WORKAROUND** | no | Exact Lakeflow expectation metrics and operational behavior require comparison tests. | planned:challenge-3 |
+| CDC | Managed CDC / AUTO CDC flows | **WORKAROUND** | no | Equivalent semantics and supported options require executable validation. | planned:challenge-3 |
+| Observability | Pipeline event log | **WORKAROUND** | no | OSS events do not provide the complete managed event-log experience. | planned:challenge-3 |
+| Operations | Managed scheduling and triggers | **ALTERNATIVE** | no | Airflow schedules pipeline execution. | documented |
+| Operations | Managed retries and recovery | **ALTERNATIVE** | no | Spark checkpointing plus Airflow retry policy. | documented |
+| Operations | Pipeline autoscaling | **MISSING** | no | The tested standalone Spark deployment is fixed-size. | documented |
+| Operations | Serverless pipeline compute | **MISSING** | no | Compute is self-managed. | documented |
+| Operations | Integrated pipeline UI and graph | **MISSING** | no | No equivalent managed pipeline UI is included. | documented |
+
+</details>
+
+### Workflow orchestration
+
+`Lakeflow Jobs` → `Apache Airflow 3.1.6`
+
+```
+Outcome coverage  █████████████████░░░   83%   (10/12)
+Native parity     ████████░░░░░░░░░░░░   42%   (5/12)
+```
+
+Native **5** · alternatives **4** · workarounds **1** · missing **2** · not assessed **0** · workload-required coverage **4/4**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Core | Directed acyclic task graphs | **NATIVE** | yes | — | measured:orchestration |
+| Triggers | Schedules and event triggers | **NATIVE** | no | — | documented |
+| Core | Task dependencies and conditions | **NATIVE** | yes | — | measured:orchestration |
+| Operations | Retries timeouts and notifications | **NATIVE** | no | — | documented |
+| Core | Parameters and task values | **ALTERNATIVE** | yes | Airflow params XCom and generated task configuration. | measured:orchestration |
+| Operations | Backfills and repair runs | **ALTERNATIVE** | no | Airflow backfill and task clearing semantics. | documented |
+| Tasks | Python and notebook tasks | **ALTERNATIVE** | yes | Python tasks and Spark Connect replace workspace notebook tasks. | measured:orchestration |
+| Tasks | SQL and pipeline tasks | **ALTERNATIVE** | no | Airflow operators invoke query and pipeline services. | documented |
+| Observability | Run history and logs | **NATIVE** | no | — | documented |
+| Compute | Managed compute attachment | **WORKAROUND** | no | Compute lifecycle needs operators or infrastructure automation. | documented |
+| Compute | Serverless job execution | **MISSING** | no | Airflow schedules work but does not provide serverless Spark compute. | documented |
+| Experience | Databricks-native task types and UI | **MISSING** | no | Airflow has its own operators and UI rather than Databricks task parity. | documented |
+
+</details>
+
+### Deployment and configuration
+
+`Databricks Asset Bundles` → `Python packaging and Docker Compose`
+
+```
+Outcome coverage  ██████████████████░░   89%   (8/9)
+Native parity     ████░░░░░░░░░░░░░░░░   22%   (2/9)
+```
+
+Native **2** · alternatives **4** · workarounds **2** · missing **1** · not assessed **0** · workload-required coverage **4/4**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Definition | Version-controlled deployment definition | **NATIVE** | yes | — | measured:orchestration |
+| Definition | Environment variables and targets | **ALTERNATIVE** | yes | Environment files and platform configuration. | documented |
+| Artifacts | Python wheel packaging | **NATIVE** | yes | — | measured:spark_executable |
+| Deployment | Resource deployment | **ALTERNATIVE** | yes | Compose and platform scripts provision the open services. | documented |
+| Deployment | Deployment validation | **ALTERNATIVE** | no | Configuration tests and Freedom Check. | documented |
+| Definition | Development and production target overrides | **ALTERNATIVE** | no | Separate environment configuration and infrastructure variables. | documented |
+| Security | Identity-aware run-as configuration | **WORKAROUND** | no | Requires identity integration across Airflow Spark and UC OSS. | documented |
+| Deployment | Unified resource state and deployment lifecycle | **WORKAROUND** | no | Multiple open components have separate lifecycle and state. | documented |
+| Deployment | Databricks workspace resource model | **MISSING** | no | Workspace-specific resources intentionally have no direct open equivalent. | documented |
+
+</details>
+
+### ML lifecycle
+
+`Databricks managed MLflow` → `MLflow OSS 3.14`
+
+```
+Outcome coverage  ████████████░░░░░░░░   60%   (6/10)
+Native parity     ██████████░░░░░░░░░░   50%   (5/10)
+```
+
+Native **5** · alternatives **0** · workarounds **1** · missing **4** · not assessed **0** · workload-required coverage **0/0**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Tracking | Experiment and run tracking | **NATIVE** | no | — | planned:challenge-5 |
+| Tracking | Artifact storage | **NATIVE** | no | — | documented |
+| Models | Model packaging and flavors | **NATIVE** | no | — | documented |
+| Registry | Model registry | **NATIVE** | no | — | documented |
+| AI | Tracing and evaluation APIs | **NATIVE** | no | — | documented |
+| Governance | Registry integration with catalog permissions | **WORKAROUND** | no | Identity and UC OSS integration require explicit configuration. | documented |
+| Operations | Managed tracking service operations | **MISSING** | no | The service database artifacts backups and upgrades are operator responsibilities. | documented |
+| Serving | Managed model serving | **MISSING** | no | A serving platform must be deployed separately. | documented |
+| Serving | Serverless GPU inference | **MISSING** | no | No managed inference compute is included. | documented |
+| Features | Integrated feature engineering service | **MISSING** | no | No managed feature store equivalent is included. | documented |
+
+</details>
+
+### Business intelligence
+
+`Databricks SQL AI/BI` → `Open BI tools over Spark SQL or DuckDB`
+
+```
+Outcome coverage  ███████████████░░░░░   75%   (6/8)
+Native parity     ░░░░░░░░░░░░░░░░░░░░    0%   (0/8)
+```
+
+Native **0** · alternatives **5** · workarounds **1** · missing **2** · not assessed **0** · workload-required coverage **0/0**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Authoring | SQL editor and saved queries | **ALTERNATIVE** | no | Use an external SQL client or BI authoring tool. | planned:challenge-6 |
+| Visualization | Interactive dashboards | **ALTERNATIVE** | no | Connect an open BI tool to the query endpoint. | planned:challenge-6 |
+| Distribution | Dashboard sharing and embedding | **ALTERNATIVE** | no | Use the selected BI tool's sharing and embedding model. | planned:challenge-6 |
+| Automation | Scheduled dashboard refresh | **ALTERNATIVE** | no | BI scheduling or Airflow. | planned:challenge-6 |
+| Automation | SQL alerts | **ALTERNATIVE** | no | Scheduled queries plus an alert integration. | planned:challenge-6 |
+| Governance | Catalog-aware permissions | **WORKAROUND** | no | End-to-end identity propagation must be integrated across BI query service and UC OSS. | planned:challenge-6 |
+| AI | AI-assisted dashboard authoring | **MISSING** | no | No equivalent assistant is included in the open stack. | documented |
+| Semantics | Managed semantic metric layer | **MISSING** | no | A semantic-layer component and model must be selected separately. | documented |
+
+</details>
+
+### AI, vector search and agents
+
+`Databricks Mosaic AI capabilities` → `Open models and separately operated AI services`
+
+```
+Outcome coverage  ██████████████░░░░░░   70%   (7/10)
+Native parity     ████░░░░░░░░░░░░░░░░   20%   (2/10)
+```
+
+Native **2** · alternatives **3** · workarounds **2** · missing **3** · not assessed **0** · workload-required coverage **0/0**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Models | Foundation model inference API | **ALTERNATIVE** | no | Use an open model server or external model API. | planned:challenge-7 |
+| Observability | Model and prompt tracing | **NATIVE** | no | — | documented |
+| Evaluation | Evaluation datasets and metrics | **NATIVE** | no | — | documented |
+| Retrieval | Vector indexing and similarity search | **ALTERNATIVE** | no | Deploy an open vector database or search engine. | planned:challenge-7 |
+| Retrieval | Automatic vector index synchronization | **WORKAROUND** | no | Data-change capture embedding and index updates require a custom pipeline. | planned:challenge-7 |
+| Agents | Agent authoring framework | **ALTERNATIVE** | no | Use an open agent framework with MLflow tracing. | planned:challenge-7 |
+| Agents | Managed agent deployment | **MISSING** | no | Agent serving scaling and lifecycle must be supplied separately. | documented |
+| Governance | AI gateway and endpoint governance | **MISSING** | no | No unified AI gateway is included in this stack. | documented |
+| Governance | Catalog-governed AI assets | **WORKAROUND** | no | UC OSS and MLflow permissions require explicit identity integration. | planned:challenge-7 |
+| Serving | Serverless GPU model serving | **MISSING** | no | GPU serving infrastructure is operator-owned. | documented |
+
+</details>
+
+### Governance observability
+
+`Databricks system tables and Unity Catalog lineage` → `Spark event logs and OpenLineage`
+
+```
+Outcome coverage  ████████████░░░░░░░░   60%   (6/10)
+Native parity     ████░░░░░░░░░░░░░░░░   20%   (2/10)
+```
+
+Native **2** · alternatives **2** · workarounds **2** · missing **4** · not assessed **0** · workload-required coverage **0/0**
+
+<details markdown="1"><summary>Every capability and gap</summary>
+
+| Area | Capability | Status | Required here | Gap or alternative | Evidence |
+|---|---|---|---|---|---|
+| Runtime | Spark execution metrics | **NATIVE** | no | — | documented |
+| Runtime | Query plans and job event logs | **NATIVE** | no | — | documented |
+| Lineage | Cross-job dataset lineage | **ALTERNATIVE** | no | OpenLineage events and a compatible backend. | planned:challenge-8 |
+| Lineage | Column-level lineage | **WORKAROUND** | no | Coverage depends on engine integration and SQL-plan extraction. | planned:challenge-8 |
+| Audit | Account audit log | **WORKAROUND** | no | Service logs must be collected correlated and retained separately. | planned:challenge-8 |
+| Audit | Query history system tables | **ALTERNATIVE** | no | Spark event-log processing and engine-specific history. | documented |
+| Cost | Billing and usage system tables | **MISSING** | no | Infrastructure and service cost data require a separate FinOps pipeline. | documented |
+| Governance | Access and governance system tables | **MISSING** | no | No unified open governance event schema is implemented. | documented |
+| Operations | Managed retention and query service | **MISSING** | no | Storage retention indexing and query infrastructure are operator-owned. | documented |
+| Experience | Unified governance UI | **MISSING** | no | Separate open tools are required for logs metrics lineage and catalog metadata. | documented |
+
+</details>
+
+Definitions and maintenance rules: `docs/platform-capability-coverage.md`.
+
+## 10. Known limitations
 
 - The Databricks side was not executed for this report. SQL portability is measured against the official TPC-H answers (SF ≤ 1) or the OpenLakehouse Spark run, not against Databricks output.
 - Freedom Day ran as a rehearsal on tables written by OSS Spark. Tables written by Databricks may carry additional Delta table features (for example deletion vectors or row tracking); the Freedom Day report lists the features it actually found.
@@ -266,7 +619,7 @@ Catalog probe (live, against UC OSS):
 - SQL portability is measured on TPC-H only. TPC-H uses a conservative SQL subset; real workloads using Databricks SQL extensions will score lower (use `freedom assess` to find them).
 - Lines-of-code ratios measure how much code is shared, not how hard the platform-specific part is to write.
 
-## 10. Freedom Score
+## 11. Freedom Score
 
 ```
 LAKEHOUSE FREEDOM REPORT
@@ -299,7 +652,7 @@ Freedom Score
 
 Freedom Score = unweighted mean of the included, measured components. Definitions: `freedom/reporting/score.py`.
 
-## 11. Conclusions
+## 12. Conclusions
 
 **Data.** 19 of 19 Delta tables were readable by two open engines after the catalog was rebuilt from storage alone, and no stored object was rewritten. Keeping tables external, in an open format, on storage you control (F1) is what makes this possible.
 
