@@ -1,0 +1,123 @@
+# Documentation site for Lakehouse Freedom, built with Zensical (https://zensical.org).
+#
+#   make docs-serve     preview on http://localhost:8000
+#   make docs-build     static site in ./site
+#
+# Published to GitHub Pages by .github/workflows/docs.yml.
+
+[project]
+site_name = "Lakehouse Freedom"
+site_description = "Build managed. Stay open. Keep your freedom. An executable portability reference architecture for Databricks and OpenLakehouse."
+site_url = "https://pegodk.github.io/lakehouse-freedom/"
+repo_url = "https://github.com/pegodk/lakehouse-freedom"
+repo_name = "pegodk/lakehouse-freedom"
+edit_uri = "edit/main/docs/"
+copyright = "Apache License 2.0 · Not affiliated with Databricks or OpenLakehouse"
+docs_dir = "docs"
+site_dir = "site"
+
+nav = [
+  { "Home" = "index.md" },
+  { "Get started" = "getting-started.md" },
+  { "Concepts" = [
+    { "Freedom Principles" = "freedom-principles.md" },
+    { "Freedom Architecture" = "freedom-architecture.md" },
+    { "Freedom Path" = "freedom-path.md" },
+  ] },
+  { "Measure" = [
+    { "Freedom Check" = "freedom-check.md" },
+    { "Freedom Benchmark" = "freedom-benchmark.md" },
+    { "Freedom Day" = "freedom-day.md" },
+    { "Freedom Score" = "freedom-score.md" },
+    { "Latest Freedom Report" = "report.md" },
+  ] },
+  { "Platforms" = [
+    { "OpenLakehouse" = "platforms/openlakehouse.md" },
+    { "Databricks" = "platforms/databricks.md" },
+    { "Capability mapping" = "capability-mapping.md" },
+  ] },
+  { "Reference" = [
+    { "Commands" = "reference/commands.md" },
+    { "Repository layout" = "reference/layout.md" },
+    { "Freedom Challenges" = "freedom-challenges.md" },
+  ] },
+]
+
+[project.theme]
+language = "en"
+features = [
+  "content.code.annotate",
+  "content.code.copy",
+  "content.tabs.link",
+  "content.tooltips",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.instant",
+  "navigation.path",
+  "navigation.sections",
+  "navigation.tabs",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+]
+
+[project.theme.icon]
+logo = "lucide/landmark"
+repo = "fontawesome/brands/github"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "teal"
+accent = "amber"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "teal"
+accent = "amber"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/pegodk/lakehouse-freedom"
+
+[project.markdown_extensions]
+abbr = {}
+admonition = {}
+attr_list = {}
+def_list = {}
+footnotes = {}
+md_in_html = {}
+tables = {}
+toc.permalink = true
+pymdownx.betterem = {}
+pymdownx.details = {}
+pymdownx.emoji.emoji_generator = "zensical.extensions.emoji.to_svg"
+pymdownx.emoji.emoji_index = "zensical.extensions.emoji.twemoji"
+pymdownx.highlight.anchor_linenums = true
+pymdownx.highlight.line_spans = "__span"
+pymdownx.highlight.pygments_lang_class = true
+pymdownx.inlinehilite = {}
+pymdownx.keys = {}
+pymdownx.magiclink = {}
+pymdownx.mark = {}
+pymdownx.smartsymbols = {}
+# The latest Freedom Report and the capability data are included from the
+# repository root, so the site always shows what the tooling generated.
+pymdownx.snippets.base_path = ["."]
+pymdownx.snippets.check_paths = true
+pymdownx.superfences.custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+]
+pymdownx.tabbed.alternate_style = true
+pymdownx.tabbed.combine_header_slug = true
+pymdownx.tasklist.custom_checkbox = true

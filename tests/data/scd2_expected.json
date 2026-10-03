@@ -1,0 +1,110 @@
+[
+ {
+  "customer_id": 1,
+  "name": "Ada",
+  "segment": "BUILDING",
+  "city": "Copenhagen",
+  "valid_from": "2024-01-01",
+  "valid_to": null,
+  "is_current": true
+ },
+ {
+  "customer_id": 2,
+  "name": "Grace",
+  "segment": "MACHINERY",
+  "city": "Aarhus",
+  "valid_from": "2024-01-01",
+  "valid_to": "2024-02-01",
+  "is_current": false
+ },
+ {
+  "customer_id": 2,
+  "name": "Grace",
+  "segment": "MACHINERY",
+  "city": "Copenhagen",
+  "valid_from": "2024-02-01",
+  "valid_to": "2024-03-01",
+  "is_current": false
+ },
+ {
+  "customer_id": 2,
+  "name": "Grace",
+  "segment": "AUTOMOBILE",
+  "city": "Copenhagen",
+  "valid_from": "2024-03-01",
+  "valid_to": null,
+  "is_current": true
+ },
+ {
+  "customer_id": 3,
+  "name": "Linus",
+  "segment": "AUTOMOBILE",
+  "city": "Odense",
+  "valid_from": "2024-01-01",
+  "valid_to": null,
+  "is_current": true
+ },
+ {
+  "customer_id": 4,
+  "name": "Margaret",
+  "segment": "HOUSEHOLD",
+  "city": "Aalborg",
+  "valid_from": "2024-01-01",
+  "valid_to": null,
+  "is_current": true
+ },
+ {
+  "customer_id": 5,
+  "name": "Edsger",
+  "segment": "FURNITURE",
+  "city": "Esbjerg",
+  "valid_from": "2024-01-01",
+  "valid_to": "2024-02-01",
+  "is_current": false
+ },
+ {
+  "customer_id": 5,
+  "name": "Edsger",
+  "segment": "FURNITURE",
+  "city": "Roskilde",
+  "valid_from": "2024-02-01",
+  "valid_to": null,
+  "is_current": true
+ },
+ {
+  "customer_id": 6,
+  "name": "Barbara",
+  "segment": "BUILDING",
+  "city": "Vejle",
+  "valid_from": "2024-01-01",
+  "valid_to": "2024-02-01",
+  "is_current": false
+ },
+ {
+  "customer_id": 6,
+  "name": "Barbara",
+  "segment": "BUILDING",
+  "city": "Kolding",
+  "valid_from": "2024-03-01",
+  "valid_to": null,
+  "is_current": true
+ },
+ {
+  "customer_id": 7,
+  "name": "Ken",
+  "segment": "MACHINERY",
+  "city": "Horsens",
+  "valid_from": "2024-02-01",
+  "valid_to": "2024-03-01",
+  "is_current": false
+ },
+ {
+  "customer_id": 7,
+  "name": "Kenneth",
+  "segment": "MACHINERY",
+  "city": "Horsens",
+  "valid_from": "2024-03-01",
+  "valid_to": null,
+  "is_current": true
+ }
+]

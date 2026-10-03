@@ -183,7 +183,7 @@ def render(scale_factor: float) -> str:
     for q in range(1, 23):
         k = f"q{q:02d}"
         rows.append([k] + [(cl[k]["classification"] if cl else "not run") for cl in classes.values()])
-    w("<details><summary>Per-query classification</summary>")
+    w("<details markdown=\"1\"><summary>Per-query classification</summary>")
     w("")
     w(_table(["Query"] + list(classes), rows))
     w("")
@@ -231,7 +231,7 @@ def render(scale_factor: float) -> str:
     w("")
     w("LOC = logical lines (no blanks, comments or docstrings). File-level detail:")
     w("")
-    w("<details><summary>Files</summary>")
+    w("<details markdown=\"1\"><summary>Files</summary>")
     w("")
     w(_table(["File", "Group", "Category", "LOC"],
              [[f"`{f['path']}`", f["group"], f["category"], f["loc"]] for f in inv["files"]]))

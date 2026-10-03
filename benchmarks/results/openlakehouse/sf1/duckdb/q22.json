@@ -1,0 +1,70 @@
+{
+ "platform": "openlakehouse",
+ "engine": "duckdb",
+ "engine_version": "1.5.6",
+ "query": "q22",
+ "scale_factor": 1.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 0.2149,
+ "durations_s": [
+  0.2206,
+  0.2035,
+  0.2149
+ ],
+ "row_count": 7,
+ "error": null,
+ "timestamp": "2026-10-03T22:10:34.354042+00:00",
+ "environment": {
+  "engine_version": "1.5.6",
+  "platform_label": "OpenLakehouse (local Docker) + DuckDB in-process on the host",
+  "compute": "DuckDB in-process, all host cores",
+  "table_resolution": "Unity Catalog OSS REST -> delta_scan(storage_location)",
+  "host_cpus": 8,
+  "host_memory_gb": 13.6,
+  "host_os": "Linux 7.2.5-3-omarchy"
+ },
+ "columns": [
+  "cntrycode",
+  "numcust",
+  "totacctbal"
+ ],
+ "rows": [
+  [
+   "13",
+   888,
+   "6737713.99"
+  ],
+  [
+   "17",
+   861,
+   "6460573.72"
+  ],
+  [
+   "18",
+   964,
+   "7236687.40"
+  ],
+  [
+   "23",
+   892,
+   "6701457.95"
+  ],
+  [
+   "29",
+   948,
+   "7158866.63"
+  ],
+  [
+   "30",
+   909,
+   "6808436.13"
+  ],
+  [
+   "31",
+   922,
+   "6806670.18"
+  ]
+ ],
+ "canonical": null
+}

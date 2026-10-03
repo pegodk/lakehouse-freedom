@@ -1,0 +1,184 @@
+{
+ "platform": "openlakehouse",
+ "engine": "spark",
+ "scale_factor": 1.0,
+ "repeats": 3,
+ "environment": {
+  "engine_version": "4.1.0",
+  "platform_label": "OpenLakehouse (local Docker)",
+  "compute": "Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host",
+  "openlakehouse_repo": "https://github.com/open-lakehouse/open-lakehouse",
+  "openlakehouse_commit": "77f9ebb21452c4d8fa5be89f9f3f8c503b2bf4a4",
+  "spark_image": "4.1.0-scala2.13-java21-python3-r-ubuntu",
+  "delta_version": "4.3.1",
+  "unitycatalog_spark_connector": "0.4.1",
+  "unitycatalog_server": "v0.5.0",
+  "seaweedfs": "3.80",
+  "postgres": "16",
+  "spark_conf": {
+   "spark.executor.cores": "6",
+   "spark.executor.memory": "7g",
+   "spark.driver.memory": "2g",
+   "spark.sql.shuffle.partitions": "24"
+  },
+  "host_cpus": 8,
+  "host_memory_gb": 13.6,
+  "host_os": "Linux 7.2.5-3-omarchy"
+ },
+ "queries": {
+  "q01": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 4.5735,
+   "row_count": 4,
+   "error": null
+  },
+  "q02": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 3.561,
+   "row_count": 100,
+   "error": null
+  },
+  "q03": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.5511,
+   "row_count": 10,
+   "error": null
+  },
+  "q04": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.019,
+   "row_count": 5,
+   "error": null
+  },
+  "q05": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 5.1005,
+   "row_count": 5,
+   "error": null
+  },
+  "q06": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.8151,
+   "row_count": 1,
+   "error": null
+  },
+  "q07": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 4.8692,
+   "row_count": 4,
+   "error": null
+  },
+  "q08": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 4.5318,
+   "row_count": 2,
+   "error": null
+  },
+  "q09": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 4.5653,
+   "row_count": 175,
+   "error": null
+  },
+  "q10": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 3.9878,
+   "row_count": 20,
+   "error": null
+  },
+  "q11": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.981,
+   "row_count": 1048,
+   "error": null
+  },
+  "q12": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.1473,
+   "row_count": 2,
+   "error": null
+  },
+  "q13": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.9702,
+   "row_count": 42,
+   "error": null
+  },
+  "q14": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.5667,
+   "row_count": 1,
+   "error": null
+  },
+  "q15": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.3462,
+   "row_count": 1,
+   "error": null
+  },
+  "q16": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.1237,
+   "row_count": 18314,
+   "error": null
+  },
+  "q17": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 3.3741,
+   "row_count": 1,
+   "error": null
+  },
+  "q18": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 5.7034,
+   "row_count": 57,
+   "error": null
+  },
+  "q19": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.9161,
+   "row_count": 1,
+   "error": null
+  },
+  "q20": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 3.1815,
+   "row_count": 186,
+   "error": null
+  },
+  "q21": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 6.6239,
+   "row_count": 100,
+   "error": null
+  },
+  "q22": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.5987,
+   "row_count": 7,
+   "error": null
+  }
+ }
+}
