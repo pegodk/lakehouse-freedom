@@ -12,7 +12,7 @@ dist/
 site/
 
 # Generated data never goes to Git (TPC-H data lives in object storage)
-data/
+/data/
 *.parquet
 
 # Databricks bundle state
