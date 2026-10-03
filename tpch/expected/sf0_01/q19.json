@@ -1,0 +1,1 @@
+{"source": "duckdb tpch_answers()", "scale_factor": 0.01, "query": "q19", "columns": ["revenue"], "rows": [["22923.0280"]]}

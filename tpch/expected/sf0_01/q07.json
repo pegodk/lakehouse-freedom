@@ -1,0 +1,1 @@
+{"source": "duckdb tpch_answers()", "scale_factor": 0.01, "query": "q07", "columns": ["supp_nation", "cust_nation", "l_year", "revenue"], "rows": [["FRANCE", "GERMANY", "1995", "268068.5774"], ["FRANCE", "GERMANY", "1996", "303862.2980"], ["GERMANY", "FRANCE", "1995", "621159.4882"], ["GERMANY", "FRANCE", "1996", "379095.8854"]]}

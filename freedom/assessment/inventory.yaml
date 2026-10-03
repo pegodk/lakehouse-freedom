@@ -1,0 +1,51 @@
+# Which code runs where. Drives the transformation and orchestration
+# portability scores (freedom/assessment/inventory.py). Paths are globs relative
+# to the repository root. A file must appear in exactly one group;
+# tests/portability/test_inventory.py enforces that every workload file is
+# classified.
+#
+#   shared            executed unchanged on Databricks and on OpenLakehouse
+#   databricks        executed only on Databricks
+#   openlakehouse     executed only on OpenLakehouse
+#
+# Categories:
+#   transformation    business logic and the code that runs it (task entry
+#                     points, session and configuration glue)
+#   orchestration     task graph and scheduler definitions
+#   infrastructure    stack provisioning; reported, but not part of any score
+
+shared:
+  transformation:
+    - src/common/config.py
+    - src/common/delta_io.py
+    - src/common/tpch_schema.py
+    - src/ingestion/*.py
+    - src/transformations/*.py
+    - src/quality/*.py
+    - src/run.py
+    - tpch/generator/*.py
+    - tpch/sql.py
+    - tpch/queries/*.sql
+    - benchmarks/runner/*.py
+  orchestration:
+    - src/common/pipeline.py
+
+databricks:
+  transformation:
+    - platforms/databricks/entrypoint.py
+  orchestration:
+    - platforms/databricks/resources/lakehouse_freedom.job.yml
+  infrastructure:
+    - platforms/databricks/databricks.yml
+    - platforms/databricks/resources/landing.yml
+
+openlakehouse:
+  transformation:
+    - platforms/openlakehouse/entrypoint.py
+    - platforms/openlakehouse/adapter.py
+    - platforms/openlakehouse/catalog.py
+  orchestration:
+    - platforms/openlakehouse/airflow/dags/*.py
+  infrastructure:
+    - platforms/openlakehouse/scripts/*.sh
+    - platforms/openlakehouse/config/*

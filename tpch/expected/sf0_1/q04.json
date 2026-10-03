@@ -1,0 +1,1 @@
+{"source": "duckdb tpch_answers()", "scale_factor": 0.1, "query": "q04", "columns": ["o_orderpriority", "order_count"], "rows": [["1-URGENT", "999"], ["2-HIGH", "997"], ["3-MEDIUM", "1031"], ["4-NOT SPECIFIED", "989"], ["5-LOW", "1077"]]}

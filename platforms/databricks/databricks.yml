@@ -1,0 +1,63 @@
+# Lakehouse Freedom: the managed implementation, as a Databricks Asset Bundle.
+#
+#   cd platforms/databricks
+#   databricks bundle validate -t dev
+#   databricks bundle deploy   -t dev --var="table_root=abfss://<container>@<account>.dfs.core.windows.net/freedom"
+#   databricks bundle run      -t dev lakehouse_freedom
+#
+# Prerequisites (one-off, by a workspace/metastore admin):
+#   CREATE CATALOG IF NOT EXISTS freedom;
+#   an external location covering ${var.table_root}, with CREATE EXTERNAL TABLE
+#   granted to the deploying principal.
+bundle:
+  name: lakehouse-freedom
+
+# The bundle lives in platforms/databricks but the wheel is built from the repo
+# root, so sync from there (sources only; generated data never leaves the laptop).
+sync:
+  paths:
+    - ../..
+  exclude:
+    - benchmarks/results/**
+    - reports/**
+    - platforms/openlakehouse/stack/**
+    - .venv/**
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Unity Catalog catalog for every Lakehouse Freedom object
+    default: freedom
+  scale_factor:
+    description: TPC-H scale factor (1, 10, 100, ...)
+    default: "1"
+  table_root:
+    description: >
+      External location URL under which Delta tables are written
+      (abfss://..., s3://..., gs://...). External tables are part of the
+      Freedom Architecture: the data stays readable from storage on Freedom Day.
+      Leave empty to fall back to catalog-managed tables (not recommended here).
+    default: ""
+  reader_group:
+    description: Group granted read access to the landing schema
+    default: account users
+  repeats:
+    description: Timed repetitions per TPC-H query
+    default: "3"
+
+artifacts:
+  lakehouse_freedom:
+    type: whl
+    path: ../..
+    build: uv build --wheel
+
+targets:
+  # Deliberately not `mode: development`: that mode prefixes schema names with
+  # the user name, and the schema names are part of what is compared across
+  # platforms (freedom.tpch_sf1.lineitem must mean the same thing everywhere).
+  dev:
+    default: true
+    workspace:
+      root_path: ~/.bundle/${bundle.name}/${bundle.target}

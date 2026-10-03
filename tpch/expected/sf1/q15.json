@@ -1,0 +1,1 @@
+{"source": "duckdb tpch_answers()", "scale_factor": 1, "query": "q15", "columns": ["s_suppkey", "s_name", "s_address", "s_phone", "total_revenue"], "rows": [["8449", "Supplier#000008449", "5BXWsJERA2mP5OyO4", "20-469-856-8873", "1772627.2087"]]}

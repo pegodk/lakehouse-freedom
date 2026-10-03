@@ -1,0 +1,1 @@
+{"source": "duckdb tpch_answers()", "scale_factor": 0.1, "query": "q05", "columns": ["n_name", "revenue"], "rows": [["CHINA", "7822103.0000"], ["INDIA", "6376121.5085"], ["JAPAN", "6000077.2184"], ["INDONESIA", "5580475.4027"], ["VIETNAM", "4497840.5466"]]}

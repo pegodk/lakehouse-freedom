@@ -1,0 +1,1 @@
+{"source": "duckdb tpch_answers()", "scale_factor": 0.1, "query": "q12", "columns": ["l_shipmode", "high_line_count", "low_line_count"], "rows": [["MAIL", "647", "945"], ["SHIP", "620", "943"]]}

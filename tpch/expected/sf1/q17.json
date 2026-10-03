@@ -1,0 +1,1 @@
+{"source": "duckdb tpch_answers()", "scale_factor": 1, "query": "q17", "columns": ["avg_yearly"], "rows": [["348406.0542857143"]]}

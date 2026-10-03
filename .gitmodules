@@ -1,0 +1,3 @@
+[submodule "platforms/openlakehouse/stack"]
+	path = platforms/openlakehouse/stack
+	url = https://github.com/open-lakehouse/open-lakehouse.git

@@ -1,0 +1,24 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# Generated data never goes to Git (TPC-H data lives in object storage)
+data/
+*.parquet
+
+# Databricks bundle state
+platforms/databricks/.databricks/
+
+# Machine-specific run artefacts
+reports/*sf0_01*
+benchmarks/results/*/sf0_01/
+benchmarks/results/freedom_day/sf0_01/
+
+.env
+.DS_Store

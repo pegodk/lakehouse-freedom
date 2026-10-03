@@ -1,0 +1,85 @@
+[project]
+name = "lakehouse-freedom"
+version = "0.1.0"
+description = "Build managed. Stay open. Keep your freedom. An executable portability reference architecture for Databricks and OpenLakehouse."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+# Runtime dependencies are deliberately minimal: this wheel is installed on
+# Databricks serverless, where pyspark is provided by the platform.
+dependencies = [
+    "duckdb==1.5.6",
+    "pyyaml>=6",
+]
+
+[project.optional-dependencies]
+# The OpenLakehouse side and the Freedom tooling run on a developer machine.
+local = [
+    "pyspark-client==4.1.0",
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "boto3>=1.35",
+    "requests>=2.32",
+]
+databricks = [
+    "databricks-sdk>=0.40",
+]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[project.scripts]
+freedom = "freedom.cli:main"
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+# The repository keeps the layout from the Lakehouse Freedom spec (src/, tpch/,
+# benchmarks/runner/, freedom/) and maps it onto importable packages:
+#   lakehouse_freedom            <- src/              shared workload code
+#   lakehouse_freedom.tpch       <- tpch/             generator, queries, expected answers
+#   lakehouse_freedom.benchmarks <- benchmarks/runner/ query runner (runs on both platforms)
+#   freedom                      <- freedom/          assessment, validation, reporting
+#   freedom_platforms            <- platforms/        platform adapters (entry points, sessions)
+[tool.setuptools]
+package-dir = { "lakehouse_freedom" = "src", "lakehouse_freedom.tpch" = "tpch", "lakehouse_freedom.benchmarks" = "benchmarks/runner", "freedom" = "freedom", "freedom_platforms" = "platforms" }
+packages = [
+    "lakehouse_freedom",
+    "lakehouse_freedom.common",
+    "lakehouse_freedom.ingestion",
+    "lakehouse_freedom.transformations",
+    "lakehouse_freedom.quality",
+    "lakehouse_freedom.tpch",
+    "lakehouse_freedom.tpch.generator",
+    "lakehouse_freedom.benchmarks",
+    "freedom",
+    "freedom.assessment",
+    "freedom.validation",
+    "freedom.reporting",
+    "freedom_platforms",
+    "freedom_platforms.openlakehouse",
+    "freedom_platforms.databricks",
+]
+
+[tool.setuptools.package-data]
+"lakehouse_freedom.tpch" = ["queries/*.sql", "queries/adapted/*/*.sql", "expected/*/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "stack: needs the local OpenLakehouse stack running (make openlakehouse-up)",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+# Broad excepts are deliberate in the validation code: a failure is recorded as
+# a measurement instead of aborting the run.
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["UP017"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["lakehouse_freedom", "freedom", "freedom_platforms"]

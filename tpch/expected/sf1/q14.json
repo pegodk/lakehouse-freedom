@@ -1,0 +1,1 @@
+{"source": "duckdb tpch_answers()", "scale_factor": 1, "query": "q14", "columns": ["promo_revenue"], "rows": [["16.380778626395543"]]}

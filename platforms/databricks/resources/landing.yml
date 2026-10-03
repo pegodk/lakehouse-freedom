@@ -1,0 +1,25 @@
+# Landing zone for raw files and run artefacts. Grants are part of the
+# workload's catalog footprint; see freedom/validation/catalog_portability.py.
+resources:
+  schemas:
+    landing:
+      catalog_name: ${var.catalog}
+      name: landing
+      comment: Raw TPC-H files and run artefacts for Lakehouse Freedom
+      grants:
+        - principal: ${var.reader_group}
+          privileges: [USE_SCHEMA, READ_VOLUME]
+
+  volumes:
+    raw:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.landing.name}
+      name: raw
+      volume_type: MANAGED
+      comment: TPC-H Raw Parquet produced by DuckDB dbgen
+    results:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.landing.name}
+      name: results
+      volume_type: MANAGED
+      comment: Benchmark results, quality reports and fingerprints

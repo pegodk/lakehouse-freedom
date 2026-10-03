@@ -1,0 +1,1 @@
+{"source": "duckdb tpch_answers()", "scale_factor": 0.01, "query": "q21", "columns": ["s_name", "numwait"], "rows": [["Supplier#000000074", "9"]]}
