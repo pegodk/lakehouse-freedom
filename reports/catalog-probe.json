@@ -19,7 +19,7 @@
    "capability": "External Delta tables created from Spark SQL",
    "probe": "CREATE TABLE ... USING DELTA LOCATION from Spark; table appears as EXTERNAL DELTA with its location",
    "recreated": true,
-   "evidence": "table_type=EXTERNAL, format=DELTA, location=s3://lakehouse/freedom/probe/39c64ab3/spark_created"
+   "evidence": "table_type=EXTERNAL, format=DELTA, location=s3://lakehouse/freedom/probe/43b9de8e/spark_created"
   },
   {
    "key": "spark_columns",

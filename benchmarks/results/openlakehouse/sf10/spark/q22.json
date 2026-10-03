@@ -2,17 +2,17 @@
  "platform": "openlakehouse",
  "engine": "spark",
  "engine_version": "4.1.0",
- "query": "q05",
+ "query": "q22",
  "scale_factor": 10.0,
  "variant": "canonical",
  "success": true,
- "duration_s": 29.5074,
+ "duration_s": 7.0249,
  "durations_s": [
-  29.5074
+  7.0249
  ],
- "row_count": 5,
+ "row_count": 7,
  "error": null,
- "timestamp": "2026-10-03T23:16:59.618289+00:00",
+ "timestamp": "2026-10-03T23:21:25.505776+00:00",
  "environment": {
   "engine_version": "4.1.0",
   "platform_label": "OpenLakehouse (local Docker)",
@@ -36,29 +36,45 @@
   "host_os": "Linux 7.2.5-3-omarchy"
  },
  "columns": [
-  "n_name",
-  "revenue"
+  "cntrycode",
+  "numcust",
+  "totacctbal"
  ],
  "rows": [
   [
-   "INDIA",
-   "536862587.9995"
+   "13",
+   9025,
+   "67592468.28"
   ],
   [
-   "CHINA",
-   "535350829.9282"
+   "17",
+   9067,
+   "68084663.34"
   ],
   [
-   "VIETNAM",
-   "532269388.7176"
+   "18",
+   9210,
+   "69312783.61"
   ],
   [
-   "JAPAN",
-   "526766837.1444"
+   "23",
+   8984,
+   "67607771.32"
   ],
   [
-   "INDONESIA",
-   "523176852.3189"
+   "29",
+   9199,
+   "69015438.26"
+  ],
+  [
+   "30",
+   9343,
+   "70118838.04"
+  ],
+  [
+   "31",
+   9086,
+   "68144525.38"
   ]
  ],
  "canonical": null

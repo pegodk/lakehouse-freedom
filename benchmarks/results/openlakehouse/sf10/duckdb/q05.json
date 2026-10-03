@@ -1,0 +1,52 @@
+{
+ "platform": "openlakehouse",
+ "engine": "duckdb",
+ "engine_version": "1.5.6",
+ "query": "q05",
+ "scale_factor": 10.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 2.9699,
+ "durations_s": [
+  2.9699
+ ],
+ "row_count": 5,
+ "error": null,
+ "timestamp": "2026-10-03T23:21:38.298807+00:00",
+ "environment": {
+  "engine_version": "1.5.6",
+  "platform_label": "OpenLakehouse (local Docker) + DuckDB in-process on the host",
+  "compute": "DuckDB in-process, all host cores",
+  "table_resolution": "Unity Catalog OSS REST -> delta_scan(storage_location)",
+  "host_cpus": 8,
+  "host_memory_gb": 13.6,
+  "host_os": "Linux 7.2.5-3-omarchy"
+ },
+ "columns": [
+  "n_name",
+  "revenue"
+ ],
+ "rows": [
+  [
+   "INDIA",
+   "536862587.9995"
+  ],
+  [
+   "CHINA",
+   "535350829.9282"
+  ],
+  [
+   "VIETNAM",
+   "532269388.7176"
+  ],
+  [
+   "JAPAN",
+   "526766837.1444"
+  ],
+  [
+   "INDONESIA",
+   "523176852.3189"
+  ]
+ ],
+ "canonical": null
+}

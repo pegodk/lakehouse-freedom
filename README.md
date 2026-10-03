@@ -18,7 +18,7 @@ No theoretical arguments about vendor lock-in. We run the workload and measure t
 
 ## Latest result
 
-TPC-H SF1 on OpenLakehouse (local Docker, 8 cores). From [`reports/freedom-report.md`](reports/freedom-report.md):
+TPC-H SF10 on OpenLakehouse (local Docker, 8 cores). From [`reports/freedom-report.md`](reports/freedom-report.md):
 
 ```
 Data portability                ████████████████████  100%   19/19 tables
