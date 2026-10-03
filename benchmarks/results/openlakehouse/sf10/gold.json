@@ -1,0 +1,11 @@
+{
+ "rows": 175,
+ "hash_sum": "12962307859979690068",
+ "columns": [
+  "nation",
+  "net_revenue",
+  "order_year",
+  "orders",
+  "quantity"
+ ]
+}
