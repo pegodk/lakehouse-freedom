@@ -1,22 +1,22 @@
 {
- "platform": "openlakehouse",
- "engine": "spark",
- "engine_version": "4.1.0",
+ "platform": "freedom_day",
+ "engine": "duckdb",
+ "engine_version": "1.5.6",
  "query": "q01",
  "scale_factor": 10.0,
  "variant": "canonical",
  "success": true,
- "duration_s": 51.5103,
+ "duration_s": 4.8253,
  "durations_s": [
-  51.5103
+  4.8253
  ],
  "row_count": 4,
  "error": null,
- "timestamp": "2026-10-03T23:15:34.684010+00:00",
+ "timestamp": "2026-10-03T23:30:03.747050+00:00",
  "environment": {
-  "engine_version": "4.1.0",
-  "platform_label": "OpenLakehouse (local Docker)",
-  "compute": "Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host",
+  "engine_version": "1.5.6",
+  "platform_label": "Freedom Day: OpenLakehouse, catalog rebuilt from storage",
+  "source_root": "s3://lakehouse/freedom/tables",
   "openlakehouse_repo": "https://github.com/open-lakehouse/open-lakehouse",
   "openlakehouse_commit": "77f9ebb21452c4d8fa5be89f9f3f8c503b2bf4a4",
   "spark_image": "4.1.0-scala2.13-java21-python3-r-ubuntu",
@@ -25,12 +25,6 @@
   "unitycatalog_server": "v0.5.0",
   "seaweedfs": "3.80",
   "postgres": "16",
-  "spark_conf": {
-   "spark.executor.cores": "6",
-   "spark.executor.memory": "7g",
-   "spark.driver.memory": "2g",
-   "spark.sql.shuffle.partitions": "24"
-  },
   "host_cpus": 8,
   "host_memory_gb": 13.6,
   "host_os": "Linux 7.2.5-3-omarchy"
@@ -55,9 +49,9 @@
    "566065727797.25",
    "537759104278.0656",
    "559276670892.116819",
-   "25.500975",
-   "38237.151009",
-   "0.050007",
+   25.500975103007097,
+   38237.15100895854,
+   0.0500065745402432,
    14804077
   ],
   [
@@ -67,9 +61,9 @@
    "14767438399.17",
    "14028805792.2114",
    "14590490998.366737",
-   "25.522448",
-   "38257.810660",
-   "0.049973",
+   25.522448302840946,
+   38257.81066008114,
+   0.04997336773765667,
    385998
   ],
   [
@@ -79,9 +73,9 @@
    "1114302286901.88",
    "1058580922144.9638",
    "1100937000170.591854",
-   "25.498076",
-   "38233.902923",
-   "0.050001",
+   25.498075870689316,
+   38233.90292348181,
+   0.05000081182113131,
    29144351
   ],
   [
@@ -91,9 +85,9 @@
    "566431054976.00",
    "538110922664.7677",
    "559634780885.086257",
-   "25.508385",
-   "38251.219274",
-   "0.049997",
+   25.50838478968014,
+   38251.219273559764,
+   0.04999679231408742,
    14808183
   ]
  ],

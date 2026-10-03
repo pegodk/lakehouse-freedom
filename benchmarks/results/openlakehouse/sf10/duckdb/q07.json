@@ -1,0 +1,58 @@
+{
+ "platform": "openlakehouse",
+ "engine": "duckdb",
+ "engine_version": "1.5.6",
+ "query": "q07",
+ "scale_factor": 10.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 1.3231,
+ "durations_s": [
+  1.3231
+ ],
+ "row_count": 4,
+ "error": null,
+ "timestamp": "2026-10-03T23:21:40.121056+00:00",
+ "environment": {
+  "engine_version": "1.5.6",
+  "platform_label": "OpenLakehouse (local Docker) + DuckDB in-process on the host",
+  "compute": "DuckDB in-process, all host cores",
+  "table_resolution": "Unity Catalog OSS REST -> delta_scan(storage_location)",
+  "host_cpus": 8,
+  "host_memory_gb": 13.6,
+  "host_os": "Linux 7.2.5-3-omarchy"
+ },
+ "columns": [
+  "supp_nation",
+  "cust_nation",
+  "l_year",
+  "revenue"
+ ],
+ "rows": [
+  [
+   "FRANCE",
+   "GERMANY",
+   1995,
+   "521960141.7003"
+  ],
+  [
+   "FRANCE",
+   "GERMANY",
+   1996,
+   "524796110.3842"
+  ],
+  [
+   "GERMANY",
+   "FRANCE",
+   1995,
+   "542199700.0546"
+  ],
+  [
+   "GERMANY",
+   "FRANCE",
+   1996,
+   "533640926.2614"
+  ]
+ ],
+ "canonical": null
+}

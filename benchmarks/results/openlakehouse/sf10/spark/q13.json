@@ -1,0 +1,225 @@
+{
+ "platform": "openlakehouse",
+ "engine": "spark",
+ "engine_version": "4.1.0",
+ "query": "q13",
+ "scale_factor": 10.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 13.7608,
+ "durations_s": [
+  13.7608
+ ],
+ "row_count": 45,
+ "error": null,
+ "timestamp": "2026-10-03T23:18:50.070483+00:00",
+ "environment": {
+  "engine_version": "4.1.0",
+  "platform_label": "OpenLakehouse (local Docker)",
+  "compute": "Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host",
+  "openlakehouse_repo": "https://github.com/open-lakehouse/open-lakehouse",
+  "openlakehouse_commit": "77f9ebb21452c4d8fa5be89f9f3f8c503b2bf4a4",
+  "spark_image": "4.1.0-scala2.13-java21-python3-r-ubuntu",
+  "delta_version": "4.3.1",
+  "unitycatalog_spark_connector": "0.4.1",
+  "unitycatalog_server": "v0.5.0",
+  "seaweedfs": "3.80",
+  "postgres": "16",
+  "spark_conf": {
+   "spark.executor.cores": "6",
+   "spark.executor.memory": "7g",
+   "spark.driver.memory": "2g",
+   "spark.sql.shuffle.partitions": "24"
+  },
+  "host_cpus": 8,
+  "host_memory_gb": 13.6,
+  "host_os": "Linux 7.2.5-3-omarchy"
+ },
+ "columns": [
+  "c_count",
+  "custdist"
+ ],
+ "rows": [
+  [
+   0,
+   500019
+  ],
+  [
+   10,
+   66125
+  ],
+  [
+   9,
+   65012
+  ],
+  [
+   11,
+   62192
+  ],
+  [
+   8,
+   58445
+  ],
+  [
+   12,
+   55784
+  ],
+  [
+   13,
+   49943
+  ],
+  [
+   19,
+   46595
+  ],
+  [
+   7,
+   46529
+  ],
+  [
+   18,
+   46036
+  ],
+  [
+   14,
+   45349
+  ],
+  [
+   20,
+   45327
+  ],
+  [
+   17,
+   44970
+  ],
+  [
+   16,
+   43830
+  ],
+  [
+   15,
+   43808
+  ],
+  [
+   21,
+   42585
+  ],
+  [
+   22,
+   38057
+  ],
+  [
+   6,
+   32772
+  ],
+  [
+   23,
+   32590
+  ],
+  [
+   24,
+   26830
+  ],
+  [
+   25,
+   21068
+  ],
+  [
+   5,
+   19745
+  ],
+  [
+   26,
+   16121
+  ],
+  [
+   27,
+   11606
+  ],
+  [
+   4,
+   9929
+  ],
+  [
+   28,
+   8196
+  ],
+  [
+   29,
+   5594
+  ],
+  [
+   3,
+   3974
+  ],
+  [
+   30,
+   3748
+  ],
+  [
+   31,
+   2343
+  ],
+  [
+   32,
+   1484
+  ],
+  [
+   2,
+   1216
+  ],
+  [
+   33,
+   868
+  ],
+  [
+   34,
+   510
+  ],
+  [
+   35,
+   254
+  ],
+  [
+   1,
+   232
+  ],
+  [
+   36,
+   144
+  ],
+  [
+   37,
+   83
+  ],
+  [
+   38,
+   47
+  ],
+  [
+   39,
+   16
+  ],
+  [
+   40,
+   9
+  ],
+  [
+   41,
+   7
+  ],
+  [
+   42,
+   4
+  ],
+  [
+   43,
+   3
+  ],
+  [
+   46,
+   1
+  ]
+ ],
+ "canonical": null
+}

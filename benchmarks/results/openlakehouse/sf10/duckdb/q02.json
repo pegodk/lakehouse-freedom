@@ -1,36 +1,23 @@
 {
  "platform": "openlakehouse",
- "engine": "spark",
- "engine_version": "4.1.0",
+ "engine": "duckdb",
+ "engine_version": "1.5.6",
  "query": "q02",
  "scale_factor": 10.0,
  "variant": "canonical",
  "success": true,
- "duration_s": 23.218,
+ "duration_s": 1.413,
  "durations_s": [
-  23.218
+  1.413
  ],
  "row_count": 100,
  "error": null,
- "timestamp": "2026-10-03T23:15:57.903747+00:00",
+ "timestamp": "2026-10-03T23:21:31.007655+00:00",
  "environment": {
-  "engine_version": "4.1.0",
-  "platform_label": "OpenLakehouse (local Docker)",
-  "compute": "Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host",
-  "openlakehouse_repo": "https://github.com/open-lakehouse/open-lakehouse",
-  "openlakehouse_commit": "77f9ebb21452c4d8fa5be89f9f3f8c503b2bf4a4",
-  "spark_image": "4.1.0-scala2.13-java21-python3-r-ubuntu",
-  "delta_version": "4.3.1",
-  "unitycatalog_spark_connector": "0.4.1",
-  "unitycatalog_server": "v0.5.0",
-  "seaweedfs": "3.80",
-  "postgres": "16",
-  "spark_conf": {
-   "spark.executor.cores": "6",
-   "spark.executor.memory": "7g",
-   "spark.driver.memory": "2g",
-   "spark.sql.shuffle.partitions": "24"
-  },
+  "engine_version": "1.5.6",
+  "platform_label": "OpenLakehouse (local Docker) + DuckDB in-process on the host",
+  "compute": "DuckDB in-process, all host cores",
+  "table_resolution": "Unity Catalog OSS REST -> delta_scan(storage_location)",
   "host_cpus": 8,
   "host_memory_gb": 13.6,
   "host_os": "Linux 7.2.5-3-omarchy"

@@ -2,17 +2,17 @@
  "platform": "openlakehouse",
  "engine": "spark",
  "engine_version": "4.1.0",
- "query": "q05",
+ "query": "q19",
  "scale_factor": 10.0,
  "variant": "canonical",
  "success": true,
- "duration_s": 29.5074,
+ "duration_s": 8.2476,
  "durations_s": [
-  29.5074
+  8.2476
  ],
- "row_count": 5,
+ "row_count": 1,
  "error": null,
- "timestamp": "2026-10-03T23:16:59.618289+00:00",
+ "timestamp": "2026-10-03T23:20:27.353892+00:00",
  "environment": {
   "engine_version": "4.1.0",
   "platform_label": "OpenLakehouse (local Docker)",
@@ -36,29 +36,11 @@
   "host_os": "Linux 7.2.5-3-omarchy"
  },
  "columns": [
-  "n_name",
   "revenue"
  ],
  "rows": [
   [
-   "INDIA",
-   "536862587.9995"
-  ],
-  [
-   "CHINA",
-   "535350829.9282"
-  ],
-  [
-   "VIETNAM",
-   "532269388.7176"
-  ],
-  [
-   "JAPAN",
-   "526766837.1444"
-  ],
-  [
-   "INDONESIA",
-   "523176852.3189"
+   "30104438.0911"
   ]
  ],
  "canonical": null
