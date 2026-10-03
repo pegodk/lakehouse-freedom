@@ -46,19 +46,6 @@ benchmark). `documented` is a reasoned statement that is not tested automaticall
 - **Elastic, managed compute.** Principle F6. This is where the managed platform earns its keep; the benchmark section shows the effect when comparable compute is used.
 - **Lineage, audit and system tables.** Freedom Challenge
 
-## Not covered by v1: Freedom Challenges
+## Not covered by v1
 
-Each future challenge asks the same question for one more capability: how much of it remains portable,
-and what does it take to reproduce it with the open lakehouse ecosystem?
-
-| # | Challenge | Databricks capability | Likely open counterpart (to be measured) |
-|---|---|---|---|
-| 1 | TPC-H / SQL / Delta | Spark, Delta, Databricks SQL | **v1, this repository** |
-| 2 | Streaming + Auto Loader | Auto Loader, Structured Streaming | Structured Streaming file source, Kafka (in OpenLakehouse) |
-| 3 | Lakeflow Declarative Pipelines | `dlt`, streaming tables, materialized views | Spark Declarative Pipelines (Spark 4.1, in OpenLakehouse) |
-| 4 | Unity Catalog governance | grants, row filters, masks, tags | UC OSS with authorization enabled, engine-side policies |
-| 5 | MLflow / ML workloads | Managed MLflow, Model Serving | MLflow 3.14 (in OpenLakehouse) |
-| 6 | Databricks SQL / BI | SQL warehouses, dashboards | Spark Thrift / Connect, DuckDB, BI tools |
-| 7 | AI / Vector Search / Agents | AI functions, Vector Search, Agent Framework | open models, vector stores, MLflow tracing |
-| 8 | Observability | system tables, lineage | OpenLineage, Spark event logs |
-| 9 | Disaster recovery / Freedom Day | managed DR | Freedom Day against a replicated bucket |
+Capabilities outside Freedom Challenge #1 (streaming, declarative pipelines, governance, ML, BI, AI, observability) are listed on the [Freedom Challenges](freedom-challenges.md) page.

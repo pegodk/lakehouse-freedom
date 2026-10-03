@@ -19,7 +19,7 @@ DBX     := databricks $(if $(DATABRICKS_PROFILE),-p $(DATABRICKS_PROFILE),)
 .DEFAULT_GOAL := help
 .PHONY: help setup venv openlakehouse-configure openlakehouse-up openlakehouse-down \
         openlakehouse-destroy openlakehouse-status generate-data pipeline freedom-benchmark \
-        freedom-check freedom-day freedom-report freedom-assess demo test test-stack lint \
+        freedom-check freedom-day freedom-report freedom-assess demo test test-stack lint docs-serve docs-build \
         databricks-validate databricks-deploy databricks-run databricks-fetch-results clean-results
 
 help:
@@ -85,8 +85,16 @@ test: ## Unit and portability tests that need no running stack
 test-stack: ## Tests against the running OpenLakehouse stack (SF0.01)
 	$(PY) -m pytest -m stack
 
-lint:
-	.venv/bin/ruff check src tpch benchmarks freedom platforms --exclude platforms/openlakehouse/stack
+lint: ## Lint with ruff
+	.venv/bin/ruff check src tpch benchmarks freedom platforms tests --exclude platforms/openlakehouse/stack
+
+docs-serve: ## Preview the documentation site on http://localhost:8000
+	uv pip install --python $(PY) -q -e '.[docs]'
+	.venv/bin/zensical serve
+
+docs-build: ## Build the documentation site into ./site
+	uv pip install --python $(PY) -q -e '.[docs]'
+	.venv/bin/zensical build --clean
 
 # ── Databricks (managed implementation) ─────────────────────────────────────
 databricks-validate: ## Validate the Asset Bundle (DATABRICKS_PROFILE=)

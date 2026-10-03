@@ -8,6 +8,9 @@ dist/
 .pytest_cache/
 .ruff_cache/
 
+# Documentation build
+site/
+
 # Generated data never goes to Git (TPC-H data lives in object storage)
 data/
 *.parquet

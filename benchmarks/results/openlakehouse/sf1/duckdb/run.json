@@ -1,0 +1,171 @@
+{
+ "platform": "openlakehouse",
+ "engine": "duckdb",
+ "scale_factor": 1.0,
+ "repeats": 3,
+ "environment": {
+  "engine_version": "1.5.6",
+  "platform_label": "OpenLakehouse (local Docker) + DuckDB in-process on the host",
+  "compute": "DuckDB in-process, all host cores",
+  "table_resolution": "Unity Catalog OSS REST -> delta_scan(storage_location)",
+  "host_cpus": 8,
+  "host_memory_gb": 13.6,
+  "host_os": "Linux 7.2.5-3-omarchy"
+ },
+ "queries": {
+  "q01": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.252,
+   "row_count": 4,
+   "error": null
+  },
+  "q02": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.3853,
+   "row_count": 100,
+   "error": null
+  },
+  "q03": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.2542,
+   "row_count": 10,
+   "error": null
+  },
+  "q04": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.1758,
+   "row_count": 5,
+   "error": null
+  },
+  "q05": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.3367,
+   "row_count": 5,
+   "error": null
+  },
+  "q06": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.0765,
+   "row_count": 1,
+   "error": null
+  },
+  "q07": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.3794,
+   "row_count": 4,
+   "error": null
+  },
+  "q08": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.4168,
+   "row_count": 2,
+   "error": null
+  },
+  "q09": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.4873,
+   "row_count": 175,
+   "error": null
+  },
+  "q10": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.3269,
+   "row_count": 20,
+   "error": null
+  },
+  "q11": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.2466,
+   "row_count": 1048,
+   "error": null
+  },
+  "q12": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.1872,
+   "row_count": 2,
+   "error": null
+  },
+  "q13": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.4202,
+   "row_count": 42,
+   "error": null
+  },
+  "q14": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.1624,
+   "row_count": 1,
+   "error": null
+  },
+  "q15": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.108,
+   "row_count": 1,
+   "error": null
+  },
+  "q16": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.2268,
+   "row_count": 18314,
+   "error": null
+  },
+  "q17": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.1907,
+   "row_count": 1,
+   "error": null
+  },
+  "q18": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.3771,
+   "row_count": 57,
+   "error": null
+  },
+  "q19": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.2347,
+   "row_count": 1,
+   "error": null
+  },
+  "q20": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.2724,
+   "row_count": 186,
+   "error": null
+  },
+  "q21": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.5621,
+   "row_count": 100,
+   "error": null
+  },
+  "q22": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.2149,
+   "row_count": 7,
+   "error": null
+  }
+ }
+}

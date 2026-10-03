@@ -1,0 +1,41 @@
+{
+ "platform": "freedom_day",
+ "engine": "spark",
+ "engine_version": "4.1.0",
+ "query": "q19",
+ "scale_factor": 1.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 2.1328,
+ "durations_s": [
+  2.1328
+ ],
+ "row_count": 1,
+ "error": null,
+ "timestamp": "2026-10-03T22:12:55.799189+00:00",
+ "environment": {
+  "engine_version": "4.1.0",
+  "platform_label": "Freedom Day: OpenLakehouse, catalog rebuilt from storage",
+  "source_root": "s3://lakehouse/freedom/tables",
+  "openlakehouse_repo": "https://github.com/open-lakehouse/open-lakehouse",
+  "openlakehouse_commit": "77f9ebb21452c4d8fa5be89f9f3f8c503b2bf4a4",
+  "spark_image": "4.1.0-scala2.13-java21-python3-r-ubuntu",
+  "delta_version": "4.3.1",
+  "unitycatalog_spark_connector": "0.4.1",
+  "unitycatalog_server": "v0.5.0",
+  "seaweedfs": "3.80",
+  "postgres": "16",
+  "host_cpus": 8,
+  "host_memory_gb": 13.6,
+  "host_os": "Linux 7.2.5-3-omarchy"
+ },
+ "columns": [
+  "revenue"
+ ],
+ "rows": [
+  [
+   "3083843.0578"
+  ]
+ ],
+ "canonical": null
+}

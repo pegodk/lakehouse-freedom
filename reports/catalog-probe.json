@@ -1,0 +1,77 @@
+{
+ "items": [
+  {
+   "key": "catalog",
+   "capability": "Catalogs",
+   "probe": "create and read back a catalog via REST",
+   "recreated": true,
+   "evidence": "created and read back"
+  },
+  {
+   "key": "schema",
+   "capability": "Schemas",
+   "probe": "create and read back a schema via REST",
+   "recreated": true,
+   "evidence": "created and listed"
+  },
+  {
+   "key": "external_table",
+   "capability": "External Delta tables created from Spark SQL",
+   "probe": "CREATE TABLE ... USING DELTA LOCATION from Spark; table appears as EXTERNAL DELTA with its location",
+   "recreated": true,
+   "evidence": "table_type=EXTERNAL, format=DELTA, location=s3://lakehouse/freedom/probe/39c64ab3/spark_created"
+  },
+  {
+   "key": "spark_columns",
+   "capability": "Column metadata for tables created from Spark",
+   "probe": "columns of the Spark-created table are returned by the catalog API",
+   "recreated": false,
+   "evidence": "catalog API returned 0 of 2 columns"
+  },
+  {
+   "key": "spark_comment",
+   "capability": "Table comments set from Spark SQL",
+   "probe": "COMMENT clause of the Spark-created table is returned by the catalog API",
+   "recreated": true,
+   "evidence": "catalog API comment='probe comment'"
+  },
+  {
+   "key": "spark_properties",
+   "capability": "Custom table properties set from Spark SQL",
+   "probe": "TBLPROPERTIES of the Spark-created table are returned by the catalog API",
+   "recreated": false,
+   "evidence": "catalog API properties={\"table_type\": \"EXTERNAL\"}"
+  },
+  {
+   "key": "alter_metadata",
+   "capability": "ALTER TABLE for comments and properties",
+   "probe": "ALTER TABLE ... SET TBLPROPERTIES from Spark succeeds",
+   "recreated": false,
+   "evidence": "Altering a table is not supported yet"
+  },
+  {
+   "key": "rest_registration",
+   "capability": "Registering an existing Delta table with full column metadata",
+   "probe": "POST /tables with columns and column comments; read back via API and query from Spark",
+   "recreated": true,
+   "evidence": "2 columns, column comment 'identifier', properties {\"freedom.layer\": \"probe\"}, Spark read 1 row(s)"
+  },
+  {
+   "key": "volume",
+   "capability": "Volumes for raw files",
+   "probe": "create and read back an external volume via REST",
+   "recreated": true,
+   "evidence": "1 volume(s) listed"
+  },
+  {
+   "key": "grants",
+   "capability": "Grants (GRANT USE SCHEMA ... TO principal)",
+   "probe": "PATCH /permissions on a schema for an existing UC user; read the grant back",
+   "recreated": false,
+   "evidence": "grant read back: []; server.authorization is 'disable' in the OpenLakehouse default config"
+  }
+ ],
+ "recreated": 6,
+ "total": 10,
+ "score": 0.6
+}
