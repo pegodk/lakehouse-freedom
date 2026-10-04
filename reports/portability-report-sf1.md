@@ -1,6 +1,6 @@
 # 🗽 Portable Lakehouse Report
 
-Scale factor **1** (`sf1`) · generated 2026-10-04 18:59 UTC by `make portability-report SCALE=1`
+Scale factor **1** (`sf1`) · generated 2026-10-04 19:03 UTC by `make portability-report SCALE=1`
 
 > **Scope of this report.** The Databricks side of the workload has not been run for this scale factor, so every comparison below uses the OpenLakehouse run, the official TPC-H answers (where they exist) and separate DuckDB reference results. Databricks columns are marked *not run*. Run the bundle in `platforms/databricks/` and `make databricks-fetch-results` to complete it.
 
@@ -20,12 +20,12 @@ Governance portability
 ██████████░░░░░░░░░░   50%   (1/2)
 ```
 
-| Component | Formula | Included in Portability Score |
-|---|---|---|
-| Transformation portability | shared transformation LOC / (shared + OpenLakehouse-specific transformation LOC) | yes |
-| Catalog portability | Unity Catalog capabilities recreated in UC OSS / capabilities used | yes |
-| Orchestration portability | shared orchestration LOC / (shared + OpenLakehouse-specific orchestration LOC) | yes |
-| Governance portability | obligations enforced by DataFusion / reviewed obligations in the registry | yes |
+| Component | Formula | Included in Portability Score | Details |
+|---|---|---|---|
+| Transformation portability | shared transformation LOC / (shared + OpenLakehouse-specific transformation LOC) | yes | [view files](#5-platform-specific-code) |
+| Catalog portability | Unity Catalog capabilities recreated in UC OSS / capabilities used | yes | [view 10 capabilities](#catalog-portability-details) |
+| Orchestration portability | shared orchestration LOC / (shared + OpenLakehouse-specific orchestration LOC) | yes | [view files](#5-platform-specific-code) |
+| Governance portability | obligations enforced by DataFusion / reviewed obligations in the registry | yes | [view obligations](#governance-portability-details) |
 
 The score is the unweighted mean of the included, measured components. The capability coverage later in this report provides the broader comparison of native support, alternatives, workarounds and gaps.
 
@@ -208,7 +208,9 @@ Databricks-specific constructs found by the scanner in `platforms/databricks/`: 
 | Lineage, audit and system tables | Unity Catalog lineage, system tables | OpenLineage (not part of v1) | **PLATFORM-SPECIFIC** | documented |
 | Experiment tracking | Databricks managed MLflow | MLflow OSS 3.14 or any MLflow-compatible tracking server | **PORTABLE** | measured:mlflow_tracking |
 
-Catalog probe (live, against UC OSS):
+### Catalog portability details
+
+These are the ten capabilities behind the catalog score. The six marked **yes** are supported in the tested UC OSS configuration.
 
 | Unity Catalog capability | Recreated | Evidence |
 |---|---|---|
@@ -222,6 +224,15 @@ Catalog probe (live, against UC OSS):
 | Registering an existing Delta table with full column metadata | yes | 2 columns, column comment 'identifier', properties {"portable_lakehouse.layer": "probe"}, Spark read 1 row(s) |
 | Volumes for raw files | yes | 1 volume(s) listed |
 | Grants (GRANT USE SCHEMA ... TO principal) | **no** | grant read back: []; server.authorization is 'disable' in the OpenLakehouse default config |
+
+### Governance portability details
+
+These are the reviewed obligations behind the governance score. Support means the DataFusion adapter enforces the obligation; unsupported obligations fail closed.
+
+| Governance feature | Obligation | Policy | Enforced | Evidence |
+|---|---|---|---|---|
+| Tenant row filtering | `row_filter/tenant_isolation` | tenant-reader | **no** | fails closed; not implemented |
+| Email column masking | `column_mask/mask_email` | pii-reader | yes | compiled into a DataFusion expression |
 
 ## 7. Platform capability coverage
 

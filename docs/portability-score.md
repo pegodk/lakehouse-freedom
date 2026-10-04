@@ -39,6 +39,8 @@ Unity Catalog capabilities used by the workload
 
 Measured live by the catalog probe (catalogs, schemas, external tables, Spark-created column metadata, comments, properties, `ALTER TABLE`, REST registration, volumes, grants).
 
+[See the ten catalog capabilities and the evidence for each result](report.md#catalog-portability-details).
+
 ### Orchestration portability
 
 ```
@@ -58,6 +60,8 @@ reviewed obligations in governance/obligations.yaml
 ```
 
 The current registry contains tenant row isolation and email masking. The DataFusion adapter enforces email masking and fails closed for tenant isolation, so governance portability is 1/2 (50%). This metric measures the implemented obligation boundary; it does not represent production identity integration, gateway hardening, or every governance capability.
+
+[See each governance feature and its enforcement status](report.md#governance-portability-details).
 
 ### Portability Score
 

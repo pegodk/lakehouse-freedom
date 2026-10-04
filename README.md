@@ -32,9 +32,9 @@ Governance portability          ██████████░░░░░░
 Every percentage is a ratio of measured counts. Governance measures reviewed obligation coverage in the DataFusion adapter; it does not claim that production identity integration or gateway hardening is complete.
 
 - **[Transformation portability](https://pegodk.github.io/portable-lakehouse/portability-score/#transformation-portability):** shared versus platform-specific transformation code.
-- **[Catalog portability](https://pegodk.github.io/portable-lakehouse/portability-score/#catalog-portability):** Unity Catalog capabilities supported by both implementations.
+- **[Catalog portability](https://pegodk.github.io/portable-lakehouse/report/#catalog-portability-details):** see exactly which 6 of 10 Unity Catalog capabilities are supported in the tested configuration.
 - **[Orchestration portability](https://pegodk.github.io/portable-lakehouse/portability-score/#orchestration-portability):** shared task graph versus scheduler-specific code.
-- **[Governance portability](https://pegodk.github.io/portable-lakehouse/portability-score/#governance-portability):** reviewed Cedar obligations enforced by the DataFusion reference adapter.
+- **[Governance portability](https://pegodk.github.io/portable-lakehouse/report/#governance-portability-details):** see which reviewed features—currently tenant row filtering and email column masking—are enforced by the DataFusion adapter.
 
 The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and separate DuckDB and Python reference implementations. See [limitations](#limitations) and the [score formulas](https://pegodk.github.io/portable-lakehouse/portability-score/).
 
