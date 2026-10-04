@@ -1,6 +1,6 @@
 # Portability Principles
 
-Seven principles for treating portability as a design objective. Each one explains how this repository applies the principle and what evidence is collected.
+Portability should be part of the design of every lakehouse from the start. These seven principles explain how to make it an explicit architectural quality, how this repository applies each principle, and what evidence is collected.
 
 ## P1: Own the data
 
@@ -51,6 +51,6 @@ The open implementation does not need to reproduce every Databricks capability. 
 
 ## P7: Managed services are allowed to be better
 
-The objective is not to show that an open-source stack is superior to Databricks. Managed services may offer better performance, operations, developer experience, governance, autoscaling and observability. Portability means making architectural options and dependencies visible, not producing identical platforms.
+Managed services may offer better performance, operations, developer experience, governance, autoscaling and observability. A portable design uses those advantages deliberately while keeping platform dependencies visible and preserving options around the data and business logic that matter most.
 
 **In this repository.** The capability mapping marks serverless compute, governance (grants, masks, row filters), lineage and system tables as `PLATFORM-SPECIFIC`. The catalog probe shows exactly which Unity Catalog behaviours UC OSS 0.5.0 does not reproduce. The benchmark refuses to rank platforms on unlike hardware.

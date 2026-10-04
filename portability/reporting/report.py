@@ -20,6 +20,7 @@ from portability.reporting.score import bar, components, portability_score
 from portability.validation import compare
 from portable_lakehouse.common.config import scale_tag
 from portable_lakehouse.common.tpch_schema import TABLES
+from portable_lakehouse.governance.datafusion import SUPPORTED_OBLIGATIONS
 
 REPO = Path(__file__).resolve().parents[2]
 CAPABILITIES = REPO / "portability" / "assessment" / "capabilities.yaml"
@@ -79,8 +80,15 @@ def render(scale_factor: float) -> str:
         w(bar(c["value"]) + (f"   ({c['numerator']}/{c['denominator']})" if c["value"] is not None else ""))
     w("```")
     w("")
-    w(_table(["Component", "Formula", "Included in Portability Score"],
-             [[c["name"], c["formula"], "yes" if c["in_score"] else "no (additional engine)"] for c in comps]))
+    detail_links = {
+        "transformation": "[view files](#5-platform-specific-code)",
+        "catalog": "[view 10 capabilities](#catalog-portability-details)",
+        "orchestration": "[view files](#5-platform-specific-code)",
+        "governance": "[view obligations](#governance-portability-details)",
+    }
+    w(_table(["Component", "Formula", "Included in Portability Score", "Details"],
+             [[c["name"], c["formula"], "yes" if c["in_score"] else "no (additional engine)",
+               detail_links[c["key"]]] for c in comps]))
     w("")
     w("The score is the unweighted mean of the included, measured components. The capability coverage "
       "later in this report provides the broader comparison of native support, alternatives, workarounds and gaps.")
@@ -223,12 +231,40 @@ def render(scale_factor: float) -> str:
                c["evidence"]] for c in caps]))
     w("")
     if probe_items:
-        w("Catalog probe (live, against UC OSS):")
+        w("### Catalog portability details")
+        w("")
+        w("These are the ten capabilities behind the catalog score. The six marked **yes** are supported "
+          "in the tested UC OSS configuration.")
         w("")
         w(_table(["Unity Catalog capability", "Recreated", "Evidence"],
                  [[i["capability"], "yes" if i["recreated"] else "**no**", i["evidence"]]
                   for i in probe_items.values()]))
         w("")
+
+    w("### Governance portability details")
+    w("")
+    w("These are the reviewed obligations behind the governance score. Support means the DataFusion "
+      "adapter enforces the obligation; unsupported obligations fail closed.")
+    w("")
+    governance_registry = yaml.safe_load((REPO / "governance" / "obligations.yaml").read_text())
+    governance_names = {
+        ("row_filter", "tenant_isolation"): "Tenant row filtering",
+        ("column_mask", "mask_email"): "Email column masking",
+    }
+    governance_rows = []
+    for policy_id, obligations in governance_registry.items():
+        for obligation in obligations:
+            key = (obligation["kind"], obligation["name"])
+            supported = key in SUPPORTED_OBLIGATIONS
+            governance_rows.append([
+                governance_names.get(key, obligation["name"].replace("_", " ").title()),
+                f"`{obligation['kind']}/{obligation['name']}`",
+                policy_id,
+                "yes" if supported else "**no**",
+                "compiled into a DataFusion expression" if supported else "fails closed; not implemented",
+            ])
+    w(_table(["Governance feature", "Obligation", "Policy", "Enforced", "Evidence"], governance_rows))
+    w("")
 
     # 9
     w("## 7. Platform capability coverage")
@@ -315,10 +351,14 @@ def _conclusions(comps, probe, dbx_run) -> str:
         gaps = [i["capability"] for i in probe["items"] if not i["recreated"]]
         parts.append(f"**Catalog.** {probe['recreated']} of {probe['total']} Unity Catalog capabilities used by "
                      f"the workload are also supported by UC OSS. Gaps: {'; '.join(gaps)}. This is where the "
-                     f"managed catalog has the clearest capability advantage (F6).")
+                     f"managed catalog has the clearest capability advantage (P7).")
     o = c["orchestration"]
     parts.append(f"**Orchestration.** Sharing the task graph keeps both schedulers aligned, but the scheduler "
                  f"definitions themselves are platform code ({o['value'] * 100:.0f}% shared).")
+    g = c["governance"]
+    parts.append(f"**Governance.** The DataFusion adapter enforces {g['numerator']} of {g['denominator']} "
+                 "reviewed obligations. This measures obligation coverage, not production identity or "
+                 "gateway readiness.")
     if not dbx_run:
         parts.append("**Next step.** Run the Databricks bundle to replace the stand-in references with "
                      "measured Databricks output and complete the two-implementation comparison.")

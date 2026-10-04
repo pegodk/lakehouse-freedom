@@ -9,9 +9,17 @@ The model supports both **RBAC** and **ABAC**. Roles and group membership can be
 represented as principal attributes, while policies can also evaluate principal,
 resource and request-context attributes. Both approaches produce the same portable
 decision contract: allow or deny, the matched policy IDs, and typed enforcement
-obligations. Governance portability is not included in the Portability Score until the
-identity integration and governed SQL gateway are exercised end to end on both
-reference architectures.
+obligations. Governance portability is included in the Portability Score as the
+share of reviewed obligations that the DataFusion adapter currently enforces.
+This deliberately narrow metric does not claim that identity integration or a
+production governed SQL gateway is complete.
+
+| Governance feature | Reviewed obligation | DataFusion enforcement |
+|---|---|---|
+| Tenant row filtering | `row_filter/tenant_isolation` | **Not yet implemented**; fails closed |
+| Email column masking | `column_mask/mask_email` | **Implemented** as a DataFusion expression |
+
+[See the generated governance score details](report.md#governance-portability-details).
 
 ```mermaid
 flowchart LR

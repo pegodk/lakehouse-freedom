@@ -12,7 +12,7 @@ But what does that openness give a lakehouse design in practice?
 
 Portable Lakehouse is an open-source reference architecture, implementation pattern and portability toolkit. It builds a realistic workload for Databricks and then runs the same data—and as much of the same code as practical—on an open-source lakehouse based on [OpenLakehouse.io](https://openlakehouse.io).
 
-The objective is not to demonstrate why an organization should leave Databricks. Databricks is the primary managed implementation because its integrated platform, managed infrastructure and higher-level services provide substantial value. The objective is to make the boundary between an open foundation and managed capabilities visible, so teams can preserve architectural options while using the platform that fits them.
+Portability should be part of the design of every lakehouse from the start. Databricks is the primary managed implementation because its integrated platform, managed infrastructure and higher-level services provide substantial value. Portable Lakehouse makes the boundary between an open foundation and managed capabilities visible, so teams can use those benefits while preserving ownership of their data, core logic and future architectural choices.
 
 📖 **Documentation: <https://pegodk.github.io/portable-lakehouse/>**
 
@@ -21,20 +21,20 @@ The objective is not to demonstrate why an organization should leave Databricks.
 TPC-H SF10 on OpenLakehouse (local Docker, 8 cores). From [`reports/portability-report.md`](reports/portability-report.md):
 
 ```
-Portability Score                   █████████████░░░░░░░   67%
+Portability Score                   ████████████░░░░░░░░   62%
 ─────────────────────────────────────────────────────
 Transformation portability      ██████████████████░░   89%   1512/1702 LOC shared
 Catalog portability             ████████████░░░░░░░░   60%   6/10 UC capabilities
 Orchestration portability       ██████████░░░░░░░░░░   51%   29/57 LOC shared
-Governance portability          ····················   not scored
+Governance portability          ██████████░░░░░░░░░░   50%   1/2 obligations enforced
 ```
 
-Every percentage is a ratio of measured counts. Governance is shown separately because the current implementation is a foundation, not a complete measured enforcement path.
+Every percentage is a ratio of measured counts. Governance measures reviewed obligation coverage in the DataFusion adapter; it does not claim that production identity integration or gateway hardening is complete.
 
 - **[Transformation portability](https://pegodk.github.io/portable-lakehouse/portability-score/#transformation-portability):** shared versus platform-specific transformation code.
-- **[Catalog portability](https://pegodk.github.io/portable-lakehouse/portability-score/#catalog-portability):** Unity Catalog capabilities supported by both implementations.
+- **[Catalog portability](https://pegodk.github.io/portable-lakehouse/report/#catalog-portability-details):** see exactly which 6 of 10 Unity Catalog capabilities are supported in the tested configuration.
 - **[Orchestration portability](https://pegodk.github.io/portable-lakehouse/portability-score/#orchestration-portability):** shared task graph versus scheduler-specific code.
-- **[Governance portability](https://pegodk.github.io/portable-lakehouse/governance/):** portable RBAC/ABAC decisions and typed enforcement obligations using Cedar, with DataFusion as the reference enforcement point.
+- **[Governance portability](https://pegodk.github.io/portable-lakehouse/report/#governance-portability-details):** see which reviewed features—currently tenant row filtering and email column masking—are enforced by the DataFusion adapter.
 
 The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and separate DuckDB and Python reference implementations. See [limitations](#limitations) and the [score formulas](https://pegodk.github.io/portable-lakehouse/portability-score/).
 
@@ -54,7 +54,7 @@ The Databricks side of the workload is defined and validated but **has not been 
           PORTABILITY CHECK → PORTABILITY REPORT
 ```
 
-- **[Portability Score](https://pegodk.github.io/portable-lakehouse/portability-score/).** Measured ratios summarise shared transformation code, catalog behaviour and orchestration.
+- **[Portability Score](https://pegodk.github.io/portable-lakehouse/portability-score/).** Measured ratios summarise shared transformation code, catalog behaviour, orchestration and governance obligation coverage.
 - **[Capability coverage](https://pegodk.github.io/portable-lakehouse/platform-capability-coverage/).** Curated matrices compare native support, alternatives, workarounds and gaps across the two architectures.
 - **[Portability Benchmark](https://pegodk.github.io/portable-lakehouse/portability-benchmark/).** One TPC-H workload compares SQL compatibility and execution characteristics across Spark, DuckDB and Apache DataFusion.
 - **[Governance portability](https://pegodk.github.io/portable-lakehouse/governance/).** Cedar provides portable RBAC/ABAC decisions that map reviewed policies to typed row-filter, column-allow and column-mask obligations.
@@ -88,7 +88,7 @@ The Databricks side is an Asset Bundle in [`platforms/databricks`](platforms/dat
 | P6 | Portability does not require platform equivalence |
 | P7 | Managed services are allowed to be better |
 
-Portability is architectural optionality, not an argument against managed services. [Read more](https://pegodk.github.io/portable-lakehouse/portability-principles/).
+Portability is a design requirement for architectural optionality. It should be considered from the first architectural decisions, including when a managed service is the clear platform choice. [Read more](https://pegodk.github.io/portable-lakehouse/portability-principles/).
 
 ## Limitations
 

@@ -1,6 +1,6 @@
 # 🗽 Portable Lakehouse Report
 
-Scale factor **1** (`sf1`) · generated 2026-10-04 18:03 UTC by `make portability-report SCALE=1`
+Scale factor **1** (`sf1`) · generated 2026-10-04 19:03 UTC by `make portability-report SCALE=1`
 
 > **Scope of this report.** The Databricks side of the workload has not been run for this scale factor, so every comparison below uses the OpenLakehouse run, the official TPC-H answers (where they exist) and separate DuckDB reference results. Databricks columns are marked *not run*. Run the bundle in `platforms/databricks/` and `make databricks-fetch-results` to complete it.
 
@@ -8,21 +8,24 @@ Scale factor **1** (`sf1`) · generated 2026-10-04 18:03 UTC by `make portabilit
 
 ```
 Portability Score
-█████████████░░░░░░░   67%
+████████████░░░░░░░░   62%
 ────────────────────────────────────────────
 Transformation portability
-██████████████████░░   89%   (1555/1745)
+██████████████████░░   89%   (1555/1746)
 Catalog portability
 ████████████░░░░░░░░   60%   (6/10)
 Orchestration portability
 ██████████░░░░░░░░░░   51%   (29/57)
+Governance portability
+██████████░░░░░░░░░░   50%   (1/2)
 ```
 
-| Component | Formula | Included in Portability Score |
-|---|---|---|
-| Transformation portability | shared transformation LOC / (shared + OpenLakehouse-specific transformation LOC) | yes |
-| Catalog portability | Unity Catalog capabilities recreated in UC OSS / capabilities used | yes |
-| Orchestration portability | shared orchestration LOC / (shared + OpenLakehouse-specific orchestration LOC) | yes |
+| Component | Formula | Included in Portability Score | Details |
+|---|---|---|---|
+| Transformation portability | shared transformation LOC / (shared + OpenLakehouse-specific transformation LOC) | yes | [view files](#5-platform-specific-code) |
+| Catalog portability | Unity Catalog capabilities recreated in UC OSS / capabilities used | yes | [view 10 capabilities](#catalog-portability-details) |
+| Orchestration portability | shared orchestration LOC / (shared + OpenLakehouse-specific orchestration LOC) | yes | [view files](#5-platform-specific-code) |
+| Governance portability | obligations enforced by DataFusion / reviewed obligations in the registry | yes | [view obligations](#governance-portability-details) |
 
 The score is the unweighted mean of the included, measured components. The capability coverage later in this report provides the broader comparison of native support, alternatives, workarounds and gaps.
 
@@ -118,7 +121,7 @@ TPC-H SF1, generated in 1 chunk(s) in 14 s.
 |---|---|---|---|
 | shared | 1555 | 29 | 0 |
 | databricks | 42 | 66 | 64 |
-| openlakehouse | 190 | 28 | 112 |
+| openlakehouse | 191 | 28 | 112 |
 
 LOC = logical lines (no blanks, comments or docstrings). File-level detail:
 
@@ -169,7 +172,7 @@ LOC = logical lines (no blanks, comments or docstrings). File-level detail:
 | `platforms/databricks/resources/portable_lakehouse.job.yml` | databricks | orchestration | 66 |
 | `platforms/databricks/databricks.yml` | databricks | infrastructure | 42 |
 | `platforms/databricks/resources/landing.yml` | databricks | infrastructure | 22 |
-| `src/governance/datafusion.py` | openlakehouse | transformation | 42 |
+| `src/governance/datafusion.py` | openlakehouse | transformation | 43 |
 | `platforms/openlakehouse/entrypoint.py` | openlakehouse | transformation | 24 |
 | `platforms/openlakehouse/adapter.py` | openlakehouse | transformation | 112 |
 | `platforms/openlakehouse/catalog.py` | openlakehouse | transformation | 12 |
@@ -205,7 +208,9 @@ Databricks-specific constructs found by the scanner in `platforms/databricks/`: 
 | Lineage, audit and system tables | Unity Catalog lineage, system tables | OpenLineage (not part of v1) | **PLATFORM-SPECIFIC** | documented |
 | Experiment tracking | Databricks managed MLflow | MLflow OSS 3.14 or any MLflow-compatible tracking server | **PORTABLE** | measured:mlflow_tracking |
 
-Catalog probe (live, against UC OSS):
+### Catalog portability details
+
+These are the ten capabilities behind the catalog score. The six marked **yes** are supported in the tested UC OSS configuration.
 
 | Unity Catalog capability | Recreated | Evidence |
 |---|---|---|
@@ -219,6 +224,15 @@ Catalog probe (live, against UC OSS):
 | Registering an existing Delta table with full column metadata | yes | 2 columns, column comment 'identifier', properties {"portable_lakehouse.layer": "probe"}, Spark read 1 row(s) |
 | Volumes for raw files | yes | 1 volume(s) listed |
 | Grants (GRANT USE SCHEMA ... TO principal) | **no** | grant read back: []; server.authorization is 'disable' in the OpenLakehouse default config |
+
+### Governance portability details
+
+These are the reviewed obligations behind the governance score. Support means the DataFusion adapter enforces the obligation; unsupported obligations fail closed.
+
+| Governance feature | Obligation | Policy | Enforced | Evidence |
+|---|---|---|---|---|
+| Tenant row filtering | `row_filter/tenant_isolation` | tenant-reader | **no** | fails closed; not implemented |
+| Email column masking | `column_mask/mask_email` | pii-reader | yes | compiled into a DataFusion expression |
 
 ## 7. Platform capability coverage
 
@@ -585,10 +599,12 @@ Definitions and maintenance rules: `docs/platform-capability-coverage.md`.
 
 ## 9. Conclusions
 
-**Code.** 89% of the code that runs the workload on OpenLakehouse is shared with the code that runs it on Databricks (1555 of 1745 LOC). The platform-specific remainder is session setup, configuration and orchestration.
+**Code.** 89% of the code that runs the workload on OpenLakehouse is shared with the code that runs it on Databricks (1555 of 1746 LOC). The platform-specific remainder is session setup, configuration and orchestration.
 
-**Catalog.** 6 of 10 Unity Catalog capabilities used by the workload are also supported by UC OSS. Gaps: Column metadata for tables created from Spark; Custom table properties set from Spark SQL; ALTER TABLE for comments and properties; Grants (GRANT USE SCHEMA ... TO principal). This is where the managed catalog has the clearest capability advantage (F6).
+**Catalog.** 6 of 10 Unity Catalog capabilities used by the workload are also supported by UC OSS. Gaps: Column metadata for tables created from Spark; Custom table properties set from Spark SQL; ALTER TABLE for comments and properties; Grants (GRANT USE SCHEMA ... TO principal). This is where the managed catalog has the clearest capability advantage (P7).
 
 **Orchestration.** Sharing the task graph keeps both schedulers aligned, but the scheduler definitions themselves are platform code (51% shared).
+
+**Governance.** The DataFusion adapter enforces 1 of 2 reviewed obligations. This measures obligation coverage, not production identity or gateway readiness.
 
 **Next step.** Run the Databricks bundle to replace the stand-in references with measured Databricks output and complete the two-implementation comparison.
