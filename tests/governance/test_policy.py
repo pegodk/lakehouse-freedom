@@ -1,6 +1,6 @@
 import pytest
 
-from lakehouse_freedom.governance import (
+from portable_lakehouse.governance import (
     AccessDenied,
     AccessRequest,
     CedarJsonAuthorizer,
@@ -24,7 +24,7 @@ def request():
     return AccessRequest(
         Principal("User", "alice", {"tenant": "acme"}),
         "select",
-        Resource("Table", "freedom.silver.orders", {"classification": "internal"}),
+        Resource("Table", "portable_lakehouse.silver.orders", {"classification": "internal"}),
     )
 
 

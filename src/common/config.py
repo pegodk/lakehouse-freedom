@@ -1,7 +1,7 @@
 """Workload configuration shared by every platform.
 
 The business logic never asks "am I on Databricks?". Instead each platform
-adapter (platforms/<name>/entrypoint.py) builds a FreedomConfig and hands it to
+adapter (platforms/<name>/entrypoint.py) builds a LakehouseConfig and hands it to
 the shared tasks. Everything that legitimately differs between platforms is a
 field here, which makes the platform-specific surface explicit and countable.
 """
@@ -19,7 +19,7 @@ def scale_tag(scale_factor: float) -> str:
 
 
 @dataclass(frozen=True)
-class FreedomConfig:
+class LakehouseConfig:
     platform: str
     """'databricks' or 'openlakehouse'. Recorded in outputs only, never branched on."""
 
@@ -35,10 +35,10 @@ class FreedomConfig:
 
     table_root: str | None = None
     """Root for external Delta table locations. None means catalog-managed tables.
-    The Freedom Architecture uses external tables so the data stays readable
+    The Portable Lakehouse Architecture uses external tables so the data stays readable
     consistently by both reference implementations."""
 
-    catalog: str = "freedom"
+    catalog: str = "portable_lakehouse"
 
     engine_info: dict = field(default_factory=dict)
     """Free-form description of the compute (cluster size, serverless, laptop)."""

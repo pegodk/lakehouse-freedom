@@ -1,18 +1,18 @@
 """Run pipeline tasks on OpenLakehouse via Spark Connect.
 
-    python -m freedom_platforms.openlakehouse.entrypoint all --scale 1
-    python -m freedom_platforms.openlakehouse.entrypoint silver --scale 10
+    python -m portable_lakehouse_platforms.openlakehouse.entrypoint all --scale 1
+    python -m portable_lakehouse_platforms.openlakehouse.entrypoint silver --scale 10
 
 This is the OpenLakehouse counterpart of platforms/databricks/entrypoint.py.
-Both only build a session and a config; the work happens in lakehouse_freedom.
+Both only build a session and a config; the work happens in portable_lakehouse.
 """
 
 from __future__ import annotations
 
 import argparse
 
-from lakehouse_freedom.common.pipeline import TASKS
-from lakehouse_freedom.run import run_all, run_task
+from portable_lakehouse.common.pipeline import TASKS
+from portable_lakehouse.run import run_all, run_task
 
 from . import adapter as ol
 from .catalog import ensure_catalog

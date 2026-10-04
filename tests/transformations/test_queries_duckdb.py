@@ -6,9 +6,9 @@ This needs no Spark and no stack; it is the quickest SQL portability signal.
 import duckdb
 import pytest
 
-from freedom.validation.compare import rows_equal
-from lakehouse_freedom.tpch import sql as tpch_sql
-from lakehouse_freedom.tpch.generator.dbgen import answers
+from portability.validation.compare import rows_equal
+from portable_lakehouse.tpch import sql as tpch_sql
+from portable_lakehouse.tpch.generator.dbgen import answers
 
 
 @pytest.fixture(scope="module")

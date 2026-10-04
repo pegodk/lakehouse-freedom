@@ -2,8 +2,8 @@ import json
 
 import duckdb
 
-from lakehouse_freedom.common.tpch_schema import TABLES, expected_row_count
-from lakehouse_freedom.tpch.generator.dbgen import generate
+from portable_lakehouse.common.tpch_schema import TABLES, expected_row_count
+from portable_lakehouse.tpch.generator.dbgen import generate
 
 
 def test_generate_sf001_local(tmp_path):

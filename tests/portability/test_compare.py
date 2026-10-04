@@ -1,5 +1,5 @@
-from freedom.reporting.score import bar
-from freedom.validation.compare import diff_ratio, rows_equal, values_equal
+from portability.reporting.score import bar
+from portability.validation.compare import diff_ratio, rows_equal, values_equal
 
 
 def test_numeric_tolerance():

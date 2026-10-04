@@ -17,8 +17,8 @@ Ports used: 5432 (PostgreSQL), 8333 (SeaweedFS S3), 8081 (Unity Catalog OSS), 70
 ## Three commands
 
 ```bash
-git clone --recurse-submodules https://github.com/pegodk/lakehouse-freedom.git
-cd lakehouse-freedom
+git clone --recurse-submodules https://github.com/pegodk/portable-lakehouse.git
+cd portable-lakehouse
 
 make setup              # (1)!
 make openlakehouse-up   # (2)!
@@ -27,9 +27,9 @@ make demo SCALE=1       # (3)!
 
 1. Initialises the OpenLakehouse submodule, creates `.venv`, writes the OpenLakehouse runtime configuration and downloads its Spark JARs.
 2. Starts SeaweedFS, PostgreSQL, Unity Catalog OSS and Spark 4.1 (master, worker, Connect server) using OpenLakehouse's own compose files.
-3. Pipeline, Freedom Benchmark, Freedom Check and Freedom Report, at TPC-H scale factor 1.
+3. Pipeline, Portability Benchmark, Portability Check and Portability Report, at TPC-H scale factor 1.
 
-When it finishes, open `reports/freedom-report.md`.
+When it finishes, open `reports/portability-report.md`.
 
 !!! tip "Pick a scale factor"
 
@@ -38,11 +38,11 @@ When it finishes, open `reports/freedom-report.md`.
 ## Step by step
 
 ```bash
-make generate-data     SCALE=1   # TPC-H Raw Parquet into s3://lakehouse/freedom/raw/sf1
+make generate-data     SCALE=1   # TPC-H Raw Parquet into s3://lakehouse/portable-lakehouse/raw/sf1
 make pipeline          SCALE=1   # generate → bronze → silver → gold → quality → TPC-H, plus SCD2
-make freedom-benchmark SCALE=1   # 22 queries on Spark, DuckDB and DataFusion (REPEATS=3)
-make freedom-check     SCALE=1   # exit code 1 if any check fails
-make freedom-report    SCALE=1   # reports/freedom-report.md
+make portability-benchmark SCALE=1   # 22 queries on Spark, DuckDB and DataFusion (REPEATS=3)
+make portability-check     SCALE=1   # exit code 1 if any check fails
+make portability-report    SCALE=1   # reports/portability-report.md
 ```
 
 Each step reads what the previous one wrote, so they can be re-run individually.
@@ -59,7 +59,7 @@ make openlakehouse-destroy   # stop containers and delete all data volumes
 The default Spark sizing assumes 8 cores and 16 GB. For a smaller machine:
 
 ```bash
-FREEDOM_SPARK_EXECUTOR_CORES=3 FREEDOM_SPARK_EXECUTOR_MEMORY=4g make openlakehouse-configure
+PORTABLE_LAKEHOUSE_SPARK_EXECUTOR_CORES=3 PORTABLE_LAKEHOUSE_SPARK_EXECUTOR_MEMORY=4g make openlakehouse-configure
 platforms/openlakehouse/scripts/stack.sh restart-spark
 ```
 

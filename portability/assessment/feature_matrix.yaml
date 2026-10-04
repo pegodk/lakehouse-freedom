@@ -1,0 +1,217 @@
+# Curated platform capability comparison. This is broader than the capabilities
+# exercised by the v1 workload, but is not intended to enumerate every product
+# feature. Keep profile and target versions explicit so the comparison can be
+# reproduced and reviewed as the products evolve.
+#
+# status:
+#   NATIVE        substantially equivalent capability in the open target
+#   ALTERNATIVE   same outcome through a different open component or approach
+#   WORKAROUND    outcome is possible with material limitations or manual work
+#   MISSING       no implemented equivalent in this repository's open stack
+#   NOT_ASSESSED  insufficient evidence; excluded from both ratios
+
+as_of: 2026-10-04
+
+profiles:
+  - key: table_format
+    component: Table format and transactions
+    source: Databricks Delta Lake
+    target: Delta Lake OSS 4.3.1
+    features:
+      - {capability: ACID transaction log, area: Core format, status: NATIVE, workload: required, evidence: measured:delta_readable}
+      - {capability: Schema enforcement and evolution, area: Core format, status: NATIVE, workload: required, evidence: measured:schema}
+      - {capability: Time travel and table history, area: Core format, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: MERGE / UPDATE / DELETE, area: DML, status: NATIVE, workload: required, evidence: measured:scd2}
+      - {capability: Change Data Feed, area: DML, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Deletion vectors, area: Advanced format, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Row tracking, area: Advanced format, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Liquid clustering, area: Layout, status: MISSING, workload: not_used, evidence: documented, gap: Databricks-managed clustering is not available in this stack.}
+      - {capability: Predictive optimization, area: Maintenance, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Scheduled OPTIMIZE and VACUUM jobs.}
+      - {capability: Catalog-managed coordinated commits, area: Transactions, status: MISSING, workload: not_used, evidence: documented, gap: Open reads are validated for external Delta tables; catalog-managed commit parity is not claimed.}
+
+  - key: batch_compute
+    component: Batch compute
+    source: Databricks Runtime and serverless compute
+    target: Apache Spark 4.1.0 standalone
+    features:
+      - {capability: Spark SQL and DataFrame execution, area: Runtime, status: NATIVE, workload: required, evidence: measured:spark_executable}
+      - {capability: PySpark and Spark Connect, area: Runtime, status: NATIVE, workload: required, evidence: measured:spark_executable}
+      - {capability: Delta Lake integration, area: Runtime, status: NATIVE, workload: required, evidence: measured:delta_readable}
+      - {capability: Cluster libraries and custom code, area: Runtime, status: NATIVE, workload: required, evidence: measured:transformations}
+      - {capability: Autoscaling workers, area: Elasticity, status: WORKAROUND, workload: not_used, evidence: documented, gap: Requires an external cluster manager; the tested stack has fixed workers.}
+      - {capability: Serverless provisioning, area: Operations, status: MISSING, workload: not_used, evidence: documented, gap: Compute must be provisioned and operated by the user.}
+      - {capability: Photon vectorized engine, area: Performance, status: MISSING, workload: not_used, evidence: documented, gap: Photon is proprietary; Spark uses its OSS execution engine.}
+      - {capability: Runtime-managed upgrades and patching, area: Operations, status: MISSING, workload: not_used, evidence: documented, gap: Image and dependency lifecycle belongs to the operator.}
+      - {capability: Spot/preemptible instance orchestration, area: Elasticity, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Cloud or Kubernetes cluster-manager configuration.}
+      - {capability: Managed compute policies, area: Governance, status: WORKAROUND, workload: not_used, evidence: documented, gap: Must be implemented with infrastructure policy and deployment controls.}
+
+  - key: sql_analytics
+    component: SQL analytics
+    source: Databricks SQL
+    target: Spark SQL and DuckDB
+    features:
+      - {capability: ANSI SQL query execution, area: Query, status: NATIVE, workload: required, evidence: measured:tpch_results}
+      - {capability: Delta table queries, area: Query, status: NATIVE, workload: required, evidence: measured:tpch_results}
+      - {capability: JDBC/ODBC connectivity, area: Connectivity, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Spark Thrift Server or a compatible query service.}
+      - {capability: Multi-engine local analytics, area: Query, status: ALTERNATIVE, workload: required, evidence: measured:duckdb_access, alternative: DuckDB reads the same Delta storage.}
+      - {capability: Serverless SQL warehouses, area: Operations, status: MISSING, workload: not_used, evidence: documented, gap: No managed serverless warehouse is included.}
+      - {capability: Warehouse autoscaling and auto-stop, area: Operations, status: WORKAROUND, workload: not_used, evidence: documented, gap: Requires deployment-level automation.}
+      - {capability: Result cache and managed query acceleration, area: Performance, status: WORKAROUND, workload: not_used, evidence: documented, gap: Engine caches differ and are not managed as a single service.}
+      - {capability: Query history and profiles, area: Observability, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Spark event logs and engine-specific profiling.}
+      - {capability: SQL alerts and scheduled queries, area: Automation, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Airflow scheduling and alert integrations.}
+      - {capability: Integrated dashboards, area: BI, status: MISSING, workload: not_used, evidence: documented, gap: An external BI tool is required.}
+
+  - key: streaming_ingestion
+    component: Streaming and file ingestion
+    source: Auto Loader and Databricks Structured Streaming
+    target: Apache Spark Structured Streaming and Kafka
+    features:
+      - {capability: Micro-batch streaming, area: Processing, status: NATIVE, workload: not_used, evidence: planned:challenge-2}
+      - {capability: Exactly-once checkpointed processing, area: Processing, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Kafka source and sink, area: Connectivity, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: File source ingestion, area: Files, status: NATIVE, workload: not_used, evidence: planned:challenge-2}
+      - {capability: Incremental file discovery at cloud scale, area: Files, status: WORKAROUND, workload: not_used, evidence: planned:challenge-2, gap: OSS file listing does not reproduce Auto Loader notification and discovery behavior.}
+      - {capability: Managed schema inference and schema location, area: Schema, status: WORKAROUND, workload: not_used, evidence: planned:challenge-2, gap: Requires explicit schema state and evolution handling.}
+      - {capability: Rescued data column for unexpected input, area: Schema, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-2, alternative: Parse permissively and retain corrupt or unknown fields explicitly.}
+      - {capability: Managed file notification setup, area: Operations, status: MISSING, workload: not_used, evidence: documented, gap: Cloud queues events and permissions must be provisioned separately.}
+      - {capability: Auto Loader backfill controls, area: Operations, status: WORKAROUND, workload: not_used, evidence: planned:challenge-2, gap: Requires custom discovery state or batch backfill orchestration.}
+      - {capability: Integrated streaming operational UI, area: Observability, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Spark UI metrics and external monitoring.}
+
+  - key: catalog_governance
+    component: Catalog and governance
+    source: Databricks managed Unity Catalog
+    target: Unity Catalog OSS 0.5.0
+    features:
+      - {capability: Catalog and schema hierarchy, area: Metadata, status: NATIVE, workload: required, evidence: measured:catalog_probe.namespaces}
+      - {capability: External Delta table registration, area: Metadata, status: NATIVE, workload: required, evidence: measured:catalog_probe.external_table}
+      - {capability: Volumes, area: Metadata, status: NATIVE, workload: required, evidence: measured:catalog_probe.volume}
+      - {capability: REST catalog API, area: Interoperability, status: NATIVE, workload: required, evidence: measured:catalog_probe.rest_registration}
+      - {capability: Iceberg REST interoperability, area: Interoperability, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Storage credentials and credential vending, area: Storage, status: WORKAROUND, workload: required, evidence: measured:duckdb_access, gap: Vended credentials omit the custom S3 endpoint used by SeaweedFS.}
+      - {capability: Object privileges and grants, area: Authorization, status: WORKAROUND, workload: not_used, evidence: measured:catalog_probe.grants, gap: Supported by UC OSS but disabled in the tested stack and requires identity integration.}
+      - {capability: Enterprise identity federation, area: Identity, status: WORKAROUND, workload: not_used, evidence: documented, gap: OAuth/OIDC integration must be configured and operated.}
+      - {capability: Governed tags, area: Governance, status: MISSING, workload: not_used, evidence: documented, gap: No equivalent governed tag control plane is implemented.}
+      - {capability: Tag-driven ABAC policies, area: Authorization, status: MISSING, workload: not_used, evidence: documented, gap: Requires a policy service plus catalog and engine integration.}
+      - {capability: Row filters, area: Fine-grained access, status: MISSING, workload: not_used, evidence: documented, gap: UC OSS grants do not inject row predicates into every query engine.}
+      - {capability: Column masks, area: Fine-grained access, status: MISSING, workload: not_used, evidence: documented, gap: UC OSS grants do not rewrite protected columns in every query engine.}
+      - {capability: Dynamic views for security, area: Fine-grained access, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Engine views with carefully controlled base-table and storage access.}
+      - {capability: Workspace bindings, area: Isolation, status: MISSING, workload: not_used, evidence: documented, gap: The OSS server has no Databricks workspace boundary.}
+      - {capability: Automatic lineage, area: Observability, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-8, alternative: OpenLineage with a compatible backend.}
+      - {capability: Audit and system tables, area: Observability, status: WORKAROUND, workload: not_used, evidence: planned:challenge-8, gap: Logs must be collected and normalized separately.}
+      - {capability: Catalog search and discovery UI, area: Discovery, status: WORKAROUND, workload: not_used, evidence: documented, gap: UC OSS UI is less complete than the managed governance experience.}
+      - {capability: Lakehouse federation, area: Federation, status: MISSING, workload: not_used, evidence: documented, gap: Cross-system query federation is not supplied by UC OSS.}
+
+  - key: declarative_pipelines
+    component: Declarative data pipelines
+    source: Lakeflow Spark Declarative Pipelines
+    target: Apache Spark Declarative Pipelines 4.1
+    features:
+      - {capability: Declarative table and view definitions, area: Authoring, status: NATIVE, workload: not_used, evidence: planned:challenge-3}
+      - {capability: Python authoring, area: Authoring, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: SQL authoring, area: Authoring, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Dependency graph construction, area: Planning, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Batch and streaming flows, area: Processing, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Materialized views and streaming tables, area: Processing, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Data-quality expectations, area: Quality, status: WORKAROUND, workload: not_used, evidence: planned:challenge-3, gap: Exact Lakeflow expectation metrics and operational behavior require comparison tests.}
+      - {capability: Managed CDC / AUTO CDC flows, area: CDC, status: WORKAROUND, workload: not_used, evidence: planned:challenge-3, gap: Equivalent semantics and supported options require executable validation.}
+      - {capability: Pipeline event log, area: Observability, status: WORKAROUND, workload: not_used, evidence: planned:challenge-3, gap: OSS events do not provide the complete managed event-log experience.}
+      - {capability: Managed scheduling and triggers, area: Operations, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Airflow schedules pipeline execution.}
+      - {capability: Managed retries and recovery, area: Operations, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Spark checkpointing plus Airflow retry policy.}
+      - {capability: Pipeline autoscaling, area: Operations, status: MISSING, workload: not_used, evidence: documented, gap: The tested standalone Spark deployment is fixed-size.}
+      - {capability: Serverless pipeline compute, area: Operations, status: MISSING, workload: not_used, evidence: documented, gap: Compute is self-managed.}
+      - {capability: Integrated pipeline UI and graph, area: Operations, status: MISSING, workload: not_used, evidence: documented, gap: No equivalent managed pipeline UI is included.}
+
+  - key: orchestration
+    component: Workflow orchestration
+    source: Lakeflow Jobs
+    target: Apache Airflow 3.1.6
+    features:
+      - {capability: Directed acyclic task graphs, area: Core, status: NATIVE, workload: required, evidence: measured:orchestration}
+      - {capability: Schedules and event triggers, area: Triggers, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Task dependencies and conditions, area: Core, status: NATIVE, workload: required, evidence: measured:orchestration}
+      - {capability: Retries timeouts and notifications, area: Operations, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Parameters and task values, area: Core, status: ALTERNATIVE, workload: required, evidence: measured:orchestration, alternative: Airflow params XCom and generated task configuration.}
+      - {capability: Backfills and repair runs, area: Operations, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Airflow backfill and task clearing semantics.}
+      - {capability: Python and notebook tasks, area: Tasks, status: ALTERNATIVE, workload: required, evidence: measured:orchestration, alternative: Python tasks and Spark Connect replace workspace notebook tasks.}
+      - {capability: SQL and pipeline tasks, area: Tasks, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Airflow operators invoke query and pipeline services.}
+      - {capability: Run history and logs, area: Observability, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Managed compute attachment, area: Compute, status: WORKAROUND, workload: not_used, evidence: documented, gap: Compute lifecycle needs operators or infrastructure automation.}
+      - {capability: Serverless job execution, area: Compute, status: MISSING, workload: not_used, evidence: documented, gap: Airflow schedules work but does not provide serverless Spark compute.}
+      - {capability: Databricks-native task types and UI, area: Experience, status: MISSING, workload: not_used, evidence: documented, gap: Airflow has its own operators and UI rather than Databricks task parity.}
+
+  - key: deployment
+    component: Deployment and configuration
+    source: Databricks Asset Bundles
+    target: Python packaging and Docker Compose
+    features:
+      - {capability: Version-controlled deployment definition, area: Definition, status: NATIVE, workload: required, evidence: measured:orchestration}
+      - {capability: Environment variables and targets, area: Definition, status: ALTERNATIVE, workload: required, evidence: documented, alternative: Environment files and platform configuration.}
+      - {capability: Python wheel packaging, area: Artifacts, status: NATIVE, workload: required, evidence: measured:spark_executable}
+      - {capability: Resource deployment, area: Deployment, status: ALTERNATIVE, workload: required, evidence: documented, alternative: Compose and platform scripts provision the open services.}
+      - {capability: Deployment validation, area: Deployment, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Configuration tests and Portability Check.}
+      - {capability: Development and production target overrides, area: Definition, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Separate environment configuration and infrastructure variables.}
+      - {capability: Identity-aware run-as configuration, area: Security, status: WORKAROUND, workload: not_used, evidence: documented, gap: Requires identity integration across Airflow Spark and UC OSS.}
+      - {capability: Unified resource state and deployment lifecycle, area: Deployment, status: WORKAROUND, workload: not_used, evidence: documented, gap: Multiple open components have separate lifecycle and state.}
+      - {capability: Databricks workspace resource model, area: Deployment, status: MISSING, workload: not_used, evidence: documented, gap: Workspace-specific resources intentionally have no direct open equivalent.}
+
+  - key: ml_ai
+    component: ML lifecycle
+    source: Databricks managed MLflow
+    target: MLflow OSS 3.14
+    features:
+      - {capability: Experiment and run tracking, area: Tracking, status: NATIVE, workload: not_used, evidence: planned:challenge-5}
+      - {capability: Artifact storage, area: Tracking, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Model packaging and flavors, area: Models, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Model registry, area: Registry, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Tracing and evaluation APIs, area: AI, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Registry integration with catalog permissions, area: Governance, status: WORKAROUND, workload: not_used, evidence: documented, gap: Identity and UC OSS integration require explicit configuration.}
+      - {capability: Managed tracking service operations, area: Operations, status: MISSING, workload: not_used, evidence: documented, gap: The service database artifacts backups and upgrades are operator responsibilities.}
+      - {capability: Managed model serving, area: Serving, status: MISSING, workload: not_used, evidence: documented, gap: A serving platform must be deployed separately.}
+      - {capability: Serverless GPU inference, area: Serving, status: MISSING, workload: not_used, evidence: documented, gap: No managed inference compute is included.}
+      - {capability: Integrated feature engineering service, area: Features, status: MISSING, workload: not_used, evidence: documented, gap: No managed feature store equivalent is included.}
+
+  - key: business_intelligence
+    component: Business intelligence
+    source: Databricks SQL AI/BI
+    target: Open BI tools over Spark SQL or DuckDB
+    features:
+      - {capability: SQL editor and saved queries, area: Authoring, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-6, alternative: Use an external SQL client or BI authoring tool.}
+      - {capability: Interactive dashboards, area: Visualization, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-6, alternative: Connect an open BI tool to the query endpoint.}
+      - {capability: Dashboard sharing and embedding, area: Distribution, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-6, alternative: Use the selected BI tool's sharing and embedding model.}
+      - {capability: Scheduled dashboard refresh, area: Automation, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-6, alternative: BI scheduling or Airflow.}
+      - {capability: SQL alerts, area: Automation, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-6, alternative: Scheduled queries plus an alert integration.}
+      - {capability: Catalog-aware permissions, area: Governance, status: WORKAROUND, workload: not_used, evidence: planned:challenge-6, gap: End-to-end identity propagation must be integrated across BI query service and UC OSS.}
+      - {capability: AI-assisted dashboard authoring, area: AI, status: MISSING, workload: not_used, evidence: documented, gap: No equivalent assistant is included in the open stack.}
+      - {capability: Managed semantic metric layer, area: Semantics, status: MISSING, workload: not_used, evidence: documented, gap: A semantic-layer component and model must be selected separately.}
+
+  - key: ai_platform
+    component: AI, vector search and agents
+    source: Databricks Mosaic AI capabilities
+    target: Open models and separately operated AI services
+    features:
+      - {capability: Foundation model inference API, area: Models, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-7, alternative: Use an open model server or external model API.}
+      - {capability: Model and prompt tracing, area: Observability, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Evaluation datasets and metrics, area: Evaluation, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Vector indexing and similarity search, area: Retrieval, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-7, alternative: Deploy an open vector database or search engine.}
+      - {capability: Automatic vector index synchronization, area: Retrieval, status: WORKAROUND, workload: not_used, evidence: planned:challenge-7, gap: Data-change capture embedding and index updates require a custom pipeline.}
+      - {capability: Agent authoring framework, area: Agents, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-7, alternative: Use an open agent framework with MLflow tracing.}
+      - {capability: Managed agent deployment, area: Agents, status: MISSING, workload: not_used, evidence: documented, gap: Agent serving scaling and lifecycle must be supplied separately.}
+      - {capability: AI gateway and endpoint governance, area: Governance, status: MISSING, workload: not_used, evidence: documented, gap: No unified AI gateway is included in this stack.}
+      - {capability: Catalog-governed AI assets, area: Governance, status: WORKAROUND, workload: not_used, evidence: planned:challenge-7, gap: UC OSS and MLflow permissions require explicit identity integration.}
+      - {capability: Serverless GPU model serving, area: Serving, status: MISSING, workload: not_used, evidence: documented, gap: GPU serving infrastructure is operator-owned.}
+
+  - key: observability
+    component: Governance observability
+    source: Databricks system tables and Unity Catalog lineage
+    target: Spark event logs and OpenLineage
+    features:
+      - {capability: Spark execution metrics, area: Runtime, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Query plans and job event logs, area: Runtime, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Cross-job dataset lineage, area: Lineage, status: ALTERNATIVE, workload: not_used, evidence: planned:challenge-8, alternative: OpenLineage events and a compatible backend.}
+      - {capability: Column-level lineage, area: Lineage, status: WORKAROUND, workload: not_used, evidence: planned:challenge-8, gap: Coverage depends on engine integration and SQL-plan extraction.}
+      - {capability: Account audit log, area: Audit, status: WORKAROUND, workload: not_used, evidence: planned:challenge-8, gap: Service logs must be collected correlated and retained separately.}
+      - {capability: Query history system tables, area: Audit, status: ALTERNATIVE, workload: not_used, evidence: documented, alternative: Spark event-log processing and engine-specific history.}
+      - {capability: Billing and usage system tables, area: Cost, status: MISSING, workload: not_used, evidence: documented, gap: Infrastructure and service cost data require a separate FinOps pipeline.}
+      - {capability: Access and governance system tables, area: Governance, status: MISSING, workload: not_used, evidence: documented, gap: No unified open governance event schema is implemented.}
+      - {capability: Managed retention and query service, area: Operations, status: MISSING, workload: not_used, evidence: documented, gap: Storage retention indexing and query infrastructure are operator-owned.}
+      - {capability: Unified governance UI, area: Experience, status: MISSING, workload: not_used, evidence: documented, gap: Separate open tools are required for logs metrics lineage and catalog metadata.}

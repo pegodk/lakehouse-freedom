@@ -6,7 +6,7 @@ pytestmark = pytest.mark.stack
 
 
 def test_pipeline_benchmark_and_check():
-    from freedom.cli import main
+    from portability.cli import main
 
     assert main(["pipeline", "--scale", "0.01"]) == 0
     assert main(["benchmark", "--scale", "0.01", "--repeats", "1"]) == 0

@@ -1,6 +1,6 @@
 import pytest
 
-from lakehouse_freedom.governance import (
+from portable_lakehouse.governance import (
     AccessDenied,
     AccessRequest,
     Decision,

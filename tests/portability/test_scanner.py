@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from freedom.assessment.inventory import measure
-from freedom.assessment.scanner import scan, scan_file
+from portability.assessment.inventory import measure
+from portability.assessment.scanner import scan, scan_file
 
 REPO = Path(__file__).resolve().parents[2]
 

@@ -1,4 +1,4 @@
-namespace LakehouseFreedom {
+namespace PortableLakehouse {
     entity Group;
     entity User in [Group] {
         tenant: String,

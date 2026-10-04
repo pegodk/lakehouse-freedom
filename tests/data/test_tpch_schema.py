@@ -1,4 +1,4 @@
-from lakehouse_freedom.common.tpch_schema import (
+from portable_lakehouse.common.tpch_schema import (
     FOREIGN_KEYS,
     PRIMARY_KEYS,
     TABLES,

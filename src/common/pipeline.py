@@ -1,7 +1,7 @@
 """The logical pipeline, defined once.
 
-Databricks Workflows (platforms/databricks/resources/lakehouse_freedom.job.yml),
-Airflow (platforms/openlakehouse/airflow/dags/lakehouse_freedom.py) and the
+Databricks Workflows (platforms/databricks/resources/portable_lakehouse.job.yml),
+Airflow (platforms/openlakehouse/airflow/dags/portable_lakehouse.py) and the
 local runner all execute this graph. tests/portability/test_orchestration.py
 fails if an orchestrator definition drifts from it.
 """

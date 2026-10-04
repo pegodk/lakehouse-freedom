@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start, stop and inspect the OpenLakehouse services Lakehouse Freedom needs:
+# Start, stop and inspect the OpenLakehouse services Portable Lakehouse needs:
 # storage (SeaweedFS + PostgreSQL), Spark 4.1 (master, worker, Connect) and
 # Unity Catalog OSS.
 #

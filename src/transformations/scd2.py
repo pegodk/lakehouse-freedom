@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from pyspark.sql import SparkSession
 
-from lakehouse_freedom.common.config import FreedomConfig
-from lakehouse_freedom.common.delta_io import create_table_if_missing
+from portable_lakehouse.common.config import LakehouseConfig
+from portable_lakehouse.common.delta_io import create_table_if_missing
 
 SCD2_COLUMNS = (
     "customer_id BIGINT, name STRING, segment STRING, city STRING, "
@@ -47,7 +47,7 @@ def merge_sql(target: str, changes: str, batch_id: int) -> str:
     """
 
 
-def apply_batch(spark: SparkSession, cfg: FreedomConfig, batch_id: int) -> None:
+def apply_batch(spark: SparkSession, cfg: LakehouseConfig, batch_id: int) -> None:
     target = cfg.table_name(cfg.incremental_schema, "customer_scd2")
     create_table_if_missing(
         spark,
@@ -55,13 +55,13 @@ def apply_batch(spark: SparkSession, cfg: FreedomConfig, batch_id: int) -> None:
         SCD2_COLUMNS,
         cfg.table_location(cfg.incremental_schema, "customer_scd2"),
         comment="Customer dimension, SCD type 2",
-        properties={"freedom.layer": "silver"},
+        properties={"portable_lakehouse.layer": "silver"},
     )
     changes = cfg.table_name(cfg.incremental_schema, "customer_changes")
     spark.sql(merge_sql(target, changes, batch_id))
 
 
-def snapshot(spark: SparkSession, cfg: FreedomConfig) -> list[dict]:
+def snapshot(spark: SparkSession, cfg: LakehouseConfig) -> list[dict]:
     rows = spark.sql(
         f"SELECT customer_id, name, segment, city, CAST(valid_from AS STRING) AS valid_from, "
         f"CAST(valid_to AS STRING) AS valid_to, is_current "
