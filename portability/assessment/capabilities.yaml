@@ -102,7 +102,7 @@
   openlakehouse: Fixed-size Spark standalone cluster you operate
   classification: PLATFORM-SPECIFIC
   evidence: documented
-  notes: Principle F6. This is where the managed platform earns its keep; the benchmark section shows the effect when comparable compute is used.
+  notes: Principle P7. This is where the managed platform earns its keep; the benchmark section shows the effect when comparable compute is used.
 
 - capability: Table maintenance
   databricks: Predictive optimization, auto compaction

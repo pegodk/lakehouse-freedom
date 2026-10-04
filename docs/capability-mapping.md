@@ -44,7 +44,7 @@ benchmark). `documented` is a reasoned statement that is not tested automaticall
 - **Non-Spark engine access through the catalog.** UC OSS vends credentials without an S3 endpoint, so DuckDB's unity_catalog extension sends requests to AWS instead of SeaweedFS. Location lookup through the catalog plus delta_scan works.
 - **Raw file landing.** The path is configuration (LakehouseConfig.raw_root); the generator handles both.
 - **Orchestration.** The task graph is shared; each scheduler definition is platform code. The Airflow DAG is checked for consistency but not executed in v1.
-- **Elastic, managed compute.** Principle F6. This is where the managed platform earns its keep; the benchmark section shows the effect when comparable compute is used.
+- **Elastic, managed compute.** Principle P7. This is where the managed platform earns its keep; the benchmark section shows the effect when comparable compute is used.
 - **Lineage, audit and system tables.** Portability Challenge #8 will measure the open alternatives.
 - **Experiment tracking.** The shared workload logs and reads back parameters, metrics, tags and an artifact through public MLflow APIs. Only the tracking URI differs.
 

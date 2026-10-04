@@ -71,4 +71,4 @@ An unweighted mean of the measured components. The weighting is deliberately nai
 
 - **Effort.** Lines-of-code ratios show how much is shared. They don't show how hard the non-shared part is to write.
 - **Workloads other than this one.** TPC-H is a conservative SQL subset. Run `make portability-assess REPO_PATH=...` on your own code for a first impression.
-- **Operations.** Running a Spark cluster yourself costs effort that a managed platform absorbs. That is Principle F6, and it is outside the score.
+- **Operations.** Running a Spark cluster yourself costs effort that a managed platform absorbs. That is Principle P7, and it is outside the score.
