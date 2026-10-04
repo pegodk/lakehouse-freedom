@@ -54,7 +54,7 @@ generate-data: ## Generate TPC-H Raw Parquet into OpenLakehouse storage (SCALE=)
 pipeline: ## Run the full pipeline on OpenLakehouse (SCALE=)
 	$(FREEDOM) pipeline --scale $(SCALE)
 
-freedom-benchmark: ## Freedom Benchmark: TPC-H on OpenLakehouse Spark + DuckDB (+ Databricks if DATABRICKS_PROFILE)
+freedom-benchmark: ## Freedom Benchmark: Spark + DuckDB + DataFusion (+ Databricks if configured)
 	$(FREEDOM) benchmark --scale $(SCALE) --repeats $(REPEATS)
 ifneq ($(DATABRICKS_PROFILE),)
 	$(MAKE) databricks-run databricks-fetch-results

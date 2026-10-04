@@ -25,7 +25,7 @@ Lakehouse Freedom provides two executable reference lakehouse implementations: D
 
     ---
 
-    The 22 TPC-H queries, written once, run on Databricks, open-source Spark and DuckDB, with results compared automatically.
+    The 22 TPC-H queries, written once, run on Databricks, open-source Spark, DuckDB and DataFusion, with results compared automatically.
 
     [:octicons-arrow-right-24: Freedom Benchmark](freedom-benchmark.md)
 

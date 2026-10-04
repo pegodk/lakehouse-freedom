@@ -23,6 +23,7 @@ nav = [
     { "Freedom Principles" = "freedom-principles.md" },
     { "Freedom Architecture" = "freedom-architecture.md" },
     { "Freedom Path" = "freedom-path.md" },
+    { "Portable Governance" = "governance.md" },
   ] },
   { "Measure" = [
     { "Freedom Check" = "freedom-check.md" },

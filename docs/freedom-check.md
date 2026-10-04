@@ -16,7 +16,7 @@ Results are written to `reports/freedom-check-sf<N>.json` and shown in section 4
 | 2 | Schemas compatible | Silver matches the canonical TPC-H schema, and the Databricks schema when it is available | `quality.json` |
 | 3 | Expected row counts and keys | dbgen row counts, primary-key uniqueness and non-null, 7 foreign keys without orphans | `quality.json` |
 | 4 | Transformation outputs equivalent | Silver equals DuckDB's independent conform of the Raw Parquet; Gold equals a DuckDB SQL re-implementation; Databricks fingerprints match when available | live DuckDB oracle |
-| 5 | TPC-H results equivalent | All 22 queries correct on OSS Spark and DuckDB (and Databricks when available) | official answers or reference run |
+| 5 | TPC-H results equivalent | All 22 queries correct on OSS Spark, DuckDB and DataFusion (and Databricks when available) | official answers or reference run |
 | 6 | Spark transformations executable | Every pipeline task completed on OpenLakehouse Spark | run artefacts |
 | 7 | Unity Catalog metadata accessible/recreated | UC OSS lists the tables with format and location; the [catalog probe](capability-mapping.md) recreates the Unity Catalog capabilities the workload uses | live UC OSS probe |
 | 8 | DuckDB can access selected tables | DuckDB reads `lineitem` through a UC OSS-resolved location with the expected row count | live DuckDB read |

@@ -45,6 +45,18 @@ def duckdb_s3_setup(con) -> None:
     )
 
 
+def delta_rs_s3_options() -> dict[str, str]:
+    """Object-store options used by delta-rs and its DataFusion Arrow dataset."""
+    return {
+        "AWS_ACCESS_KEY_ID": S3_ACCESS_KEY,
+        "AWS_SECRET_ACCESS_KEY": S3_SECRET_KEY,
+        "AWS_ENDPOINT_URL": f"http://{S3_ENDPOINT_HOST}",
+        "AWS_REGION": "us-east-1",
+        "AWS_ALLOW_HTTP": "true",
+        "AWS_S3_ADDRESSING_STYLE": "path",
+    }
+
+
 def boto3_client():
     import boto3
 

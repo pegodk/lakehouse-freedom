@@ -18,6 +18,8 @@ local = [
     "pyspark-client==4.1.0",
     "pandas>=2.2",
     "pyarrow>=17",
+    "datafusion>=50,<55",
+    "deltalake>=1.2,<2",
     "boto3>=1.35",
     "requests>=2.32",
 ]
@@ -54,6 +56,7 @@ packages = [
     "lakehouse_freedom.ingestion",
     "lakehouse_freedom.transformations",
     "lakehouse_freedom.quality",
+    "lakehouse_freedom.governance",
     "lakehouse_freedom.tpch",
     "lakehouse_freedom.tpch.generator",
     "lakehouse_freedom.benchmarks",

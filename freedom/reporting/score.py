@@ -4,6 +4,8 @@ Component                     Formula                                           
 ----------------------------  -------------------------------------------------------  ---------------------------------
 TPC-H SQL portability (Spark) queries PORTABLE on OpenLakehouse Spark / 22              benchmarks/results/.../spark
 TPC-H SQL portability (DuckDB) queries PORTABLE on DuckDB / 22                          benchmarks/results/.../duckdb
+TPC-H SQL portability          queries PORTABLE on DataFusion / 22                      benchmarks/results/
+(DataFusion)                                                                          .../datafusion
 Transformation portability    shared transformation LOC /                              freedom/assessment/inventory.yaml
                               (shared + OpenLakehouse-specific transformation LOC)
 Catalog portability           Unity Catalog capabilities recreated in UC OSS /          reports/catalog-probe.json
@@ -12,8 +14,8 @@ Orchestration portability     shared orchestration LOC /                        
                               (shared + OpenLakehouse-specific orchestration LOC)
 
 Freedom Score = unweighted mean of the measured components, excluding the
-DuckDB SQL component (DuckDB is an additional engine, not the migration
-target). Components that could not be measured are left out of the mean and
+DuckDB and DataFusion SQL components (they are additional engines, not the
+migration target). Components that could not be measured are left out of the mean and
 listed as such; they are never counted as zero or as 100%.
 """
 
@@ -37,8 +39,11 @@ def components(scale_factor: float) -> list[dict]:
     out = []
 
     prefer = [("databricks", "spark"), ("openlakehouse", "spark")]
-    for engine, label, in_score in (("spark", "TPC-H SQL portability (Spark)", True),
-                                    ("duckdb", "TPC-H SQL portability (DuckDB)", False)):
+    for engine, label, in_score in (
+        ("spark", "TPC-H SQL portability (Spark)", True),
+        ("duckdb", "TPC-H SQL portability (DuckDB)", False),
+        ("datafusion", "TPC-H SQL portability (DataFusion)", False),
+    ):
         classes = compare.classify("openlakehouse", engine, scale_factor, prefer)
         counts = compare.summarize(classes) if classes else None
         out.append({"key": f"sql_{engine}", "name": label,

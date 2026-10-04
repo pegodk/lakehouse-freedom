@@ -158,7 +158,12 @@ def run(scale_factor: float, probe_catalog: bool = True) -> list[Check]:
     # 5. TPC-H results
     prefer = [("databricks", "spark"), ("openlakehouse", "spark")]
     parts, failed = [], False
-    for platform, engine in (("openlakehouse", "spark"), ("openlakehouse", "duckdb"), ("databricks", "spark")):
+    for platform, engine in (
+        ("openlakehouse", "spark"),
+        ("openlakehouse", "duckdb"),
+        ("openlakehouse", "datafusion"),
+        ("databricks", "spark"),
+    ):
         classes = compare.classify(platform, engine, sf, prefer)
         if classes is None:
             parts.append(f"{platform}/{engine}: not run")

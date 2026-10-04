@@ -19,7 +19,7 @@ All `make` targets accept `SCALE` (TPC-H scale factor, default `1`). Each one wr
 |---|---|---|
 | `make generate-data` | `freedom generate --scale N` | TPC-H Raw Parquet into `s3://lakehouse/freedom/raw/sf<N>` |
 | `make pipeline` | `freedom pipeline --scale N [--task KEY]` | all tasks, or one task, on OpenLakehouse |
-| `make freedom-benchmark` | `freedom benchmark --scale N --repeats R` | 22 queries on Spark and DuckDB (`REPEATS`, default 3); adds Databricks when `DATABRICKS_PROFILE` is set |
+| `make freedom-benchmark` | `freedom benchmark --scale N --repeats R` | 22 queries on Spark, DuckDB and DataFusion (`REPEATS`, default 3); adds Databricks when `DATABRICKS_PROFILE` is set |
 | `make freedom-check` | `freedom check --scale N [--no-probe]` | 14 checks; exit code 1 on any FAIL |
 | `make freedom-report` | `freedom report --scale N` | `reports/freedom-report.md` and `reports/freedom-report-sf<N>.md` |
 | `make freedom-assess` | `freedom assess PATH [--json]` | scan a repository for Databricks-specific constructs (`REPO_PATH=`) |

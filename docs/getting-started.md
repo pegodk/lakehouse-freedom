@@ -40,7 +40,7 @@ When it finishes, open `reports/freedom-report.md`.
 ```bash
 make generate-data     SCALE=1   # TPC-H Raw Parquet into s3://lakehouse/freedom/raw/sf1
 make pipeline          SCALE=1   # generate → bronze → silver → gold → quality → TPC-H, plus SCD2
-make freedom-benchmark SCALE=1   # 22 queries on Spark and DuckDB (REPEATS=3)
+make freedom-benchmark SCALE=1   # 22 queries on Spark, DuckDB and DataFusion (REPEATS=3)
 make freedom-check     SCALE=1   # exit code 1 if any check fails
 make freedom-report    SCALE=1   # reports/freedom-report.md
 ```

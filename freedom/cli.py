@@ -2,7 +2,7 @@
 
     freedom generate  --scale 1           TPC-H Raw Parquet into OpenLakehouse storage
     freedom pipeline  --scale 1           run the whole pipeline on OpenLakehouse
-    freedom benchmark --scale 1           TPC-H on OpenLakehouse Spark and DuckDB
+    freedom benchmark --scale 1           TPC-H on Spark, DuckDB and DataFusion
     freedom check     --scale 1           Freedom Check (exit code 1 on any FAIL)
     freedom report    --scale 1           reports/freedom-report.md
     freedom assess    PATH                scan any repository for Databricks-specific code
@@ -31,7 +31,12 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("benchmark")
     _scale(p)
     p.add_argument("--repeats", type=int, default=3)
-    p.add_argument("--engines", nargs="*", default=["spark", "duckdb"])
+    p.add_argument(
+        "--engines",
+        nargs="*",
+        choices=("spark", "duckdb", "datafusion"),
+        default=["spark", "duckdb", "datafusion"],
+    )
     p = sub.add_parser("check")
     _scale(p)
     p.add_argument("--no-probe", action="store_true", help="skip the live catalog probe")

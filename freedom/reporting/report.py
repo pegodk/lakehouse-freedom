@@ -44,6 +44,7 @@ def render(scale_factor: float) -> str:
     res = compare.RESULTS
     ol_run = _load(res / "openlakehouse" / tag / "spark" / "run.json")
     duck_run = _load(res / "openlakehouse" / tag / "duckdb" / "run.json")
+    datafusion_run = _load(res / "openlakehouse" / tag / "datafusion" / "run.json")
     dbx_run = _load(res / "databricks" / tag / "spark" / "run.json")
     gen = _load(res / "openlakehouse" / tag / "generator.json")
     quality = _load(res / "openlakehouse" / tag / "quality.json")
@@ -58,6 +59,7 @@ def render(scale_factor: float) -> str:
     classes = {k: compare.classify(p, e, sf, prefer) for k, (p, e) in {
         "OpenLakehouse Spark": ("openlakehouse", "spark"),
         "OpenLakehouse DuckDB": ("openlakehouse", "duckdb"),
+        "OpenLakehouse DataFusion": ("openlakehouse", "datafusion"),
         "Databricks": ("databricks", "spark")}.items()}
 
     L: list[str] = []
@@ -86,7 +88,7 @@ def render(scale_factor: float) -> str:
     w("          ▼                                                                ▼")
     w("   Databricks                                                     OpenLakehouse")
     w("   Spark · Delta · Unity Catalog · Workflows · Bundles            Spark Connect · Delta · UC OSS")
-    w("                                                                  DuckDB · Airflow · SeaweedFS")
+    w("                                                        DuckDB · DataFusion · Airflow · SeaweedFS")
     w("```")
     w("")
     w(_table(["Platform", "Role", "Status for this report"], [
@@ -96,6 +98,8 @@ def render(scale_factor: float) -> str:
          "results available" if ol_run else "not run"],
         ["DuckDB on OpenLakehouse storage", "Second open engine on the same Delta tables",
          "results available" if duck_run else "not run"],
+        ["DataFusion on OpenLakehouse storage", "Third engine and future governed-query enforcement point",
+         "results available" if datafusion_run else "not run"],
     ]))
     w("")
 
@@ -112,6 +116,7 @@ def render(scale_factor: float) -> str:
         ["Unity Catalog Spark connector", env.get("unitycatalog_spark_connector")],
         ["SeaweedFS (S3)", env.get("seaweedfs")],
         ["DuckDB", (duck_run or {}).get("environment", {}).get("engine_version") or (gen or {}).get("duckdb_version")],
+        ["Apache DataFusion", (datafusion_run or {}).get("environment", {}).get("engine_version")],
         ["TPC-H generator", f"{gen['generator']}, tpch extension {gen['tpch_extension_version']}" if gen else None],
     ]
     if dbx_run:
@@ -185,7 +190,12 @@ def render(scale_factor: float) -> str:
       "in each place. They do not say which platform is faster. The primary result of this benchmark is "
       "portability (section 5).")
     w("")
-    runs = {"OpenLakehouse Spark": ol_run, "OpenLakehouse DuckDB": duck_run, "Databricks": dbx_run}
+    runs = {
+        "OpenLakehouse Spark": ol_run,
+        "OpenLakehouse DuckDB": duck_run,
+        "OpenLakehouse DataFusion": datafusion_run,
+        "Databricks": dbx_run,
+    }
     rows = []
     for q in range(1, 23):
         k = f"q{q:02d}"
@@ -347,10 +357,12 @@ def _conclusions(comps, classes, probe, dbx_run) -> str:
     parts = []
     sp = classes.get("OpenLakehouse Spark")
     dk = classes.get("OpenLakehouse DuckDB")
+    df = classes.get("OpenLakehouse DataFusion")
     if sp:
         s = compare.summarize(sp)
         parts.append(f"**SQL.** {s['PORTABLE']} of 22 TPC-H queries ran unchanged on open-source Spark with "
-                     f"correct results" + (f", and {compare.summarize(dk)['PORTABLE']} of 22 on DuckDB" if dk else "")
+                     f"correct results" + (f", {compare.summarize(dk)['PORTABLE']} of 22 on DuckDB" if dk else "")
+                     + (f", and {compare.summarize(df)['PORTABLE']} of 22 on DataFusion" if df else "")
                      + ". TPC-H is a conservative SQL subset, so treat this as an upper bound for real workloads.")
     t = c["transformation"]
     parts.append(f"**Code.** {t['value'] * 100:.0f}% of the code that runs the workload on OpenLakehouse is "
