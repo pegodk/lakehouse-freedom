@@ -1,8 +1,6 @@
 # 🗽 Portable Lakehouse Report
 
-Scale factor **10** (`sf10`) · generated 2026-10-04 19:03 UTC by `make portability-report SCALE=10`
-
-> **Scope of this report.** The Databricks side of the workload has not been run for this scale factor, so every comparison below uses the OpenLakehouse run, the official TPC-H answers (where they exist) and separate DuckDB reference results. Databricks columns are marked *not run*. Run the bundle in `platforms/databricks/` and `make databricks-fetch-results` to complete it.
+Scale factor **10** (`sf10`) · generated 2026-10-04 20:25 UTC by `make portability-report SCALE=10`
 
 ## Portability Score
 
@@ -45,7 +43,7 @@ The score is the unweighted mean of the included, measured components. The capab
 
 | Platform | Role | Status for this report |
 |---|---|---|
-| Databricks | Managed implementation (bundle in `platforms/databricks`) | not run |
+| Databricks | Managed implementation (bundle in `platforms/databricks`) | results available |
 | OpenLakehouse | Open-source implementation (`platforms/openlakehouse`) | results available |
 | DuckDB on OpenLakehouse storage | Second open engine on the same Delta tables | results available |
 | DataFusion on OpenLakehouse storage | Third engine and future governed-query enforcement point | not run |
@@ -64,6 +62,8 @@ The score is the unweighted mean of the included, measured components. The capab
 | DuckDB | 1.5.6 |
 | Apache DataFusion |  |
 | TPC-H generator | duckdb tpch extension (embedded TPC-H dbgen), tpch extension v1.5.6 |
+| Databricks Spark | 4.2.0 |
+| Databricks runtime | client.4.10 |
 
 OpenLakehouse compute: Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host; executor 6 cores / 7g, driver 2g; host 8 CPUs, 13.6 GB RAM, Linux 7.2.5-3-omarchy.
 
@@ -88,32 +88,33 @@ TPC-H SF10, generated in 10 chunk(s) in 204 s.
 
 | Query (median s) | OpenLakehouse Spark | OpenLakehouse DuckDB | OpenLakehouse DataFusion | Databricks |
 |---|---|---|---|---|
-| q01 | 51.51 | 3.47 | not run | not run |
-| q02 | 23.22 | 1.41 | not run | not run |
-| q03 | 20.21 | 2.82 | not run | not run |
-| q04 | 11.99 | 1.50 | not run | not run |
-| q05 | 29.51 | 2.97 | not run | not run |
-| q06 | 4.47 | 0.49 | not run | not run |
-| q07 | 26.24 | 1.32 | not run | not run |
-| q08 | 12.04 | 2.33 | not run | not run |
-| q09 | 23.70 | 4.58 | not run | not run |
-| q10 | 13.56 | 1.48 | not run | not run |
-| q11 | 8.61 | 0.56 | not run | not run |
-| q12 | 8.04 | 0.83 | not run | not run |
-| q13 | 13.76 | 2.88 | not run | not run |
-| q14 | 5.15 | 0.86 | not run | not run |
-| q15 | 10.57 | 0.77 | not run | not run |
-| q16 | 7.92 | 0.57 | not run | not run |
-| q17 | 26.38 | 0.88 | not run | not run |
-| q18 | 38.86 | 2.57 | not run | not run |
-| q19 | 8.25 | 1.31 | not run | not run |
-| q20 | 9.56 | 0.94 | not run | not run |
-| q21 | 41.55 | 2.82 | not run | not run |
-| q22 | 7.02 | 0.52 | not run | not run |
-| **total** | **402.1** | **37.9** | n/a | n/a |
+| q01 | 51.51 | 3.47 | not run | 1.47 |
+| q02 | 23.22 | 1.41 | not run | 2.94 |
+| q03 | 20.21 | 2.82 | not run | 2.29 |
+| q04 | 11.99 | 1.50 | not run | 1.41 |
+| q05 | 29.51 | 2.97 | not run | 2.83 |
+| q06 | 4.47 | 0.49 | not run | 0.89 |
+| q07 | 26.24 | 1.32 | not run | 2.48 |
+| q08 | 12.04 | 2.33 | not run | 2.42 |
+| q09 | 23.70 | 4.58 | not run | 3.31 |
+| q10 | 13.56 | 1.48 | not run | 3.34 |
+| q11 | 8.61 | 0.56 | not run | 1.51 |
+| q12 | 8.04 | 0.83 | not run | 1.15 |
+| q13 | 13.76 | 2.88 | not run | 1.50 |
+| q14 | 5.15 | 0.86 | not run | 1.26 |
+| q15 | 10.57 | 0.77 | not run | 1.79 |
+| q16 | 7.92 | 0.57 | not run | 1.88 |
+| q17 | 26.38 | 0.88 | not run | 1.86 |
+| q18 | 38.86 | 2.57 | not run | 3.80 |
+| q19 | 8.25 | 1.31 | not run | 1.29 |
+| q20 | 9.56 | 0.94 | not run | 2.02 |
+| q21 | 41.55 | 2.82 | not run | 3.08 |
+| q22 | 7.02 | 0.52 | not run | 1.33 |
+| **total** | **402.1** | **37.9** | n/a | **45.8** |
 
 - **OpenLakehouse Spark**: OpenLakehouse (local Docker); Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host; repeats per query: 1; engine 4.1.0.
 - **OpenLakehouse DuckDB**: OpenLakehouse (local Docker) + DuckDB in-process on the host; DuckDB in-process, all host cores; repeats per query: 1; engine 1.5.6.
+- **Databricks**: Databricks; serverless jobs compute; repeats per query: 3; engine 4.2.0.
 
 ## 5. Platform-specific code
 
@@ -589,7 +590,6 @@ Definitions and maintenance rules: `docs/platform-capability-coverage.md`.
 
 ## 8. Known limitations
 
-- The Databricks side was not executed for this report. SQL portability is measured against the official TPC-H answers (SF ≤ 1) or the OpenLakehouse Spark run, not against Databricks output.
 - Performance numbers compare unlike compute and must not be read as a platform performance ranking.
 - UC OSS runs with authorization disabled (OpenLakehouse default); grants, row filters and masks are not enabled in this reference architecture.
 - The DuckDB `unity_catalog` extension cannot read from SeaweedFS through UC OSS credential vending (vended credentials carry no S3 endpoint); DuckDB resolves locations through UC and reads with a configured S3 secret.
@@ -606,5 +606,3 @@ Definitions and maintenance rules: `docs/platform-capability-coverage.md`.
 **Orchestration.** Sharing the task graph keeps both schedulers aligned, but the scheduler definitions themselves are platform code (51% shared).
 
 **Governance.** The DataFusion adapter enforces 1 of 2 reviewed obligations. This measures obligation coverage, not production identity or gateway readiness.
-
-**Next step.** Run the Databricks bundle to replace the stand-in references with measured Databricks output and complete the two-implementation comparison.

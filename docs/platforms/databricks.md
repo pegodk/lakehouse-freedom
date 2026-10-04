@@ -40,4 +40,4 @@ Running the job uses Databricks compute and is billed to the workspace.
 
 ## Status in v1
 
-The bundle passes the configuration checks of `databricks bundle validate` (Databricks CLI 1.18); the final step of validation, resolving the workspace, needs an authenticated profile. The results committed in this repository come from OpenLakehouse only; the Databricks columns in `reports/portability-report.md` show *not run* until this job has been executed and its results fetched.
+The bundle passes `databricks bundle validate` with Databricks CLI 1.18. The committed SF1 and SF10 results were produced on Databricks serverless jobs compute and include all 22 TPC-H queries, table-quality and fingerprint evidence, and the incremental SCD2 scenario. The report compares execution characteristics across unlike compute only; it is not a platform performance comparison.

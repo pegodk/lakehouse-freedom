@@ -1,0 +1,39 @@
+{
+ "platform": "databricks",
+ "engine": "spark",
+ "engine_version": "4.2.0",
+ "query": "q08",
+ "scale_factor": 1.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 1.9181,
+ "durations_s": [
+  1.9181,
+  1.9496,
+  1.8184
+ ],
+ "row_count": 2,
+ "error": null,
+ "timestamp": "2026-10-04T20:07:15.715666+00:00",
+ "environment": {
+  "engine_version": "4.2.0",
+  "platform_label": "Databricks",
+  "compute": "serverless jobs compute",
+  "databricks_runtime": "client.4.10"
+ },
+ "columns": [
+  "o_year",
+  "mkt_share"
+ ],
+ "rows": [
+  [
+   1995,
+   "0.034436"
+  ],
+  [
+   1996,
+   "0.041486"
+  ]
+ ],
+ "canonical": null
+}

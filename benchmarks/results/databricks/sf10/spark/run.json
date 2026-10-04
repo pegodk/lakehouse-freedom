@@ -1,0 +1,168 @@
+{
+ "platform": "databricks",
+ "engine": "spark",
+ "scale_factor": 10.0,
+ "repeats": 3,
+ "environment": {
+  "engine_version": "4.2.0",
+  "platform_label": "Databricks",
+  "compute": "serverless jobs compute",
+  "databricks_runtime": "client.4.10"
+ },
+ "queries": {
+  "q01": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.4704,
+   "row_count": 4,
+   "error": null
+  },
+  "q02": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.9445,
+   "row_count": 100,
+   "error": null
+  },
+  "q03": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.2899,
+   "row_count": 10,
+   "error": null
+  },
+  "q04": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.409,
+   "row_count": 5,
+   "error": null
+  },
+  "q05": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.8292,
+   "row_count": 5,
+   "error": null
+  },
+  "q06": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 0.8886,
+   "row_count": 1,
+   "error": null
+  },
+  "q07": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.4796,
+   "row_count": 4,
+   "error": null
+  },
+  "q08": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.4192,
+   "row_count": 2,
+   "error": null
+  },
+  "q09": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 3.3057,
+   "row_count": 175,
+   "error": null
+  },
+  "q10": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 3.3418,
+   "row_count": 20,
+   "error": null
+  },
+  "q11": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.5101,
+   "row_count": 0,
+   "error": null
+  },
+  "q12": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.1514,
+   "row_count": 2,
+   "error": null
+  },
+  "q13": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.4986,
+   "row_count": 45,
+   "error": null
+  },
+  "q14": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.2603,
+   "row_count": 1,
+   "error": null
+  },
+  "q15": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.7904,
+   "row_count": 1,
+   "error": null
+  },
+  "q16": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.8835,
+   "row_count": 27840,
+   "error": null
+  },
+  "q17": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.8552,
+   "row_count": 1,
+   "error": null
+  },
+  "q18": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 3.7982,
+   "row_count": 100,
+   "error": null
+  },
+  "q19": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.2901,
+   "row_count": 1,
+   "error": null
+  },
+  "q20": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 2.0174,
+   "row_count": 1804,
+   "error": null
+  },
+  "q21": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 3.0788,
+   "row_count": 100,
+   "error": null
+  },
+  "q22": {
+   "variant": "canonical",
+   "success": true,
+   "duration_s": 1.3293,
+   "row_count": 7,
+   "error": null
+  }
+ }
+}
