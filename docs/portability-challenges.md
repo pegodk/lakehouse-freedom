@@ -10,7 +10,7 @@ v1 of Portable Lakehouse is **Portability Challenge #1**. Each later challenge a
 | 2 | Streaming + Auto Loader | Auto Loader, Structured Streaming | Structured Streaming file source; Kafka (in OpenLakehouse) | planned |
 | 3 | Lakeflow Declarative Pipelines | `dlt`, streaming tables, materialized views | Spark Declarative Pipelines (Spark 4.1, in OpenLakehouse) | planned |
 | 4 | Unity Catalog governance | grants, row filters, column masks, tags | UC OSS metadata, Cedar decisions, DataFusion enforcement | foundation |
-| 5 | MLflow / ML workloads | Managed MLflow, Model Serving | MLflow 3.14 (in OpenLakehouse) | planned |
+| 5 | MLflow / ML workloads | Managed MLflow, Model Serving | MLflow 3.14 (in OpenLakehouse) | tracking foundation |
 | 6 | Databricks SQL / BI | SQL warehouses, dashboards | Spark Connect / Thrift, DuckDB, open BI tools | planned |
 | 7 | AI / Vector Search / Agents | AI functions, Vector Search, Agent Framework | open models, vector stores, MLflow tracing | planned |
 | 8 | Observability | system tables, lineage | OpenLineage, Spark event logs | planned |

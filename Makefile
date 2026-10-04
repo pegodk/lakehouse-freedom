@@ -20,7 +20,7 @@ DBX     := databricks $(if $(DATABRICKS_PROFILE),-p $(DATABRICKS_PROFILE),)
 .PHONY: help setup venv openlakehouse-configure openlakehouse-up openlakehouse-down \
         openlakehouse-destroy openlakehouse-status generate-data pipeline portability-benchmark \
         portability-check portability-report portability-assess demo test test-stack lint docs-serve docs-build \
-        databricks-validate databricks-deploy databricks-run databricks-fetch-results clean-results
+        databricks-validate databricks-deploy databricks-run databricks-fetch-results mlflow-smoke clean-results
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  \033[36m%-26s\033[0m %s\n", $$1, $$2}'
@@ -31,7 +31,7 @@ setup: venv openlakehouse-configure ## One-off setup: submodule, venv, OpenLakeh
 venv: ## Create .venv and install Portable Lakehouse with local extras
 	git submodule update --init --recursive
 	uv venv --allow-existing -p 3.12 .venv
-	uv pip install --python $(PY) -e '.[local,dev,databricks]'
+	uv pip install --python $(PY) -e '.[local,dev,databricks,ml]'
 
 openlakehouse-configure: ## Write OpenLakehouse runtime config from its examples + our overlay
 	$(OL)/configure.sh
@@ -69,9 +69,13 @@ portability-report: ## Generate reports/portability-report.md (SCALE=)
 portability-assess: ## Scan a repository for Databricks-specific code (REPO_PATH=)
 	$(PORTABLE_LAKEHOUSE) assess $(or $(REPO_PATH),.)
 
+mlflow-smoke: ## Verify MLflow tracking (MLFLOW_TRACKING_URI=, defaults to local SQLite)
+	$(PORTABLE_LAKEHOUSE) mlflow --tracking-uri $(or $(MLFLOW_TRACKING_URI),sqlite:///mlflow.db)
+
 demo: ## Everything, end to end, on OpenLakehouse (SCALE=)
 	$(MAKE) pipeline SCALE=$(SCALE)
 	$(MAKE) portability-benchmark SCALE=$(SCALE)
+	$(MAKE) mlflow-smoke
 	-$(MAKE) portability-check SCALE=$(SCALE)
 	$(MAKE) portability-report SCALE=$(SCALE)
 

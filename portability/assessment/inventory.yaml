@@ -23,6 +23,7 @@ shared:
     - src/transformations/*.py
     - src/quality/*.py
     - src/governance/policy.py
+    - src/ml/*.py
     - src/run.py
     - tpch/generator/*.py
     - tpch/sql.py

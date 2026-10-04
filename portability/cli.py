@@ -6,6 +6,7 @@
     portable-lakehouse check     --scale 1    Portability Check (exit code 1 on any FAIL)
     portable-lakehouse report    --scale 1    reports/portability-report.md
     portable-lakehouse assess    PATH         assess a repository for platform dependencies
+    portable-lakehouse mlflow                  verify portable MLflow tracking
 """
 
 from __future__ import annotations
@@ -44,6 +45,10 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("assess")
     p.add_argument("path", type=Path)
     p.add_argument("--json", action="store_true")
+    p = sub.add_parser("mlflow")
+    p.add_argument("--tracking-uri", default="sqlite:///mlflow.db")
+    p.add_argument("--experiment", default="portable-lakehouse")
+    p.add_argument("--output", type=Path, default=Path("reports/mlflow-tracking.json"))
     args = parser.parse_args(argv)
 
     if args.cmd in ("generate", "pipeline"):
@@ -80,6 +85,13 @@ def main(argv: list[str] | None = None) -> int:
         from portability.reporting.report import write
 
         print(f"wrote {write(args.scale)}")
+        return 0
+
+    if args.cmd == "mlflow":
+        from portable_lakehouse.ml.tracking import run_tracking_workload
+
+        evidence = run_tracking_workload(args.tracking_uri, args.experiment, args.output)
+        print(f"MLflow run {evidence['run_id']} finished; wrote {args.output}")
         return 0
 
     if args.cmd == "assess":

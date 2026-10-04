@@ -102,7 +102,7 @@ Full list in the [report](https://pegodk.github.io/portable-lakehouse/report/#9-
 
 ## Roadmap
 
-v1 is Portability Challenge #1 (TPC-H / SQL / Delta). Next: streaming and Auto Loader, Lakeflow Declarative Pipelines, Unity Catalog governance, MLflow, Databricks SQL / BI, AI and Vector Search, observability, disaster recovery. See [Portability Challenges](https://pegodk.github.io/portable-lakehouse/portability-challenges/).
+v1 is Portability Challenge #1 (TPC-H / SQL / Delta), with governance and portable MLflow tracking foundations. Next: streaming and Auto Loader, Lakeflow Declarative Pipelines, Databricks SQL / BI, AI and Vector Search, observability, disaster recovery. See [Portability Challenges](https://pegodk.github.io/portable-lakehouse/portability-challenges/).
 
 ## License
 

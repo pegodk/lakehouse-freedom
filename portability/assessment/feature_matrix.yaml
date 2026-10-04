@@ -159,8 +159,8 @@ profiles:
     source: Databricks managed MLflow
     target: MLflow OSS 3.14
     features:
-      - {capability: Experiment and run tracking, area: Tracking, status: NATIVE, workload: not_used, evidence: planned:challenge-5}
-      - {capability: Artifact storage, area: Tracking, status: NATIVE, workload: not_used, evidence: documented}
+      - {capability: Experiment and run tracking, area: Tracking, status: NATIVE, workload: required, evidence: measured:mlflow_tracking}
+      - {capability: Artifact storage, area: Tracking, status: NATIVE, workload: required, evidence: measured:mlflow_tracking}
       - {capability: Model packaging and flavors, area: Models, status: NATIVE, workload: not_used, evidence: documented}
       - {capability: Model registry, area: Registry, status: NATIVE, workload: not_used, evidence: documented}
       - {capability: Tracing and evaluation APIs, area: AI, status: NATIVE, workload: not_used, evidence: documented}

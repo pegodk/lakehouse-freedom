@@ -26,6 +26,9 @@ local = [
 databricks = [
     "databricks-sdk>=0.40",
 ]
+ml = [
+    "mlflow>=3.14,<4",
+]
 dev = [
     "pytest>=8",
     "ruff>=0.6",
@@ -57,6 +60,7 @@ packages = [
     "portable_lakehouse.transformations",
     "portable_lakehouse.quality",
     "portable_lakehouse.governance",
+    "portable_lakehouse.ml",
     "portable_lakehouse.tpch",
     "portable_lakehouse.tpch.generator",
     "portable_lakehouse.benchmarks",

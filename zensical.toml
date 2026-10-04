@@ -24,6 +24,7 @@ nav = [
     { "Portability Principles" = "portability-principles.md" },
     { "Portable Lakehouse Architecture" = "architecture.md" },
     { "Governance portability" = "governance.md" },
+    { "Portable MLflow" = "mlflow.md" },
   ] },
   { "Measure" = [
     { "Platform capability coverage" = "platform-capability-coverage.md" },

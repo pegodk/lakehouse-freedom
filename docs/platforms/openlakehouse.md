@@ -17,7 +17,7 @@ Versions are read from the pinned submodule at run time (`adapter.discover_versi
 | Apache DataFusion | 50–54 (bounded in `pyproject.toml`) | third query engine; reference governance enforcement point |
 | Airflow | 3.1.6 (OpenLakehouse, optional) | DAG in `airflow/dags/`, not executed in v1 |
 
-OpenLakehouse also provides Kafka, MLflow, Iceberg, Jupyter and a dashboard. They are not needed for Portability Challenge #1 and are not started.
+OpenLakehouse also provides Kafka, MLflow, Iceberg, Jupyter and a dashboard. The stack's MLflow service is optional: the portable tracking smoke test defaults to local SQLite and can target that service by URI.
 
 ## Files
 
