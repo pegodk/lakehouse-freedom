@@ -6,8 +6,8 @@
 # Published to GitHub Pages by .github/workflows/docs.yml.
 
 [project]
-site_name = "Portable Lakehouse"
-site_description = "Two executable lakehouse reference architectures, with measured capability coverage for Databricks and OpenLakehouse."
+site_name = "Databricks vs. OpenLakehouse"
+site_description = "An evidence-based comparison of Databricks and an open-source OpenLakehouse architecture."
 site_url = "https://pegodk.github.io/portable-lakehouse/"
 repo_url = "https://github.com/pegodk/portable-lakehouse"
 repo_name = "pegodk/portable-lakehouse"
@@ -18,28 +18,27 @@ site_dir = "site"
 
 nav = [
   { "Home" = "index.md" },
-  { "Portability Score" = "portability-score.md" },
-  { "Get started" = "getting-started.md" },
-  { "Concepts" = [
-    { "Portability Principles" = "portability-principles.md" },
-    { "Portable Lakehouse Architecture" = "architecture.md" },
-    { "Governance portability" = "governance.md" },
-    { "Portable MLflow" = "mlflow.md" },
+  { "Comparison" = "comparison.md" },
+  { "Evidence" = [
+    { "Latest report" = "report.md" },
+    { "Capability coverage" = "platform-capability-coverage.md" },
+    { "Performance and compatibility" = "portability-benchmark.md" },
+    { "Portability score" = "portability-score.md" },
+    { "Detailed capability mapping" = "capability-mapping.md" },
   ] },
-  { "Measure" = [
-    { "Platform capability coverage" = "platform-capability-coverage.md" },
-    { "Capability mapping" = "capability-mapping.md" },
-    { "Portability Benchmark" = "portability-benchmark.md" },
-    { "Latest Portability Report" = "report.md" },
+  { "Guidance" = [
+    { "Portability principles" = "portability-principles.md" },
+    { "Architectures compared" = "architecture.md" },
+    { "Governance" = "governance.md" },
+    { "ML lifecycle" = "mlflow.md" },
   ] },
-  { "Platforms" = [
-    { "OpenLakehouse" = "platforms/openlakehouse.md" },
-    { "Databricks" = "platforms/databricks.md" },
-  ] },
-  { "Reference" = [
+  { "Technical appendix" = [
+    { "Reproduce the evidence" = "reproduce.md" },
+    { "Databricks reference" = "platforms/databricks.md" },
+    { "OpenLakehouse reference" = "platforms/openlakehouse.md" },
     { "Commands" = "reference/commands.md" },
     { "Repository layout" = "reference/layout.md" },
-    { "Portability Challenges" = "portability-challenges.md" },
+    { "Assessment backlog" = "portability-challenges.md" },
   ] },
 ]
 

@@ -1,35 +1,29 @@
-# Platform capability coverage
+# Capability coverage
 
-The Portability Score summarises measured sharing between the two reference architectures. Platform capability
-coverage answers a broader question: which outcomes are supported by each architecture, and whether support is
-native, provided by an alternative, requires a workaround, or is missing. It is reported separately because a
-curated capability comparison is different from a score calculated from workload measurements.
-
-The source of truth is
-[`portability/assessment/feature_matrix.yaml`](../portability/assessment/feature_matrix.yaml). The generated Portability Report
-shows two progress bars and an expandable capability table for every component pair:
-
-- **Outcome coverage** counts `NATIVE`, `ALTERNATIVE`, and `WORKAROUND`: the outcome can be achieved, even if the
-  implementation or operational experience differs.
-- **Native parity** counts only `NATIVE`: the open target provides substantially equivalent semantics.
-- **Required coverage** considers only capabilities exercised by the current workload.
-
-## Status definitions
+The broad comparison asks whether an important Databricks outcome is available natively, through an open alternative, through a workaround, or not at all.
 
 | Status | Meaning |
 |---|---|
-| `NATIVE` | Substantially equivalent capability in the open target |
-| `ALTERNATIVE` | Same outcome through a different open component or approach |
-| `WORKAROUND` | Possible with material limitations or manual work |
-| `MISSING` | No implemented equivalent in this repository's open stack |
-| `NOT_ASSESSED` | Evidence is insufficient |
+| **Native** | Substantially equivalent capability in the open target |
+| **Alternative** | Similar outcome through a different component or approach |
+| **Workaround** | Possible with material limitations or manual work |
+| **Missing** | No implemented equivalent in this repository's open stack |
 
-This is a curated comparison, not a claim to enumerate every feature of either product. Every matrix records an
-`as_of` date and explicit target versions. A documented claim can describe a known product difference; a measured
-claim is backed by a repository check or artefact. Planned evidence identifies a future Portability Challenge and does
-not imply that the capability has already been tested.
+## Pattern across the platform
 
-## Updating the comparison
+| Area | Assessment |
+|---|---|
+| Delta tables and transactions | Strongest native overlap; 7 of 10 assessed capabilities are native |
+| Batch compute | Core Spark is native; serverless, Photon, and managed lifecycle are not |
+| SQL analytics | Queries are portable; warehouse operations, acceleration, and integrated BI differ |
+| Streaming | Spark and Kafka foundations exist; Auto Loader operations need workarounds |
+| Catalog and governance | Metadata basics work; fine-grained controls and integrated governance have major gaps |
+| Declarative pipelines | Spark foundations overlap; managed operations and UI do not |
+| Orchestration | Airflow covers common workflow outcomes through a different experience |
+| Deployment | Open tools can deploy the system, but there is no unified workspace lifecycle |
+| ML lifecycle | MLflow APIs travel well; managed serving and feature engineering do not |
+| BI, AI, and observability | Mostly separate alternatives, workarounds, or gaps |
 
-Add or change capabilities in the YAML matrix, retaining a precise gap or alternative for every non-native row.
-Run `pytest tests/portability/test_feature_coverage.py` and regenerate the report with `make portability-report`.
+“Outcome coverage” in the generated report counts native features, alternatives, and workarounds. It should not be read as parity. “Native parity” is the stricter measure.
+
+The [latest report](report.md#7-platform-capability-coverage) lists every assessed capability, gap, evidence level, target version, and as-of date. The underlying matrix is curated rather than exhaustive; rows marked planned have not been tested.

@@ -1,25 +1,16 @@
-# Portable MLflow tracking
+# ML lifecycle
 
-Portability Challenge #5 now has an executable tracking foundation. The shared
-workload logs parameters, metrics, tags and an artifact, then reads the run
-back to produce `reports/mlflow-tracking.json` as measured evidence.
+Databricks managed MLflow and MLflow OSS share public tracking APIs. The same workload successfully logged and read back parameters, metrics, tags, and an artifact by changing only the tracking URI.
 
-Install the ML dependency and run a local smoke test:
+That demonstrates **tracking portability**, not ML-platform equivalence.
 
-```bash
-uv pip install --python .venv/bin/python -e '.[ml]'
-make mlflow-smoke
-```
+| Capability | Finding |
+|---|---|
+| Experiment and run tracking | Native OSS counterpart; measured here |
+| Artifact storage | Native OSS counterpart; measured here |
+| Model packaging, registry, tracing | Available in MLflow OSS; not exercised here |
+| Catalog-aware registry governance | Requires explicit integration |
+| Managed service operations | Operator responsibility in OSS |
+| Feature engineering and model serving | Separate services; not reproduced here |
 
-The default `sqlite:///mlflow.db` URI needs no service. Point the same workload at an
-MLflow OSS server or another MLflow-compatible backend with:
-
-```bash
-make mlflow-smoke MLFLOW_TRACKING_URI=http://localhost:5000
-```
-
-For Databricks, use a configured Databricks MLflow tracking URI and credentials.
-The workload contains no platform branch: backend selection is configuration.
-
-This foundation measures experiment and artifact tracking. Model registry,
-feature engineering and model serving remain separate Challenge #5 gaps.
+The lesson is broader than MLflow: an open API can preserve workload code while leaving identity, governance, availability, and operations platform-specific.
