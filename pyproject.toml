@@ -26,6 +26,9 @@ local = [
 databricks = [
     "databricks-sdk>=0.40",
 ]
+ml = [
+    "mlflow>=3.14,<4",
+]
 dev = [
     "pytest>=8",
     "ruff>=0.6",
@@ -57,6 +60,7 @@ packages = [
     "lakehouse_freedom.transformations",
     "lakehouse_freedom.quality",
     "lakehouse_freedom.governance",
+    "lakehouse_freedom.ml",
     "lakehouse_freedom.tpch",
     "lakehouse_freedom.tpch.generator",
     "lakehouse_freedom.benchmarks",

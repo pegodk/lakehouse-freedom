@@ -259,7 +259,23 @@ def run(scale_factor: float, probe_catalog: bool = True) -> list[Check]:
         f"Databricks job: {'identical' if job_graph == graph else 'DIFFERENT'}; "
         f"Airflow DAG: {'generated from' if dag_ok else 'NOT generated from'} the shared graph")
 
-    # 13. Databricks side
+    # 13. Portable MLflow tracking
+    mlflow_evidence = _load(REPO / "reports" / "mlflow-tracking.json")
+    if mlflow_evidence is None:
+        add("mlflow_tracking", "MLflow experiment tracking portable", FAIL,
+            "mlflow-tracking.json missing; run make mlflow-smoke")
+    else:
+        expected_artifact = "evidence/readme.txt"
+        ok = (
+            mlflow_evidence.get("status") == "FINISHED"
+            and mlflow_evidence.get("metrics", {}).get("portability_score") == 1.0
+            and expected_artifact in mlflow_evidence.get("artifacts", [])
+        )
+        add("mlflow_tracking", "MLflow experiment tracking portable", PASS if ok else FAIL,
+            f"run {mlflow_evidence.get('run_id')} logged and read back parameters, metrics, tags and artifact"
+            if ok else "tracking evidence is incomplete")
+
+    # 14. Databricks side
     dbx = _load(_results("databricks", sf, "spark", "run.json"))
     if dbx is None:
         add("databricks", "Databricks reference run available", SKIP,

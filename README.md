@@ -89,7 +89,7 @@ Full list in the [report](https://pegodk.github.io/lakehouse-freedom/report/#9-k
 
 ## Roadmap
 
-v1 is Freedom Challenge #1 (TPC-H / SQL / Delta). Next: streaming and Auto Loader, Lakeflow Declarative Pipelines, Unity Catalog governance, MLflow, Databricks SQL / BI, AI and Vector Search, observability, disaster recovery. See [Freedom Challenges](https://pegodk.github.io/lakehouse-freedom/freedom-challenges/).
+v1 is Freedom Challenge #1 (TPC-H / SQL / Delta), with governance and portable MLflow tracking foundations. Next: streaming and Auto Loader, Lakeflow Declarative Pipelines, Databricks SQL / BI, AI and Vector Search, observability, disaster recovery. See [Freedom Challenges](https://pegodk.github.io/lakehouse-freedom/freedom-challenges/).
 
 ## License
 
