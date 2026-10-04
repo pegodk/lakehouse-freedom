@@ -1,4 +1,4 @@
-from freedom.assessment.feature_coverage import COVERED, STATUSES, load, summarize
+from portability.assessment.feature_coverage import COVERED, STATUSES, load, summarize
 
 
 def test_feature_matrix_is_valid_and_has_visible_gaps():

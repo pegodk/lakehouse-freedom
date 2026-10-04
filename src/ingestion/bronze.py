@@ -10,9 +10,9 @@ from __future__ import annotations
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 
-from lakehouse_freedom.common.config import FreedomConfig
-from lakehouse_freedom.common.delta_io import ensure_schema, write_table
-from lakehouse_freedom.common.tpch_schema import TABLES
+from portable_lakehouse.common.config import LakehouseConfig
+from portable_lakehouse.common.delta_io import ensure_schema, write_table
+from portable_lakehouse.common.tpch_schema import TABLES
 
 
 def add_lineage(df: DataFrame, batch_id: str) -> DataFrame:
@@ -24,7 +24,7 @@ def add_lineage(df: DataFrame, batch_id: str) -> DataFrame:
     )
 
 
-def build_bronze(spark: SparkSession, cfg: FreedomConfig, batch_id: str) -> dict[str, int]:
+def build_bronze(spark: SparkSession, cfg: LakehouseConfig, batch_id: str) -> dict[str, int]:
     ensure_schema(spark, cfg.catalog, cfg.bronze_schema)
     counts = {}
     for table in TABLES:
@@ -35,7 +35,7 @@ def build_bronze(spark: SparkSession, cfg: FreedomConfig, batch_id: str) -> dict
             cfg.table_name(cfg.bronze_schema, table),
             cfg.table_location(cfg.bronze_schema, table),
             comment=f"TPC-H {table}, raw generator output with lineage columns",
-            properties={"freedom.layer": "bronze", "freedom.source": "tpch-dbgen"},
+            properties={"portable_lakehouse.layer": "bronze", "portable_lakehouse.source": "tpch-dbgen"},
         )
         counts[table] = spark.table(cfg.table_name(cfg.bronze_schema, table)).count()
     return counts

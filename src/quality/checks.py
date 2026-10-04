@@ -14,8 +14,8 @@ from operator import or_
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 
-from lakehouse_freedom.common.config import FreedomConfig
-from lakehouse_freedom.common.tpch_schema import (
+from portable_lakehouse.common.config import LakehouseConfig
+from portable_lakehouse.common.tpch_schema import (
     FOREIGN_KEYS,
     PRIMARY_KEYS,
     TABLES,
@@ -42,7 +42,7 @@ def schema_of(df: DataFrame) -> list[tuple[str, str]]:
     return [(f.name, f.dataType.simpleString()) for f in df.schema.fields]
 
 
-def run_quality(spark: SparkSession, cfg: FreedomConfig) -> dict:
+def run_quality(spark: SparkSession, cfg: LakehouseConfig) -> dict:
     """Row counts, keys, referential integrity and schema conformance for Silver."""
     results: dict = {"tables": {}, "foreign_keys": []}
     for table in TABLES:

@@ -1,6 +1,6 @@
 # Portable MLflow tracking
 
-Freedom Challenge #5 now has an executable tracking foundation. The shared
+Portability Challenge #5 now has an executable tracking foundation. The shared
 workload logs parameters, metrics, tags and an artifact, then reads the run
 back to produce `reports/mlflow-tracking.json` as measured evidence.
 

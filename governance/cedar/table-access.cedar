@@ -2,15 +2,15 @@
 // maps `public-reader` and `tenant-reader` to engine enforcement operations.
 
 permit (
-    principal is LakehouseFreedom::User,
-    action == LakehouseFreedom::Action::"select",
-    resource is LakehouseFreedom::Table
+    principal is PortableLakehouse::User,
+    action == PortableLakehouse::Action::"select",
+    resource is PortableLakehouse::Table
 )
 when { resource.classification == "public" };
 
 permit (
-    principal is LakehouseFreedom::User,
-    action == LakehouseFreedom::Action::"select",
-    resource is LakehouseFreedom::Table
+    principal is PortableLakehouse::User,
+    action == PortableLakehouse::Action::"select",
+    resource is PortableLakehouse::Table
 )
 when { resource has tenantColumn && principal has tenant };

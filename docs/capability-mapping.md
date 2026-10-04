@@ -1,17 +1,17 @@
 # Capability mapping
 
 How each Databricks capability used by this workload maps to OpenLakehouse. The source of truth is
-[`freedom/assessment/capabilities.yaml`](../freedom/assessment/capabilities.yaml). The Freedom Report
+[`portability/assessment/capabilities.yaml`](../portability/assessment/capabilities.yaml). The Portability Report
 renders it next to the live catalog probe, and `tests/portability/test_docs.py` keeps this page in sync.
 
 | Classification | Meaning |
 |---|---|
-| **PORTABLE** | Runs unchanged on OpenLakehouse |
+| **PORTABLE** | Ran unchanged on OpenLakehouse in the measured scenario |
 | **ADAPTABLE** | Small, mechanical change: configuration, or swapping one idiom for another |
-| **REWRITE** | The same outcome is reachable, but the code has to be rewritten |
+| **REIMPLEMENT** | The business requirement remains, but the implementation changes substantially |
 | **PLATFORM-SPECIFIC** | A managed capability with no drop-in open equivalent in this stack |
 
-Evidence `measured:<x>` is checked on every run (Freedom Check key, catalog probe item,
+Evidence `measured:<x>` is checked on every run (Portability Check key, catalog probe item,
 benchmark). `documented` is a reasoned statement that is not tested automatically.
 
 | Capability | Databricks | OpenLakehouse | Classification | Evidence |
@@ -40,14 +40,14 @@ benchmark). `documented` is a reasoned statement that is not tested automaticall
 - **Batch compute.** Same PySpark code; only session creation differs (entrypoint.py).
 - **Full refresh of an external table.** The UC OSS 0.5 Spark connector rejects CREATE OR REPLACE with a location. The INSERT OVERWRITE idiom works on both platforms and is what the shared code uses.
 - **Catalog (namespaces, external tables, volumes).** Catalogs, schemas, external Delta tables, comments and volumes recreate. Column metadata and custom properties of Spark-created tables are not stored by UC OSS; registering through the REST API keeps them.
-- **Access control.** OpenLakehouse ships with authorization disabled; grants are not stored. Freedom Challenge #4 adds a Cedar decision contract and makes DataFusion the reference enforcement point; end-to-end gateway enforcement remains to be measured.
+- **Access control.** OpenLakehouse ships with authorization disabled; grants are not stored. Portability Challenge #4 adds a Cedar decision contract and makes DataFusion the reference enforcement point; end-to-end gateway enforcement remains to be measured.
 - **Non-Spark engine access through the catalog.** UC OSS vends credentials without an S3 endpoint, so DuckDB's unity_catalog extension sends requests to AWS instead of SeaweedFS. Location lookup through the catalog plus delta_scan works.
-- **Raw file landing.** The path is configuration (FreedomConfig.raw_root); the generator handles both.
+- **Raw file landing.** The path is configuration (LakehouseConfig.raw_root); the generator handles both.
 - **Orchestration.** The task graph is shared; each scheduler definition is platform code. The Airflow DAG is checked for consistency but not executed in v1.
 - **Elastic, managed compute.** Principle F6. This is where the managed platform earns its keep; the benchmark section shows the effect when comparable compute is used.
-- **Lineage, audit and system tables.** Freedom Challenge #8 will measure the open alternatives.
+- **Lineage, audit and system tables.** Portability Challenge #8 will measure the open alternatives.
 - **Experiment tracking.** The shared workload logs and reads back parameters, metrics, tags and an artifact through public MLflow APIs. Only the tracking URI differs.
 
 ## Not covered by v1
 
-Capabilities outside Freedom Challenge #1 (streaming, declarative pipelines, governance, ML, BI, AI, observability) are listed on the [Freedom Challenges](freedom-challenges.md) page.
+Capabilities outside Portability Challenge #1 (streaming, declarative pipelines, governance, ML, BI, AI, observability) are listed on the [Portability Challenges](portability-challenges.md) page.

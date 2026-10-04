@@ -1,4 +1,4 @@
-# Documentation site for Lakehouse Freedom, built with Zensical (https://zensical.org).
+# Documentation site for Portable Lakehouse, built with Zensical (https://zensical.org).
 #
 #   make docs-serve     preview on http://localhost:8000
 #   make docs-build     static site in ./site
@@ -6,11 +6,11 @@
 # Published to GitHub Pages by .github/workflows/docs.yml.
 
 [project]
-site_name = "Lakehouse Freedom"
+site_name = "Portable Lakehouse"
 site_description = "Two executable lakehouse reference architectures, with measured capability coverage for Databricks and OpenLakehouse."
-site_url = "https://pegodk.github.io/lakehouse-freedom/"
-repo_url = "https://github.com/pegodk/lakehouse-freedom"
-repo_name = "pegodk/lakehouse-freedom"
+site_url = "https://pegodk.github.io/portable-lakehouse/"
+repo_url = "https://github.com/pegodk/portable-lakehouse"
+repo_name = "pegodk/portable-lakehouse"
 edit_uri = "edit/main/docs/"
 copyright = "Apache License 2.0 · Not affiliated with Databricks or OpenLakehouse"
 docs_dir = "docs"
@@ -18,19 +18,19 @@ site_dir = "site"
 
 nav = [
   { "Home" = "index.md" },
-  { "Freedom Score" = "freedom-score.md" },
+  { "Portability Score" = "portability-score.md" },
   { "Get started" = "getting-started.md" },
   { "Concepts" = [
-    { "Freedom Principles" = "freedom-principles.md" },
-    { "Freedom Architecture" = "freedom-architecture.md" },
+    { "Portability Principles" = "portability-principles.md" },
+    { "Portable Lakehouse Architecture" = "architecture.md" },
     { "Governance portability" = "governance.md" },
     { "Portable MLflow" = "mlflow.md" },
   ] },
   { "Measure" = [
     { "Platform capability coverage" = "platform-capability-coverage.md" },
     { "Capability mapping" = "capability-mapping.md" },
-    { "Freedom Benchmark" = "freedom-benchmark.md" },
-    { "Latest Freedom Report" = "report.md" },
+    { "Portability Benchmark" = "portability-benchmark.md" },
+    { "Latest Portability Report" = "report.md" },
   ] },
   { "Platforms" = [
     { "OpenLakehouse" = "platforms/openlakehouse.md" },
@@ -39,7 +39,7 @@ nav = [
   { "Reference" = [
     { "Commands" = "reference/commands.md" },
     { "Repository layout" = "reference/layout.md" },
-    { "Freedom Challenges" = "freedom-challenges.md" },
+    { "Portability Challenges" = "portability-challenges.md" },
   ] },
 ]
 
@@ -88,7 +88,7 @@ toggle.name = "Switch to system preference"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
-link = "https://github.com/pegodk/lakehouse-freedom"
+link = "https://github.com/pegodk/portable-lakehouse"
 
 [project.markdown_extensions]
 abbr = {}
@@ -111,7 +111,7 @@ pymdownx.keys = {}
 pymdownx.magiclink = {}
 pymdownx.mark = {}
 pymdownx.smartsymbols = {}
-# The latest Freedom Report and the capability data are included from the
+# The latest Portability Report and the capability data are included from the
 # repository root, so the site always shows what the tooling generated.
 pymdownx.snippets.base_path = ["."]
 pymdownx.snippets.check_paths = true

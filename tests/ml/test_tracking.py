@@ -1,7 +1,7 @@
 from pathlib import Path
 from types import SimpleNamespace
 
-from lakehouse_freedom.ml.tracking import run_tracking_workload
+from portable_lakehouse.ml.tracking import run_tracking_workload
 
 
 class FakeMlflow:

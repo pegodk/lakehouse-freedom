@@ -1,11 +1,11 @@
 # Landing zone for raw files and run artefacts. Grants are part of the
-# workload's catalog footprint; see freedom/validation/catalog_portability.py.
+# workload's catalog footprint; see portability/validation/catalog_portability.py.
 resources:
   schemas:
     landing:
       catalog_name: ${var.catalog}
       name: landing
-      comment: Raw TPC-H files and run artefacts for Lakehouse Freedom
+      comment: Raw TPC-H files and run artefacts for Portable Lakehouse
       grants:
         - principal: ${var.reader_group}
           privileges: [USE_SCHEMA, READ_VOLUME]

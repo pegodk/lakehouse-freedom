@@ -1,0 +1,80 @@
+[
+ {
+  "key": "delta_readable",
+  "title": "Delta tables readable",
+  "status": "PASS",
+  "detail": "19/19 tables read by Spark 4.1.0 through UC OSS"
+ },
+ {
+  "key": "schemas",
+  "title": "Schemas compatible",
+  "status": "PASS",
+  "detail": "8/8 Silver tables match the canonical TPC-H schema; Databricks schemas not available"
+ },
+ {
+  "key": "row_counts",
+  "title": "Expected row counts and keys",
+  "status": "PASS",
+  "detail": "dbgen row counts, primary keys and 7 foreign keys hold"
+ },
+ {
+  "key": "transformations",
+  "title": "Transformation outputs equivalent",
+  "status": "PASS",
+  "detail": "Silver matches DuckDB's separate Raw conformance check for 8/8 tables; Gold matches the DuckDB SQL reference: True; Databricks fingerprints not available"
+ },
+ {
+  "key": "tpch_results",
+  "title": "TPC-H results equivalent",
+  "status": "PASS",
+  "detail": "openlakehouse/spark: 22/22 correct vs TPC-H answers (DuckDB tpch_answers); openlakehouse/duckdb: 22/22 correct vs TPC-H answers (DuckDB tpch_answers); databricks/spark: not run"
+ },
+ {
+  "key": "spark_executable",
+  "title": "Spark transformations executable",
+  "status": "PASS",
+  "detail": "pipeline tasks ['generate', 'bronze', 'silver', 'gold', 'quality', 'incremental', 'tpch_queries'] completed on OpenLakehouse Spark; 22/22 queries ran"
+ },
+ {
+  "key": "unity_catalog",
+  "title": "Unity Catalog metadata accessible/recreated",
+  "status": "PASS",
+  "detail": "UC OSS lists 8 Silver tables with DELTA format and storage location; catalog probe: 6/10 Databricks UC capabilities recreated (gaps: spark_columns, spark_properties, alter_metadata, grants)"
+ },
+ {
+  "key": "duckdb_access",
+  "title": "DuckDB can access selected tables",
+  "status": "PASS",
+  "detail": "DuckDB 1.5.6 read lineitem (6,001,215 rows) via UC OSS-resolved location s3://lakehouse/portable-lakehouse/tables/tpch_sf1/lineitem"
+ },
+ {
+  "key": "incremental",
+  "title": "Incremental pipeline works",
+  "status": "PASS",
+  "detail": "3 batches applied incrementally; duplicate batch refused: True; replay idempotent: True"
+ },
+ {
+  "key": "scd2",
+  "title": "SCD2 behaviour equivalent",
+  "status": "PASS",
+  "detail": "openlakehouse: equal to the Python oracle; databricks: not run"
+ },
+ {
+  "key": "shared_code",
+  "title": "Shared code has no Databricks-specific APIs",
+  "status": "PASS",
+  "detail": "37 shared files scanned with 21 rules; no hits"
+ },
+ {
+  "key": "orchestration",
+  "title": "Orchestration matches the shared task graph",
+  "status": "PASS",
+  "detail": "Databricks job: matches shared graph; Airflow DAG: generated from the shared graph"
+ },
+ {
+  "key": "databricks",
+  "title": "Databricks reference run available",
+  "status": "SKIP",
+  "detail": "no Databricks results for this scale factor; see platforms/databricks/README.md"
+ }
+]

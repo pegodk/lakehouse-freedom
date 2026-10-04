@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from freedom.assessment.inventory import count_loc, measure
+from portability.assessment.inventory import count_loc, measure
 
 REPO = Path(__file__).resolve().parents[2]
 WORKLOAD_DIRS = ["src", "tpch/generator", "tpch/queries", "benchmarks/runner", "platforms/databricks",

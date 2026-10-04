@@ -1,6 +1,6 @@
 """OpenLakehouse platform adapter.
 
-Everything Lakehouse Freedom needs to know about the local OpenLakehouse stack
+Everything Portable Lakehouse needs to know about the local OpenLakehouse stack
 lives here: endpoints, credentials, storage roots, and how to discover the
 versions of the running components. Versions are read from the pinned
 submodule's own files rather than hard-coded.
@@ -17,16 +17,16 @@ from pathlib import Path
 STACK = Path(__file__).resolve().parent / "stack"
 REPO = Path(__file__).resolve().parents[2]
 
-SPARK_REMOTE = os.environ.get("FREEDOM_SPARK_REMOTE", "sc://localhost:15002")
-UC_URL = os.environ.get("FREEDOM_UC_URL", "http://localhost:8081")
-S3_ENDPOINT_HOST = os.environ.get("FREEDOM_S3_ENDPOINT", "localhost:8333")
+SPARK_REMOTE = os.environ.get("PORTABLE_LAKEHOUSE_SPARK_REMOTE", "sc://localhost:15002")
+UC_URL = os.environ.get("PORTABLE_LAKEHOUSE_UC_URL", "http://localhost:8081")
+S3_ENDPOINT_HOST = os.environ.get("PORTABLE_LAKEHOUSE_S3_ENDPOINT", "localhost:8333")
 S3_ACCESS_KEY = os.environ.get("S3_ACCESS_KEY", "lakehouse_s3")
 S3_SECRET_KEY = os.environ.get("S3_SECRET_KEY", "lakehouse_s3_secret")
 
-RAW_ROOT = "s3://lakehouse/freedom/raw"
-TABLE_ROOT = "s3://lakehouse/freedom/tables"
+RAW_ROOT = "s3://lakehouse/portable-lakehouse/raw"
+TABLE_ROOT = "s3://lakehouse/portable-lakehouse/tables"
 RESULTS_ROOT = str(REPO / "benchmarks" / "results")
-CATALOG = "freedom"
+CATALOG = "portable_lakehouse"
 
 
 def spark_session():
@@ -39,7 +39,7 @@ def duckdb_s3_setup(con) -> None:
     """Point DuckDB's httpfs/delta readers at SeaweedFS."""
     con.execute("INSTALL httpfs; LOAD httpfs;")
     con.execute(
-        f"""CREATE OR REPLACE SECRET freedom_s3 (
+        f"""CREATE OR REPLACE SECRET portable_lakehouse_s3 (
             TYPE s3, KEY_ID '{S3_ACCESS_KEY}', SECRET '{S3_SECRET_KEY}',
             ENDPOINT '{S3_ENDPOINT_HOST}', URL_STYLE 'path', USE_SSL false, REGION 'us-east-1')"""
     )
@@ -141,9 +141,9 @@ def environment() -> dict:
 
 
 def config(scale_factor: float):
-    from lakehouse_freedom.common.config import FreedomConfig
+    from portable_lakehouse.common.config import LakehouseConfig
 
-    return FreedomConfig(
+    return LakehouseConfig(
         platform="openlakehouse",
         scale_factor=scale_factor,
         raw_root=RAW_ROOT,

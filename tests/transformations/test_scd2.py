@@ -1,10 +1,10 @@
 import json
 from pathlib import Path
 
-from freedom.assessment.scanner import RULES
-from freedom.validation.scd2_reference import expected_scd2
-from lakehouse_freedom.ingestion.incremental import BATCHES
-from lakehouse_freedom.transformations.scd2 import merge_sql
+from portability.assessment.scanner import RULES
+from portability.validation.scd2_reference import expected_scd2
+from portable_lakehouse.ingestion.incremental import BATCHES
+from portable_lakehouse.transformations.scd2 import merge_sql
 
 EXPECTED = Path(__file__).resolve().parents[1] / "data" / "scd2_expected.json"
 

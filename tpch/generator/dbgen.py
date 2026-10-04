@@ -23,8 +23,8 @@ from datetime import datetime, timezone
 
 import duckdb
 
-from lakehouse_freedom.common.config import scale_tag
-from lakehouse_freedom.common.tpch_schema import TABLES
+from portable_lakehouse.common.config import scale_tag
+from portable_lakehouse.common.tpch_schema import TABLES
 
 
 def default_chunks(scale_factor: float) -> int:

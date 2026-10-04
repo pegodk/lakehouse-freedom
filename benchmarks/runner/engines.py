@@ -1,4 +1,4 @@
-"""Query engines for the Freedom Benchmark.
+"""Query engines for the Portability Benchmark.
 
 SparkSqlEngine works with any SparkSession: Databricks (classic or serverless)
 and Spark Connect against OpenLakehouse. DuckDbEngine and DataFusionEngine read
@@ -11,7 +11,7 @@ from collections.abc import Callable
 
 import duckdb
 
-from lakehouse_freedom.common.tpch_schema import TABLES
+from portable_lakehouse.common.tpch_schema import TABLES
 
 
 class SparkSqlEngine:

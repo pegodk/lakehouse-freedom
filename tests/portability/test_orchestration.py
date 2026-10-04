@@ -2,7 +2,7 @@ from pathlib import Path
 
 import yaml
 
-from lakehouse_freedom.common.pipeline import TASKS, topological_order
+from portable_lakehouse.common.pipeline import TASKS, topological_order
 
 REPO = Path(__file__).resolve().parents[2]
 
@@ -14,8 +14,8 @@ def test_graph_is_acyclic_and_complete():
 
 
 def test_databricks_job_matches_shared_graph():
-    job = yaml.safe_load((REPO / "platforms/databricks/resources/lakehouse_freedom.job.yml").read_text())
-    tasks = job["resources"]["jobs"]["lakehouse_freedom"]["tasks"]
+    job = yaml.safe_load((REPO / "platforms/databricks/resources/portable_lakehouse.job.yml").read_text())
+    tasks = job["resources"]["jobs"]["portable_lakehouse"]["tasks"]
     graph = {t["task_key"]: tuple(d["task_key"] for d in t.get("depends_on", [])) for t in tasks}
     assert graph == {t.key: t.depends_on for t in TASKS}
     for t in tasks:
@@ -23,5 +23,5 @@ def test_databricks_job_matches_shared_graph():
 
 
 def test_airflow_dag_is_generated_from_shared_graph():
-    src = (REPO / "platforms/openlakehouse/airflow/dags/lakehouse_freedom.py").read_text()
-    assert "from lakehouse_freedom.common.pipeline import TASKS" in src
+    src = (REPO / "platforms/openlakehouse/airflow/dags/portable_lakehouse.py").read_text()
+    assert "from portable_lakehouse.common.pipeline import TASKS" in src

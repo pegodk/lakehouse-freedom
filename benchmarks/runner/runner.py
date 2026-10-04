@@ -1,4 +1,4 @@
-"""Freedom Benchmark runner: executes the 22 TPC-H queries on one engine.
+"""Portability Benchmark runner: executes the 22 TPC-H queries on one engine.
 
 The same runner is used on Databricks (inside a job) and locally against
 OpenLakehouse (Spark Connect) and DuckDB. One JSON file per query is written to
@@ -21,7 +21,7 @@ import statistics
 import time
 from typing import Protocol
 
-from lakehouse_freedom.tpch import sql as tpch_sql
+from portable_lakehouse.tpch import sql as tpch_sql
 
 MAX_STORED_ROWS = 50_000
 

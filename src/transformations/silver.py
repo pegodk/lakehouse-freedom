@@ -9,9 +9,9 @@ from __future__ import annotations
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 
-from lakehouse_freedom.common.config import FreedomConfig
-from lakehouse_freedom.common.delta_io import ensure_schema, write_table
-from lakehouse_freedom.common.tpch_schema import TABLES, TPCH_SCHEMA
+from portable_lakehouse.common.config import LakehouseConfig
+from portable_lakehouse.common.delta_io import ensure_schema, write_table
+from portable_lakehouse.common.tpch_schema import TABLES, TPCH_SCHEMA
 
 
 def conform(df: DataFrame, table: str) -> DataFrame:
@@ -25,7 +25,7 @@ def conform(df: DataFrame, table: str) -> DataFrame:
     return df.select(*columns)
 
 
-def build_silver(spark: SparkSession, cfg: FreedomConfig) -> dict[str, int]:
+def build_silver(spark: SparkSession, cfg: LakehouseConfig) -> dict[str, int]:
     ensure_schema(spark, cfg.catalog, cfg.silver_schema)
     counts = {}
     for table in TABLES:
@@ -37,7 +37,7 @@ def build_silver(spark: SparkSession, cfg: FreedomConfig) -> dict[str, int]:
             name,
             cfg.table_location(cfg.silver_schema, table),
             comment=f"TPC-H {table}, conformed to the TPC-H v3 schema",
-            properties={"freedom.layer": "silver"},
+            properties={"portable_lakehouse.layer": "silver"},
         )
         counts[table] = spark.table(name).count()
     return counts

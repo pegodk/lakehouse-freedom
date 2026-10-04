@@ -1,15 +1,15 @@
 # Governance portability
 
-Freedom Challenge #4 uses **Cedar for authorization decisions** and **DataFusion
+Portability Challenge #4 uses **Cedar for authorization decisions** and **DataFusion
 as the reference query enforcement point**. Unity Catalog remains the inventory
 of catalogs, schemas, tables, columns, owners and tags. DuckDB remains an
-independent query and validation engine; it is not replaced.
+separate query and validation engine; it is not replaced.
 
 The model supports both **RBAC** and **ABAC**. Roles and group membership can be
 represented as principal attributes, while policies can also evaluate principal,
 resource and request-context attributes. Both approaches produce the same portable
 decision contract: allow or deny, the matched policy IDs, and typed enforcement
-obligations. Governance portability is not included in the Freedom Score until the
+obligations. Governance portability is not included in the Portability Score until the
 identity integration and governed SQL gateway are exercised end to end on both
 reference architectures.
 
@@ -43,7 +43,7 @@ null, and fully masks malformed input:
 | DataFusion gateway | Resolve every table, inject filters/projections/masks, execute the plan |
 | Object storage | Accept credentials held by the gateway, not by the SQL client |
 
-The contract is implemented in `lakehouse_freedom.governance`, with a starting
+The contract is implemented in `portable_lakehouse.governance`, with a starting
 Cedar schema, policies and obligation registry under `governance/`. It fails closed
 when Cedar denies, reports an evaluation error, or returns an allowing policy
 that has no obligation mapping. An engine adapter must never concatenate Cedar
@@ -57,13 +57,13 @@ unrestricted credentials must not be available to clients. Policy tests must
 cover joins, aliases, CTEs, subqueries, metadata discovery and attempts to read
 the same Delta location without its governed table name.
 
-DataFusion is initially also included as a third Freedom Benchmark engine. That
+DataFusion is initially also included as a third Portability Benchmark engine. That
 measures SQL and Delta portability; it does **not** by itself claim that the
 benchmark process is a secure multi-user gateway.
 
 ## DuckDB
 
-DuckDB continues to provide an independent result oracle and trusted local
+DuckDB continues to provide a separate result reference and trusted local
 analytics. A future DuckDB adapter can consume the same typed obligations when
 DuckDB is embedded behind a locked-down service. Giving a user an unrestricted
 DuckDB connection or storage credentials bypasses that enforcement point, so it

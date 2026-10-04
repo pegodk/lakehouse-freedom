@@ -1,23 +1,27 @@
-# 🗽 Lakehouse Freedom
+# Portable Lakehouse
 
-**Build managed. Stay open. Keep your freedom.**
+**Build on Databricks. Stay open by design.**
 
-[![ci](https://github.com/pegodk/lakehouse-freedom/actions/workflows/ci.yml/badge.svg)](https://github.com/pegodk/lakehouse-freedom/actions/workflows/ci.yml)
-[![docs](https://img.shields.io/badge/docs-pegodk.github.io%2Flakehouse--freedom-teal)](https://pegodk.github.io/lakehouse-freedom/)
+[![ci](https://github.com/pegodk/portable-lakehouse/actions/workflows/ci.yml/badge.svg)](https://github.com/pegodk/portable-lakehouse/actions/workflows/ci.yml)
+[![docs](https://img.shields.io/badge/docs-pegodk.github.io%2Fportable--lakehouse-teal)](https://pegodk.github.io/portable-lakehouse/)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
-Databricks provides a powerful managed lakehouse platform built around open technologies such as Apache Spark and Delta Lake.
+Databricks provides a powerful managed lakehouse platform while building much of its foundation around open technologies such as Apache Spark, Delta Lake and MLflow.
 
-Lakehouse Freedom provides two executable reference architectures: Databricks and a fully open-source stack built on [OpenLakehouse.io](https://openlakehouse.io). The same workload makes their supported capabilities and operational tradeoffs directly comparable.
+But what does that openness give a lakehouse design in practice?
 
-📖 **Documentation: <https://pegodk.github.io/lakehouse-freedom/>**
+Portable Lakehouse is an open-source reference architecture, implementation pattern and portability toolkit. It builds a realistic workload for Databricks and then runs the same data—and as much of the same code as practical—on an open-source lakehouse based on [OpenLakehouse.io](https://openlakehouse.io).
+
+The objective is not to demonstrate why an organization should leave Databricks. Databricks is the primary managed implementation because its integrated platform, managed infrastructure and higher-level services provide substantial value. The objective is to make the boundary between an open foundation and managed capabilities visible, so teams can preserve architectural options while using the platform that fits them.
+
+📖 **Documentation: <https://pegodk.github.io/portable-lakehouse/>**
 
 ## Latest result
 
-TPC-H SF10 on OpenLakehouse (local Docker, 8 cores). From [`reports/freedom-report.md`](reports/freedom-report.md):
+TPC-H SF10 on OpenLakehouse (local Docker, 8 cores). From [`reports/portability-report.md`](reports/portability-report.md):
 
 ```
-Freedom Score                   █████████████░░░░░░░   67%
+Portability Score                   █████████████░░░░░░░   67%
 ─────────────────────────────────────────────────────
 Transformation portability      ██████████████████░░   89%   1512/1702 LOC shared
 Catalog portability             ████████████░░░░░░░░   60%   6/10 UC capabilities
@@ -27,12 +31,12 @@ Governance portability          ····················   not s
 
 Every percentage is a ratio of measured counts. Governance is shown separately because the current implementation is a foundation, not a complete measured enforcement path.
 
-- **[Transformation portability](https://pegodk.github.io/lakehouse-freedom/freedom-score/#transformation-portability):** shared versus platform-specific transformation code.
-- **[Catalog portability](https://pegodk.github.io/lakehouse-freedom/freedom-score/#catalog-portability):** Unity Catalog capabilities supported by both implementations.
-- **[Orchestration portability](https://pegodk.github.io/lakehouse-freedom/freedom-score/#orchestration-portability):** shared task graph versus scheduler-specific code.
-- **[Governance portability](https://pegodk.github.io/lakehouse-freedom/governance/):** portable RBAC/ABAC decisions and typed enforcement obligations using Cedar, with DataFusion as the reference enforcement point.
+- **[Transformation portability](https://pegodk.github.io/portable-lakehouse/portability-score/#transformation-portability):** shared versus platform-specific transformation code.
+- **[Catalog portability](https://pegodk.github.io/portable-lakehouse/portability-score/#catalog-portability):** Unity Catalog capabilities supported by both implementations.
+- **[Orchestration portability](https://pegodk.github.io/portable-lakehouse/portability-score/#orchestration-portability):** shared task graph versus scheduler-specific code.
+- **[Governance portability](https://pegodk.github.io/portable-lakehouse/governance/):** portable RBAC/ABAC decisions and typed enforcement obligations using Cedar, with DataFusion as the reference enforcement point.
 
-The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and independent DuckDB and Python oracles. See [limitations](#limitations) and the [score formulas](https://pegodk.github.io/lakehouse-freedom/freedom-score/).
+The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and separate DuckDB and Python reference implementations. See [limitations](#limitations) and the [score formulas](https://pegodk.github.io/portable-lakehouse/portability-score/).
 
 ## What it does
 
@@ -47,57 +51,58 @@ The Databricks side of the workload is defined and validated but **has not been 
            Unity Catalog       Unity Catalog OSS 0.5.0 · 🦆 DuckDB 1.5.6
                 └─────────┬─────────┘
                           ▼
-          CAPABILITY COMPARISON → FREEDOM REPORT
+          PORTABILITY CHECK → PORTABILITY REPORT
 ```
 
-- **[Freedom Score](https://pegodk.github.io/lakehouse-freedom/freedom-score/).** Measured ratios summarise shared transformation code, catalog behaviour and orchestration.
-- **[Capability coverage](https://pegodk.github.io/lakehouse-freedom/platform-capability-coverage/).** Curated matrices compare native support, alternatives, workarounds and gaps across the two architectures.
-- **[Freedom Benchmark](https://pegodk.github.io/lakehouse-freedom/freedom-benchmark/).** One TPC-H workload compares SQL compatibility and execution characteristics across Spark, DuckDB and Apache DataFusion.
-- **[Governance portability](https://pegodk.github.io/lakehouse-freedom/governance/).** Cedar provides portable RBAC/ABAC decisions that map reviewed policies to typed row-filter, column-allow and column-mask obligations.
-- **[Freedom Assess](https://pegodk.github.io/lakehouse-freedom/reference/commands/#workload-and-measurements).** `make freedom-assess REPO_PATH=...` scans any Databricks project for platform-specific constructs.
+- **[Portability Score](https://pegodk.github.io/portable-lakehouse/portability-score/).** Measured ratios summarise shared transformation code, catalog behaviour and orchestration.
+- **[Capability coverage](https://pegodk.github.io/portable-lakehouse/platform-capability-coverage/).** Curated matrices compare native support, alternatives, workarounds and gaps across the two architectures.
+- **[Portability Benchmark](https://pegodk.github.io/portable-lakehouse/portability-benchmark/).** One TPC-H workload compares SQL compatibility and execution characteristics across Spark, DuckDB and Apache DataFusion.
+- **[Governance portability](https://pegodk.github.io/portable-lakehouse/governance/).** Cedar provides portable RBAC/ABAC decisions that map reviewed policies to typed row-filter, column-allow and column-mask obligations.
+- **[Portability Assessment](https://pegodk.github.io/portable-lakehouse/reference/commands/#workload-and-measurements).** `make portability-assess REPO_PATH=...` scans any Databricks project for platform-specific constructs.
 
 ## Quickstart
 
 Requires Docker (about 10 GB RAM for containers), [`uv`](https://docs.astral.sh/uv/), `git` and `make`.
 
 ```bash
-git clone --recurse-submodules https://github.com/pegodk/lakehouse-freedom.git
-cd lakehouse-freedom
+git clone --recurse-submodules https://github.com/pegodk/portable-lakehouse.git
+cd portable-lakehouse
 make setup              # Python env, OpenLakehouse config, Spark JARs
 make openlakehouse-up   # SeaweedFS, PostgreSQL, Unity Catalog OSS, Spark 4.1 + Connect
-make demo SCALE=1       # pipeline → benchmark → Freedom Check → report
+make demo SCALE=1       # pipeline → benchmark → Portability Check → report
 ```
 
-`SCALE=0.01` is a one-minute smoke run; `SCALE=10` is the larger reference size. More in [Get started](https://pegodk.github.io/lakehouse-freedom/getting-started/) and [Commands](https://pegodk.github.io/lakehouse-freedom/reference/commands/).
+`SCALE=0.01` is a one-minute smoke run; `SCALE=10` is the larger reference size. More in [Get started](https://pegodk.github.io/portable-lakehouse/getting-started/) and [Commands](https://pegodk.github.io/portable-lakehouse/reference/commands/).
 
 The Databricks side is an Asset Bundle in [`platforms/databricks`](platforms/databricks): `make databricks-run DATABRICKS_PROFILE=... TABLE_ROOT=abfss://...`, then `make databricks-fetch-results`.
 
-## Freedom Principles
+## Portability Principles
 
 | | Principle |
 |---|---|
-| F1 | Own the data: open table format, external tables, storage you control |
-| F2 | Separate business logic from platform logic |
-| F3 | Prefer open interfaces: Spark, Delta SQL, Unity Catalog REST, object storage |
-| F4 | Isolate managed capabilities so they can be compared directly |
-| F5 | Portability must be tested |
-| F6 | Managed services are allowed to be better |
+| P1 | Own the data: use open table formats on object storage where practical |
+| P2 | Separate business logic from platform logic |
+| P3 | Prefer open interfaces where practical |
+| P4 | Isolate managed capabilities so their migration impact is measurable |
+| P5 | Test portability by executing workloads outside Databricks |
+| P6 | Portability does not require platform equivalence |
+| P7 | Managed services are allowed to be better |
 
-The project is about architectural optionality, not an argument against Databricks: keep ownership of your data, logic and future choices while you use a managed platform. [Read more](https://pegodk.github.io/lakehouse-freedom/freedom-principles/).
+Portability is architectural optionality, not an argument against managed services. [Read more](https://pegodk.github.io/portable-lakehouse/portability-principles/).
 
 ## Limitations
 
 - The Databricks job has not been run for the committed results (see above).
 - Timings come from unlike compute (a laptop vs. a managed service) and are not a platform performance comparison.
-- TPC-H is a conservative SQL subset; real workloads using Databricks SQL extensions will score lower.
+- TPC-H is a conservative SQL subset; other workloads may require more adaptation.
 - Measured Unity Catalog OSS 0.5.0 gaps: no column metadata or custom properties for Spark-created tables, no `ALTER TABLE` via the Spark connector, no grants while authorization is disabled (OpenLakehouse default).
 - The Airflow DAG is generated and consistency-checked, but not executed in v1.
 
-Full list in the [report](https://pegodk.github.io/lakehouse-freedom/report/#9-known-limitations).
+Full list in the [report](https://pegodk.github.io/portable-lakehouse/report/#9-known-limitations).
 
 ## Roadmap
 
-v1 is Freedom Challenge #1 (TPC-H / SQL / Delta), with governance and portable MLflow tracking foundations. Next: streaming and Auto Loader, Lakeflow Declarative Pipelines, Databricks SQL / BI, AI and Vector Search, observability, disaster recovery. See [Freedom Challenges](https://pegodk.github.io/lakehouse-freedom/freedom-challenges/).
+v1 is Portability Challenge #1 (TPC-H / SQL / Delta), with governance and portable MLflow tracking foundations. Next: streaming and Auto Loader, Lakeflow Declarative Pipelines, Databricks SQL / BI, AI and Vector Search, observability, disaster recovery. See [Portability Challenges](https://pegodk.github.io/portable-lakehouse/portability-challenges/).
 
 ## License
 

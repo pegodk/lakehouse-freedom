@@ -1,7 +1,7 @@
 [project]
-name = "lakehouse-freedom"
+name = "portable-lakehouse"
 version = "0.1.0"
-description = "Two executable lakehouse reference architectures with measured capability coverage for Databricks and OpenLakehouse."
+description = "A reference architecture and toolkit for measuring lakehouse portability between Databricks and OpenLakehouse."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.11"
@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# The OpenLakehouse side and the Freedom tooling run on a developer machine.
+# The OpenLakehouse implementation and portability tooling run on a developer machine.
 local = [
     "pyspark-client==4.1.0",
     "pandas>=2.2",
@@ -38,43 +38,43 @@ docs = [
 ]
 
 [project.scripts]
-freedom = "freedom.cli:main"
+portable-lakehouse = "portability.cli:main"
 
 [build-system]
 requires = ["setuptools>=75"]
 build-backend = "setuptools.build_meta"
 
-# The repository keeps the layout from the Lakehouse Freedom spec (src/, tpch/,
-# benchmarks/runner/, freedom/) and maps it onto importable packages:
-#   lakehouse_freedom            <- src/              shared workload code
-#   lakehouse_freedom.tpch       <- tpch/             generator, queries, expected answers
-#   lakehouse_freedom.benchmarks <- benchmarks/runner/ query runner (runs on both platforms)
-#   freedom                      <- freedom/          assessment, validation, reporting
-#   freedom_platforms            <- platforms/        platform adapters (entry points, sessions)
+# The repository keeps the layout from the Portable Lakehouse spec (src/, tpch/,
+# benchmarks/runner/, portability/) and maps it onto importable packages:
+#   portable_lakehouse            <- src/              shared workload code
+#   portable_lakehouse.tpch       <- tpch/             generator, queries, expected answers
+#   portable_lakehouse.benchmarks <- benchmarks/runner/ query runner (runs on both platforms)
+#   portability                  <- portability/        assessment, validation, reporting
+#   portable_lakehouse_platforms <- platforms/          platform adapters (entry points, sessions)
 [tool.setuptools]
-package-dir = { "lakehouse_freedom" = "src", "lakehouse_freedom.tpch" = "tpch", "lakehouse_freedom.benchmarks" = "benchmarks/runner", "freedom" = "freedom", "freedom_platforms" = "platforms" }
+package-dir = { "portable_lakehouse" = "src", "portable_lakehouse.tpch" = "tpch", "portable_lakehouse.benchmarks" = "benchmarks/runner", "portability" = "portability", "portable_lakehouse_platforms" = "platforms" }
 packages = [
-    "lakehouse_freedom",
-    "lakehouse_freedom.common",
-    "lakehouse_freedom.ingestion",
-    "lakehouse_freedom.transformations",
-    "lakehouse_freedom.quality",
-    "lakehouse_freedom.governance",
-    "lakehouse_freedom.ml",
-    "lakehouse_freedom.tpch",
-    "lakehouse_freedom.tpch.generator",
-    "lakehouse_freedom.benchmarks",
-    "freedom",
-    "freedom.assessment",
-    "freedom.validation",
-    "freedom.reporting",
-    "freedom_platforms",
-    "freedom_platforms.openlakehouse",
-    "freedom_platforms.databricks",
+    "portable_lakehouse",
+    "portable_lakehouse.common",
+    "portable_lakehouse.ingestion",
+    "portable_lakehouse.transformations",
+    "portable_lakehouse.quality",
+    "portable_lakehouse.governance",
+    "portable_lakehouse.ml",
+    "portable_lakehouse.tpch",
+    "portable_lakehouse.tpch.generator",
+    "portable_lakehouse.benchmarks",
+    "portability",
+    "portability.assessment",
+    "portability.validation",
+    "portability.reporting",
+    "portable_lakehouse_platforms",
+    "portable_lakehouse_platforms.openlakehouse",
+    "portable_lakehouse_platforms.databricks",
 ]
 
 [tool.setuptools.package-data]
-"lakehouse_freedom.tpch" = ["queries/*.sql", "queries/adapted/*/*.sql", "expected/*/*.json"]
+"portable_lakehouse.tpch" = ["queries/*.sql", "queries/adapted/*/*.sql", "expected/*/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -92,4 +92,4 @@ select = ["E", "F", "W", "I", "B", "UP"]
 ignore = ["UP017"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["lakehouse_freedom", "freedom", "freedom_platforms"]
+known-first-party = ["portable_lakehouse", "portability", "portable_lakehouse_platforms"]

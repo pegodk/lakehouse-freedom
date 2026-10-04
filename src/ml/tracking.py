@@ -14,7 +14,7 @@ from typing import Any
 
 def run_tracking_workload(
     tracking_uri: str,
-    experiment_name: str = "lakehouse-freedom",
+    experiment_name: str = "portable-lakehouse",
     output: Path | None = None,
 ) -> dict[str, Any]:
     """Log and read back one MLflow run, returning portable evidence."""
@@ -28,7 +28,10 @@ def run_tracking_workload(
     with mlflow.start_run(run_name="portable-tracking-smoke") as active:
         mlflow.log_params({"workload": "tracking-smoke", "api": "mlflow"})
         mlflow.log_metrics({"records": 3.0, "portability_score": 1.0})
-        mlflow.set_tags({"freedom.capability": "experiment-tracking", "freedom.portable": "true"})
+        mlflow.set_tags({
+            "portable_lakehouse.capability": "experiment-tracking",
+            "portable_lakehouse.portable": "true",
+        })
         mlflow.log_text("portable MLflow artifact\n", "evidence/readme.txt")
         run_id = active.info.run_id
         experiment_id = active.info.experiment_id
@@ -44,7 +47,7 @@ def run_tracking_workload(
         "status": saved.info.status,
         "params": dict(saved.data.params),
         "metrics": dict(saved.data.metrics),
-        "tags": {k: v for k, v in saved.data.tags.items() if k.startswith("freedom.")},
+        "tags": {k: v for k, v in saved.data.tags.items() if k.startswith("portable_lakehouse.")},
         "artifacts": sorted(item.path for item in artifacts),
     }
     if output is not None:

@@ -19,7 +19,7 @@
    "capability": "External Delta tables created from Spark SQL",
    "probe": "CREATE TABLE ... USING DELTA LOCATION from Spark; table appears as EXTERNAL DELTA with its location",
    "recreated": true,
-   "evidence": "table_type=EXTERNAL, format=DELTA, location=s3://lakehouse/freedom/probe/43b9de8e/spark_created"
+   "evidence": "table_type=EXTERNAL, format=DELTA, location=s3://lakehouse/portable-lakehouse/probe/43b9de8e/spark_created"
   },
   {
    "key": "spark_columns",
@@ -54,7 +54,7 @@
    "capability": "Registering an existing Delta table with full column metadata",
    "probe": "POST /tables with columns and column comments; read back via API and query from Spark",
    "recreated": true,
-   "evidence": "2 columns, column comment 'identifier', properties {\"freedom.layer\": \"probe\"}, Spark read 1 row(s)"
+   "evidence": "2 columns, column comment 'identifier', properties {\"portable_lakehouse.layer\": \"probe\"}, Spark read 1 row(s)"
   },
   {
    "key": "volume",

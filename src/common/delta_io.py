@@ -41,7 +41,7 @@ def write_table(
     properties: dict[str, str] | None = None,
 ) -> None:
     """Full refresh of a Delta table: create on first write, INSERT OVERWRITE after."""
-    view = "_freedom_" + name.replace(".", "_")
+    view = "_portable_lakehouse_" + name.replace(".", "_")
     df.createOrReplaceTempView(view)
     try:
         if table_exists(spark, name):

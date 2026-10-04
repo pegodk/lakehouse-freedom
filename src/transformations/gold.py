@@ -9,8 +9,8 @@ from __future__ import annotations
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 
-from lakehouse_freedom.common.config import FreedomConfig
-from lakehouse_freedom.common.delta_io import ensure_schema, write_table
+from portable_lakehouse.common.config import LakehouseConfig
+from portable_lakehouse.common.delta_io import ensure_schema, write_table
 
 
 def revenue_by_nation_year(
@@ -34,7 +34,7 @@ def revenue_by_nation_year(
     )
 
 
-def build_gold(spark: SparkSession, cfg: FreedomConfig) -> int:
+def build_gold(spark: SparkSession, cfg: LakehouseConfig) -> int:
     def silver(table: str) -> DataFrame:
         return spark.table(cfg.table_name(cfg.silver_schema, table))
 
@@ -46,6 +46,6 @@ def build_gold(spark: SparkSession, cfg: FreedomConfig) -> int:
         name,
         cfg.table_location(cfg.gold_schema, "revenue_by_nation_year"),
         comment="Net revenue per customer nation and order year",
-        properties={"freedom.layer": "gold"},
+        properties={"portable_lakehouse.layer": "gold"},
     )
     return spark.table(name).count()

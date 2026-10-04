@@ -11,8 +11,8 @@ from __future__ import annotations
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 
-from lakehouse_freedom.common.config import FreedomConfig
-from lakehouse_freedom.common.delta_io import create_table_if_missing, ensure_schema
+from portable_lakehouse.common.config import LakehouseConfig
+from portable_lakehouse.common.delta_io import create_table_if_missing, ensure_schema
 
 # (batch_id, effective_date, [(op, customer_id, name, segment, city), ...])
 # op: U = upsert (insert or change), D = delete
@@ -54,7 +54,7 @@ def batch_frame(spark: SparkSession, batch_id: int):
     ).withColumn("effective_date", F.to_date("effective_date"))
 
 
-def ingest_batch(spark: SparkSession, cfg: FreedomConfig, batch_id: int) -> bool:
+def ingest_batch(spark: SparkSession, cfg: LakehouseConfig, batch_id: int) -> bool:
     """Append one batch to the bronze change log. Returns False if already loaded."""
     ensure_schema(spark, cfg.catalog, cfg.incremental_schema)
     name = cfg.table_name(cfg.incremental_schema, "customer_changes")
@@ -64,7 +64,7 @@ def ingest_batch(spark: SparkSession, cfg: FreedomConfig, batch_id: int) -> bool
         CHANGES_COLUMNS,
         cfg.table_location(cfg.incremental_schema, "customer_changes"),
         comment="Bronze change feed for the SCD2 scenario",
-        properties={"freedom.layer": "bronze"},
+        properties={"portable_lakehouse.layer": "bronze"},
     )
     already = spark.table(name).where(F.col("batch_id") == batch_id).limit(1).count() > 0
     if already:
