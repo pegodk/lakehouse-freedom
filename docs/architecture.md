@@ -85,7 +85,7 @@ Both architectures run the same workload and produce external Delta tables with 
   </div>
   <div class="architecture-link"><span>governance</span><b>↔</b></div>
   <div class="architecture-support architecture-multi-icon">
-    <span class="architecture-icons"><img src="assets/icons/cedar.svg" alt=""><img src="assets/icons/datafusion.svg" alt=""></span>
+    <span class="architecture-icons"><img src="assets/icons/cedar.png" alt=""><img src="assets/icons/datafusion.svg" alt=""></span>
     <span><strong>Cedar + DataFusion</strong><small>Partial enforcement prototype</small></span>
   </div>
 </div>

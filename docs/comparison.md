@@ -13,7 +13,7 @@ The same TPC-H batch workload runs on two reference architectures:
 | <img class="tech-icon" src="assets/icons/apache-airflow.svg" alt="Apache Airflow"> | Orchestration | Lakeflow Jobs | Apache Airflow 3.1.6 |
 | <img class="tech-icon" src="assets/icons/mlflow.svg" alt="MLflow"> | ML tracking | Managed MLflow | MLflow OSS 3.14 |
 | <img class="tech-icon" src="assets/icons/seaweedfs.svg" alt="SeaweedFS"> <img class="tech-icon" src="assets/icons/postgresql.svg" alt="PostgreSQL"> | Storage services | Cloud external location and managed metadata | SeaweedFS S3 and PostgreSQL in the local test environment |
-| <img class="tech-icon" src="assets/icons/cedar.svg" alt="Cedar"> | Governance | Integrated platform controls | UC OSS metadata plus a Cedar/DataFusion prototype |
+| <img class="tech-icon" src="assets/icons/cedar.png" alt="Cedar"> | Governance | Integrated platform controls | UC OSS metadata plus a Cedar/DataFusion prototype |
 | <img class="tech-icon" src="assets/icons/python.svg" alt="Python"> | Workload language | Python wheel | The same Python wheel |
 
 The workload includes Raw-to-Bronze-to-Silver-to-Gold transformations, all 22 TPC-H queries, data-quality checks, and an incremental SCD2 merge.
