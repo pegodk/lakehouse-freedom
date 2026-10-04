@@ -12,7 +12,7 @@ This repository asks three questions:
 2. Where do the experience, operations, or semantics differ?
 3. Which design choices preserve future options without giving up useful managed services?
 
-It is **not** a Databricks migration tool or a production OpenLakehouse installer. The executable workload exists to test the comparison.
+The executable workload provides evidence for the comparison.
 
 ## Main findings
 

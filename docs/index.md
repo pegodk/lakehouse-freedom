@@ -13,7 +13,7 @@ description: An evidence-based comparison of managed and open lakehouse architec
 
 This project compares a managed Databricks lakehouse with an open-source architecture built from OpenLakehouse components.
 
-It is a **comparison**, not a migration guide or a production installation guide. A shared workload runs on both architectures so claims can be backed by code, query results, and catalog probes.
+A shared workload runs on both architectures so the comparison is backed by code, query results, and catalog probes.
 
 ## The short version
 

@@ -1,7 +1,7 @@
 [project]
 name = "portable-lakehouse"
 version = "0.1.0"
-description = "A reference architecture and toolkit for measuring lakehouse portability between Databricks and OpenLakehouse."
+description = "An evidence-based comparison of Databricks and OpenLakehouse capabilities and performance."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.11"
