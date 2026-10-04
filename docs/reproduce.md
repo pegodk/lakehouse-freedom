@@ -1,5 +1,7 @@
 # Reproducing the evidence
 
+<img class="page-mark" src="assets/icons/docker.svg" alt="Docker">
+
 You do not need to run the repository to use its conclusions. The committed [report](report.md) contains the results and limitations.
 
 To reproduce the open side, use Docker Compose v2, `uv`, Git, Make, about 10 GB of container memory, and about 5 GB of disk for SF1:

@@ -1,5 +1,7 @@
 # Databricks reference
 
+<img class="page-mark" src="../assets/icons/databricks.svg" alt="Databricks">
+
 Databricks is the managed side of the comparison. One serverless Lakeflow Job runs the shared Python wheel and task graph against external Delta tables registered in Unity Catalog.
 
 ## What the implementation demonstrates

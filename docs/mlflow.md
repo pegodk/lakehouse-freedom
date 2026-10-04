@@ -1,5 +1,7 @@
 # ML lifecycle
 
+<img class="page-mark" src="assets/icons/mlflow.svg" alt="MLflow">
+
 Databricks managed MLflow and MLflow OSS share public tracking APIs. The same workload successfully logged and read back parameters, metrics, tags, and an artifact by changing only the tracking URI.
 
 That demonstrates **tracking portability**, not ML-platform equivalence.

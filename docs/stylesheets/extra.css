@@ -1,0 +1,56 @@
+.platform-marks {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.platform-marks img {
+  height: 3.5rem;
+  max-width: 8rem;
+  object-fit: contain;
+}
+
+.platform-marks img:last-child,
+.page-mark-round {
+  border-radius: 18%;
+}
+
+.platform-marks span {
+  color: var(--md-default-fg-color--light);
+  font-size: .8rem;
+  text-transform: uppercase;
+}
+
+.tech-icon {
+  height: 1.6rem;
+  max-width: 2.6rem;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.tech-icon + .tech-icon {
+  margin-left: .35rem;
+}
+
+.tech-icon-wide {
+  max-width: 3.4rem;
+}
+
+.page-mark {
+  float: right;
+  height: 4rem;
+  margin: -3.5rem 0 1rem 1.5rem;
+  max-width: 8rem;
+  object-fit: contain;
+}
+
+@media screen and (max-width: 44.984375em) {
+  .platform-marks img {
+    height: 2.5rem;
+  }
+
+  .page-mark {
+    height: 3rem;
+  }
+}

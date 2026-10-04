@@ -4,15 +4,17 @@
 
 The same TPC-H batch workload runs on two reference architectures:
 
-| Layer | Databricks | OpenLakehouse reference |
-|---|---|---|
-| Storage format | Delta Lake | Delta Lake OSS 4.3.1 |
-| Compute | Databricks Runtime, serverless Spark | Apache Spark 4.1.0; DuckDB and DataFusion for additional reads |
-| Catalog | Managed Unity Catalog | Unity Catalog OSS 0.5.0 |
-| Orchestration | Lakeflow Jobs | Apache Airflow 3.1.6 |
-| ML tracking | Managed MLflow | MLflow OSS 3.14 |
-| Object storage | Cloud external location | SeaweedFS S3 in the local test environment |
-| Governance | Integrated platform controls | UC OSS metadata plus a Cedar/DataFusion prototype |
+| | Layer | Databricks | OpenLakehouse reference |
+|---|---|---|---|
+| <img class="tech-icon" src="assets/icons/delta-lake.svg" alt="Delta Lake"> | Storage format | Delta Lake | Delta Lake OSS 4.3.1 |
+| <img class="tech-icon" src="assets/icons/apache-spark.svg" alt="Apache Spark"> | Compute | Databricks Runtime, serverless Spark | Apache Spark 4.1.0 and Spark Connect |
+| <img class="tech-icon" src="assets/icons/duckdb.svg" alt="DuckDB"> <img class="tech-icon" src="assets/icons/datafusion.svg" alt="Apache DataFusion"> | Additional engines | — | DuckDB and Apache DataFusion |
+| <img class="tech-icon tech-icon-wide" src="assets/icons/unity-catalog.png" alt="Unity Catalog"> | Catalog | Managed Unity Catalog | Unity Catalog OSS 0.5.0 |
+| <img class="tech-icon" src="assets/icons/apache-airflow.svg" alt="Apache Airflow"> | Orchestration | Lakeflow Jobs | Apache Airflow 3.1.6 |
+| <img class="tech-icon" src="assets/icons/mlflow.svg" alt="MLflow"> | ML tracking | Managed MLflow | MLflow OSS 3.14 |
+| <img class="tech-icon" src="assets/icons/seaweedfs.svg" alt="SeaweedFS"> <img class="tech-icon" src="assets/icons/postgresql.svg" alt="PostgreSQL"> | Storage services | Cloud external location and managed metadata | SeaweedFS S3 and PostgreSQL in the local test environment |
+| <img class="tech-icon" src="assets/icons/cedar.svg" alt="Cedar"> | Governance | Integrated platform controls | UC OSS metadata plus a Cedar/DataFusion prototype |
+| <img class="tech-icon" src="assets/icons/python.svg" alt="Python"> | Workload language | Python wheel | The same Python wheel |
 
 The workload includes Raw-to-Bronze-to-Silver-to-Gold transformations, all 22 TPC-H queries, data-quality checks, and an incremental SCD2 merge.
 

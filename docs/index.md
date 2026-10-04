@@ -5,6 +5,12 @@ description: An evidence-based comparison of managed and open lakehouse architec
 
 # Databricks vs. OpenLakehouse
 
+<div class="platform-marks" markdown>
+  <img src="assets/icons/databricks.svg" alt="Databricks" title="Databricks">
+  <span>compared with</span>
+  <img src="assets/icons/openlakehouse.jpg" alt="OpenLakehouse" title="OpenLakehouse">
+</div>
+
 This project compares a managed Databricks lakehouse with an open-source architecture built from OpenLakehouse components.
 
 It is a **comparison**, not a migration guide or a production installation guide. A shared workload runs on both architectures so claims can be backed by code, query results, and catalog probes.

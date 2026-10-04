@@ -8,12 +8,12 @@ Databricks combines identity, catalog permissions, row filters, column masks, li
 
 The repository explores a portable policy boundary:
 
-| Role | Open component |
-|---|---|
-| Resource metadata | Unity Catalog OSS |
-| Authorization decision | Cedar |
-| Query enforcement | DataFusion prototype |
-| Data | Delta tables on object storage |
+| | Role | Open component |
+|---|---|---|
+| <img class="tech-icon tech-icon-wide" src="assets/icons/unity-catalog.png" alt="Unity Catalog"> | Resource metadata | Unity Catalog OSS |
+| <img class="tech-icon" src="assets/icons/cedar.svg" alt="Cedar"> | Authorization decision | Cedar |
+| <img class="tech-icon" src="assets/icons/datafusion.svg" alt="Apache DataFusion"> | Query enforcement | DataFusion prototype |
+| <img class="tech-icon" src="assets/icons/delta-lake.svg" alt="Delta Lake"> | Data | Delta tables on object storage |
 
 Two obligations were reviewed. Email masking is implemented; tenant row isolation fails closed because it is not implemented. This produces the measured 1/2 governance score.
 
