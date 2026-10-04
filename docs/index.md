@@ -64,7 +64,7 @@ Portable Lakehouse is an open-source reference architecture, implementation patt
 
 ## The message
 
-The project is about architectural optionality, not an argument against Databricks. Databricks-specific capabilities may provide substantial value even when they are not portable. The [Portability Principles](portability-principles.md) make those dependencies intentional and visible so teams can choose the appropriate trade-off.
+Portability should be part of the design of every lakehouse from the start. Databricks-specific capabilities may provide substantial value even when they are not portable. The [Portability Principles](portability-principles.md) make those dependencies intentional and visible so teams can use managed capabilities confidently while preserving architectural options where they matter.
 
 ## Where to start
 

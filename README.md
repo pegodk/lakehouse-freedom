@@ -12,7 +12,7 @@ But what does that openness give a lakehouse design in practice?
 
 Portable Lakehouse is an open-source reference architecture, implementation pattern and portability toolkit. It builds a realistic workload for Databricks and then runs the same data—and as much of the same code as practical—on an open-source lakehouse based on [OpenLakehouse.io](https://openlakehouse.io).
 
-The objective is not to demonstrate why an organization should leave Databricks. Databricks is the primary managed implementation because its integrated platform, managed infrastructure and higher-level services provide substantial value. The objective is to make the boundary between an open foundation and managed capabilities visible, so teams can preserve architectural options while using the platform that fits them.
+Portability should be part of the design of every lakehouse from the start. Databricks is the primary managed implementation because its integrated platform, managed infrastructure and higher-level services provide substantial value. Portable Lakehouse makes the boundary between an open foundation and managed capabilities visible, so teams can use those benefits while preserving ownership of their data, core logic and future architectural choices.
 
 📖 **Documentation: <https://pegodk.github.io/portable-lakehouse/>**
 
@@ -88,7 +88,7 @@ The Databricks side is an Asset Bundle in [`platforms/databricks`](platforms/dat
 | P6 | Portability does not require platform equivalence |
 | P7 | Managed services are allowed to be better |
 
-Portability is architectural optionality, not an argument against managed services. [Read more](https://pegodk.github.io/portable-lakehouse/portability-principles/).
+Portability is a design requirement for architectural optionality. It should be considered from the first architectural decisions, including when a managed service is the clear platform choice. [Read more](https://pegodk.github.io/portable-lakehouse/portability-principles/).
 
 ## Limitations
 
