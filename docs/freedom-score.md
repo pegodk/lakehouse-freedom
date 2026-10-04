@@ -1,12 +1,10 @@
 # Freedom Score
 
-Every component of the Freedom Score is a ratio of measured counts, and the inputs are committed alongside the report. There are no subjective percentages. A component that could not be measured is shown as *not measured* and left out of the overall score. It is never counted as 0% or 100%.
+The Freedom Score is the first summary of the measured comparison between the two reference architectures. Every component is a ratio of measured counts, and the inputs are committed alongside the report. There are no subjective percentages. A component that could not be measured is shown as *not measured* and left out of the overall score. It is never counted as 0% or 100%.
 
 ```
 LAKEHOUSE FREEDOM REPORT
 ────────────────────────────────
-TPC-H SQL portability (Spark)
-████████████████████ 100%
 Transformation portability
 ██████████████████░░  91%
 Catalog portability
@@ -18,16 +16,6 @@ Orchestration portability
 *(Shape of the output; current values are in the [latest report](report.md).)*
 
 ## Formulas
-
-### TPC-H SQL portability
-
-```
-queries PORTABLE on the target engine
-─────────────────────────────────────
-22
-```
-
-PORTABLE means the canonical text ran unchanged **and** returned the reference result. Reported separately for OSS Spark (the migration target, included in the score) and DuckDB (an additional engine, shown but not included).
 
 ### Transformation portability
 
@@ -62,7 +50,7 @@ Shared: the task graph in `src/common/pipeline.py`. Platform-specific: the Airfl
 ### Freedom Score
 
 ```
-Freedom Score = mean(SQL (Spark), transformation, catalog, orchestration)
+Freedom Score = mean(transformation, catalog, orchestration)
 ```
 
 An unweighted mean of the measured components. The weighting is deliberately naive. Read the components; the single number only summarises them.

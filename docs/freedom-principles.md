@@ -1,6 +1,6 @@
 # Freedom Principles
 
-Six principles for building on Databricks while keeping a practical path to an open-source lakehouse. Each one says what to do, how this repository applies it, and how the repository checks that it holds. A principle that cannot be checked is only an aspiration, which is why F5 exists.
+Six principles used to make the two reference architectures comparable. Each one says what to do, how this repository applies it, and how the repository verifies that it holds.
 
 ## F1: Own the data
 
@@ -35,7 +35,7 @@ Inside business logic, use Apache Spark (SQL and DataFrame API), Delta Lake SQL,
 
 ## F4: Isolate managed capabilities
 
-Using Databricks-specific functionality is fine. Make the dependency visible and keep it in one place, so its migration cost can be read off the repository.
+Using Databricks-specific functionality is fine. Make the dependency visible and keep it in one place, so the capability and its open alternative can be compared directly.
 
 **In this repository.** `platforms/databricks/entrypoint.py` (42 logical lines) is the only Databricks-specific Python. It reads cluster tags for the benchmark record, which is a legitimate use that the scanner reports as `PLATFORM-SPECIFIC`. `freedom assess <path>` runs the same scanner over any repository.
 
@@ -43,7 +43,7 @@ Using Databricks-specific functionality is fine. Make the dependency visible and
 
 A workload is not portable because its components are open source. It is portable when it has been run somewhere else and produced the same answers.
 
-**In this repository.** `make freedom-check` runs 13 checks across the reference implementations: tables readable, schemas, row counts and keys, transformation output against an independent DuckDB oracle, TPC-H answers, Unity Catalog metadata, DuckDB access, incremental loads, SCD2 against a pure-Python oracle, shared-code scan, orchestration consistency and the Databricks reference run. Failures are reported as failures. No check falls back to a platform-specific workaround.
+**In this repository.** Equivalence evidence comes from independent DuckDB and Python implementations, catalog probes, workload fingerprints and orchestration comparisons. These checks support the published capability claims; routine execution assertions are kept in the test suite rather than presented as comparison results.
 
 ## F6: Managed services are allowed to be better
 

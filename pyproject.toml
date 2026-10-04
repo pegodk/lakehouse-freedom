@@ -1,7 +1,7 @@
 [project]
 name = "lakehouse-freedom"
 version = "0.1.0"
-description = "Build managed. Stay open. Keep your freedom. An executable portability reference architecture for Databricks and OpenLakehouse."
+description = "Two executable lakehouse reference architectures with measured capability coverage for Databricks and OpenLakehouse."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.11"

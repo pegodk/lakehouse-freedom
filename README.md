@@ -8,11 +8,7 @@
 
 Databricks provides a powerful managed lakehouse platform built around open technologies such as Apache Spark and Delta Lake.
 
-But how portable is a real Databricks solution?
-
-Lakehouse Freedom provides two executable reference lakehouse implementations: Databricks and a fully open-source stack built on [OpenLakehouse.io](https://openlakehouse.io). It runs the same workload on both and compares their capabilities, correctness, portability and operational tradeoffs.
-
-No theoretical arguments about vendor lock-in. We run the workload and measure the freedom.
+Lakehouse Freedom provides two executable reference architectures: Databricks and a fully open-source stack built on [OpenLakehouse.io](https://openlakehouse.io). The same workload makes their supported capabilities and operational tradeoffs directly comparable.
 
 📖 **Documentation: <https://pegodk.github.io/lakehouse-freedom/>**
 
@@ -21,13 +17,11 @@ No theoretical arguments about vendor lock-in. We run the workload and measure t
 TPC-H SF10 on OpenLakehouse (local Docker, 8 cores). From [`reports/freedom-report.md`](reports/freedom-report.md):
 
 ```
-TPC-H SQL portability (Spark)   ████████████████████  100%   22/22 queries
-TPC-H SQL portability (DuckDB)  ████████████████████  100%   22/22 queries
-Transformation portability      ██████████████████░░   91%   1385/1524 LOC shared
+Freedom Score                   █████████████░░░░░░░   67%
+─────────────────────────────────────────────────────
+Transformation portability      ██████████████████░░   89%   1512/1702 LOC shared
 Catalog portability             ████████████░░░░░░░░   60%   6/10 UC capabilities
 Orchestration portability       ██████████░░░░░░░░░░   51%   29/57 LOC shared
-─────────────────────────────────────────────────────
-Freedom Score                   ███████████████░░░░░   75%
 ```
 
 Every percentage is a ratio of measured counts ([formulas](https://pegodk.github.io/lakehouse-freedom/freedom-score/)). The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and independent DuckDB and Python oracles. See [limitations](#limitations).
@@ -45,12 +39,12 @@ Every percentage is a ratio of measured counts ([formulas](https://pegodk.github
            Unity Catalog       Unity Catalog OSS 0.5.0 · 🦆 DuckDB 1.5.6
                 └─────────┬─────────┘
                           ▼
-             FREEDOM CHECK → FREEDOM REPORT
+          CAPABILITY COMPARISON → FREEDOM REPORT
 ```
 
-- **Freedom Benchmark.** The 22 TPC-H queries, written once for Databricks SQL / Spark SQL, run on each engine and are compared with the official answers.
-- **Freedom Check.** 13 PASS/FAIL/SKIP checks across the reference implementations: data, schemas, keys, transformation output, TPC-H answers, catalog, DuckDB access, incremental loads, SCD2, shared-code scan and orchestration.
-- **Multi-engine SQL.** The canonical queries run on Spark, DuckDB and Apache DataFusion. DuckDB remains the independent validation oracle; DataFusion is the reference enforcement point for the Cedar governance challenge.
+- **Freedom Score.** Measured ratios summarise shared transformation code, catalog behaviour, orchestration and SQL compatibility.
+- **Capability coverage.** Curated matrices compare native support, alternatives, workarounds and gaps across the two architectures.
+- **Freedom Benchmark.** One TPC-H workload compares SQL compatibility and execution characteristics across Spark, DuckDB and Apache DataFusion.
 - **Portable governance foundation.** Cedar decisions map reviewed policy IDs to typed row-filter, column-allow and column-mask obligations without treating policy text as SQL.
 - **Freedom Assess.** `make freedom-assess REPO_PATH=...` scans any Databricks project for platform-specific constructs.
 
@@ -77,7 +71,7 @@ The Databricks side is an Asset Bundle in [`platforms/databricks`](platforms/dat
 | F1 | Own the data: open table format, external tables, storage you control |
 | F2 | Separate business logic from platform logic |
 | F3 | Prefer open interfaces: Spark, Delta SQL, Unity Catalog REST, object storage |
-| F4 | Isolate managed capabilities so their migration cost is visible |
+| F4 | Isolate managed capabilities so they can be compared directly |
 | F5 | Portability must be tested |
 | F6 | Managed services are allowed to be better |
 

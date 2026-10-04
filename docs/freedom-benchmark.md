@@ -5,7 +5,7 @@ make freedom-benchmark SCALE=10            # OpenLakehouse: Spark, DuckDB, DataF
 make freedom-benchmark SCALE=10 DATABRICKS_PROFILE=<profile> TABLE_ROOT=abfss://...   # + Databricks
 ```
 
-The benchmark runs the 22 TPC-H queries on each engine, stores every result, and compares them. It answers two questions, in this order.
+The benchmark uses one TPC-H workload to compare SQL compatibility and execution characteristics across the engines in both reference architectures.
 
 | | Question | Status |
 |---|---|---|
@@ -38,7 +38,7 @@ The benchmark runs the 22 TPC-H queries on each engine, stores every result, and
 | **REWRITE** | A variant is needed that changes more than 20% of the lines |
 | **FAILED** | No variant returns the reference result |
 
-The runner always tries the canonical text first and keeps that attempt in the result file, even when an adapted variant exists. An adaptation can therefore never hide a failure of the original SQL. With the current queries no adaptations were needed: all 22 run unchanged on every engine tested.
+The runner always tries the canonical text first and keeps that attempt in the result file, even when an adapted variant exists. An adaptation can therefore never hide a dialect difference.
 
 ## Result files
 

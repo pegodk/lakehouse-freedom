@@ -2,10 +2,6 @@
 
 Component                     Formula                                                  Source
 ----------------------------  -------------------------------------------------------  ---------------------------------
-TPC-H SQL portability (Spark) queries PORTABLE on OpenLakehouse Spark / 22              benchmarks/results/.../spark
-TPC-H SQL portability (DuckDB) queries PORTABLE on DuckDB / 22                          benchmarks/results/.../duckdb
-TPC-H SQL portability          queries PORTABLE on DataFusion / 22                      benchmarks/results/
-(DataFusion)                                                                          .../datafusion
 Transformation portability    shared transformation LOC /                              freedom/assessment/inventory.yaml
                               (shared + OpenLakehouse-specific transformation LOC)
 Catalog portability           Unity Catalog capabilities recreated in UC OSS /          reports/catalog-probe.json
@@ -13,10 +9,9 @@ Catalog portability           Unity Catalog capabilities recreated in UC OSS /  
 Orchestration portability     shared orchestration LOC /                               freedom/assessment/inventory.yaml
                               (shared + OpenLakehouse-specific orchestration LOC)
 
-Freedom Score = unweighted mean of the measured components, excluding the
-DuckDB and DataFusion SQL components (they are additional engines, not the
-migration target). Components that could not be measured are left out of the mean and
-listed as such; they are never counted as zero or as 100%.
+Freedom Score = unweighted mean of the measured architecture components.
+Components that could not be measured are left out of the mean and listed as
+such; they are never counted as zero or as 100%.
 """
 
 from __future__ import annotations
@@ -25,7 +20,6 @@ import json
 from pathlib import Path
 
 from freedom.assessment.inventory import measure
-from freedom.validation import compare
 
 REPO = Path(__file__).resolve().parents[2]
 
@@ -37,20 +31,6 @@ def _load(path: Path):
 def components(scale_factor: float) -> list[dict]:
     inv = measure()
     out = []
-
-    prefer = [("databricks", "spark"), ("openlakehouse", "spark")]
-    for engine, label, in_score in (
-        ("spark", "TPC-H SQL portability (Spark)", True),
-        ("duckdb", "TPC-H SQL portability (DuckDB)", False),
-        ("datafusion", "TPC-H SQL portability (DataFusion)", False),
-    ):
-        classes = compare.classify("openlakehouse", engine, scale_factor, prefer)
-        counts = compare.summarize(classes) if classes else None
-        out.append({"key": f"sql_{engine}", "name": label,
-                    "value": counts["PORTABLE"] / counts["total"] if counts else None,
-                    "numerator": counts and counts["PORTABLE"], "denominator": counts and counts["total"],
-                    "formula": f"TPC-H queries running unchanged with correct results on {engine} / 22",
-                    "in_score": in_score})
 
     t = inv["transformation"]["openlakehouse"]
     out.append({"key": "transformation", "name": "Transformation portability", "value": t["score"],
