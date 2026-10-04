@@ -32,6 +32,7 @@ benchmark). `documented` is a reasoned statement that is not tested automaticall
 | Elastic, managed compute | Serverless compute, autoscaling, Photon | Fixed-size Spark standalone cluster you operate | **PLATFORM-SPECIFIC** | documented |
 | Table maintenance | Predictive optimization, auto compaction | Scheduled OPTIMIZE / VACUUM (supported by OSS Delta) | **ADAPTABLE** | documented |
 | Lineage, audit and system tables | Unity Catalog lineage, system tables | OpenLineage (not part of v1) | **PLATFORM-SPECIFIC** | documented |
+| Experiment tracking | Databricks managed MLflow | MLflow OSS 3.14 or any MLflow-compatible tracking server | **PORTABLE** | measured:mlflow_tracking |
 
 ## Notes
 
@@ -44,7 +45,8 @@ benchmark). `documented` is a reasoned statement that is not tested automaticall
 - **Raw file landing.** The path is configuration (FreedomConfig.raw_root); the generator handles both.
 - **Orchestration.** The task graph is shared; each scheduler definition is platform code. The Airflow DAG is checked for consistency but not executed in v1.
 - **Elastic, managed compute.** Principle F6. This is where the managed platform earns its keep; the benchmark section shows the effect when comparable compute is used.
-- **Lineage, audit and system tables.** Freedom Challenge
+- **Lineage, audit and system tables.** Freedom Challenge #8 will measure the open alternatives.
+- **Experiment tracking.** The shared workload logs and reads back parameters, metrics, tags and an artifact through public MLflow APIs. Only the tracking URI differs.
 
 ## Not covered by v1
 

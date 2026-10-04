@@ -1,6 +1,6 @@
 # 🗽 Lakehouse Freedom Report
 
-Scale factor **10** (`sf10`) · generated 2026-10-04 00:33 UTC by `make freedom-report SCALE=10`
+Scale factor **10** (`sf10`) · generated 2026-10-04 00:56 UTC by `make freedom-report SCALE=10`
 
 > **Scope of this report.** The Databricks side of the workload has not been run for this scale factor, so every comparison below uses the OpenLakehouse run, the official TPC-H answers (where they exist) and independent DuckDB oracles. Databricks columns are marked *not run*. Run the bundle in `platforms/databricks/` and `make databricks-fetch-results` to complete it.
 
@@ -11,7 +11,7 @@ Freedom Score
 █████████████░░░░░░░   67%
 ────────────────────────────────────────────
 Transformation portability
-██████████████████░░   89%   (1512/1702)
+██████████████████░░   89%   (1552/1742)
 Catalog portability
 ████████████░░░░░░░░   60%   (6/10)
 Orchestration portability
@@ -116,7 +116,7 @@ TPC-H SF10, generated in 10 chunk(s) in 204 s.
 
 | Group | Transformation LOC | Orchestration LOC | Infrastructure LOC |
 |---|---|---|---|
-| shared | 1512 | 29 | 0 |
+| shared | 1552 | 29 | 0 |
 | databricks | 42 | 66 | 64 |
 | openlakehouse | 190 | 28 | 112 |
 
@@ -136,6 +136,7 @@ LOC = logical lines (no blanks, comments or docstrings). File-level detail:
 | `src/transformations/silver.py` | shared | transformation | 30 |
 | `src/quality/checks.py` | shared | transformation | 56 |
 | `src/governance/policy.py` | shared | transformation | 91 |
+| `src/ml/tracking.py` | shared | transformation | 40 |
 | `src/run.py` | shared | transformation | 82 |
 | `tpch/generator/dbgen.py` | shared | transformation | 74 |
 | `tpch/sql.py` | shared | transformation | 10 |
@@ -202,6 +203,7 @@ Databricks-specific constructs found by the scanner in `platforms/databricks/`: 
 | Elastic, managed compute | Serverless compute, autoscaling, Photon | Fixed-size Spark standalone cluster you operate | **PLATFORM-SPECIFIC** | documented |
 | Table maintenance | Predictive optimization, auto compaction | Scheduled OPTIMIZE / VACUUM (supported by OSS Delta) | **ADAPTABLE** | documented |
 | Lineage, audit and system tables | Unity Catalog lineage, system tables | OpenLineage (not part of v1) | **PLATFORM-SPECIFIC** | documented |
+| Experiment tracking | Databricks managed MLflow | MLflow OSS 3.14 or any MLflow-compatible tracking server | **PORTABLE** | measured:mlflow_tracking |
 
 Catalog probe (live, against UC OSS):
 
@@ -468,14 +470,14 @@ Outcome coverage  ████████████░░░░░░░░  
 Native parity     ██████████░░░░░░░░░░   50%   (5/10)
 ```
 
-Native **5** · alternatives **0** · workarounds **1** · missing **4** · not assessed **0** · workload-required coverage **0/0**
+Native **5** · alternatives **0** · workarounds **1** · missing **4** · not assessed **0** · workload-required coverage **2/2**
 
 <details markdown="1"><summary>Every capability and gap</summary>
 
 | Area | Capability | Status | Required here | Gap or alternative | Evidence |
 |---|---|---|---|---|---|
-| Tracking | Experiment and run tracking | **NATIVE** | no | — | planned:challenge-5 |
-| Tracking | Artifact storage | **NATIVE** | no | — | documented |
+| Tracking | Experiment and run tracking | **NATIVE** | yes | — | measured:mlflow_tracking |
+| Tracking | Artifact storage | **NATIVE** | yes | — | measured:mlflow_tracking |
 | Models | Model packaging and flavors | **NATIVE** | no | — | documented |
 | Registry | Model registry | **NATIVE** | no | — | documented |
 | AI | Tracing and evaluation APIs | **NATIVE** | no | — | documented |
@@ -583,7 +585,7 @@ Definitions and maintenance rules: `docs/platform-capability-coverage.md`.
 
 ## 9. Conclusions
 
-**Code.** 89% of the code that runs the workload on OpenLakehouse is identical to the code that runs it on Databricks (1512 of 1702 LOC). The platform-specific remainder is session setup, configuration and orchestration.
+**Code.** 89% of the code that runs the workload on OpenLakehouse is identical to the code that runs it on Databricks (1552 of 1742 LOC). The platform-specific remainder is session setup, configuration and orchestration.
 
 **Catalog.** 6 of 10 Unity Catalog capabilities used by the workload are also supported by UC OSS. Gaps: Column metadata for tables created from Spark; Custom table properties set from Spark SQL; ALTER TABLE for comments and properties; Grants (GRANT USE SCHEMA ... TO principal). This is where the managed catalog has the clearest capability advantage (F6).
 

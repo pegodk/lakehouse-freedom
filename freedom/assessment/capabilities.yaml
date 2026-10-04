@@ -116,3 +116,10 @@
   classification: PLATFORM-SPECIFIC
   evidence: documented
   notes: Freedom Challenge #8.
+
+- capability: Experiment tracking
+  databricks: Databricks managed MLflow
+  openlakehouse: MLflow OSS 3.14 or any MLflow-compatible tracking server
+  classification: PORTABLE
+  evidence: measured:mlflow_tracking
+  notes: The same public MLflow APIs log parameters, metrics, tags and artifacts; only the tracking URI changes.
