@@ -1,0 +1,57 @@
+{
+ "platform": "databricks",
+ "engine": "spark",
+ "engine_version": "4.2.0",
+ "query": "q07",
+ "scale_factor": 1.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 2.1017,
+ "durations_s": [
+  2.1017,
+  2.1365,
+  1.8758
+ ],
+ "row_count": 4,
+ "error": null,
+ "timestamp": "2026-10-04T20:07:09.957516+00:00",
+ "environment": {
+  "engine_version": "4.2.0",
+  "platform_label": "Databricks",
+  "compute": "serverless jobs compute",
+  "databricks_runtime": "client.4.10"
+ },
+ "columns": [
+  "supp_nation",
+  "cust_nation",
+  "l_year",
+  "revenue"
+ ],
+ "rows": [
+  [
+   "FRANCE",
+   "GERMANY",
+   1995,
+   "54639732.7336"
+  ],
+  [
+   "FRANCE",
+   "GERMANY",
+   1996,
+   "54633083.3076"
+  ],
+  [
+   "GERMANY",
+   "FRANCE",
+   1995,
+   "52531746.6697"
+  ],
+  [
+   "GERMANY",
+   "FRANCE",
+   1996,
+   "52520549.0224"
+  ]
+ ],
+ "canonical": null
+}

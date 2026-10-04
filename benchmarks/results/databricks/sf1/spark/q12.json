@@ -1,0 +1,42 @@
+{
+ "platform": "databricks",
+ "engine": "spark",
+ "engine_version": "4.2.0",
+ "query": "q12",
+ "scale_factor": 1.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 1.0351,
+ "durations_s": [
+  1.0109,
+  1.0351,
+  1.1944
+ ],
+ "row_count": 2,
+ "error": null,
+ "timestamp": "2026-10-04T20:07:34.081574+00:00",
+ "environment": {
+  "engine_version": "4.2.0",
+  "platform_label": "Databricks",
+  "compute": "serverless jobs compute",
+  "databricks_runtime": "client.4.10"
+ },
+ "columns": [
+  "l_shipmode",
+  "high_line_count",
+  "low_line_count"
+ ],
+ "rows": [
+  [
+   "MAIL",
+   6202,
+   9324
+  ],
+  [
+   "SHIP",
+   6200,
+   9262
+  ]
+ ],
+ "canonical": null
+}

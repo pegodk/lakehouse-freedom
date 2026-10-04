@@ -1,0 +1,67 @@
+{
+ "platform": "databricks",
+ "engine": "spark",
+ "engine_version": "4.2.0",
+ "query": "q22",
+ "scale_factor": 1.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 1.155,
+ "durations_s": [
+  1.155,
+  1.0927,
+  1.2541
+ ],
+ "row_count": 7,
+ "error": null,
+ "timestamp": "2026-10-04T20:08:15.723720+00:00",
+ "environment": {
+  "engine_version": "4.2.0",
+  "platform_label": "Databricks",
+  "compute": "serverless jobs compute",
+  "databricks_runtime": "client.4.10"
+ },
+ "columns": [
+  "cntrycode",
+  "numcust",
+  "totacctbal"
+ ],
+ "rows": [
+  [
+   "13",
+   888,
+   "6737713.99"
+  ],
+  [
+   "17",
+   861,
+   "6460573.72"
+  ],
+  [
+   "18",
+   964,
+   "7236687.40"
+  ],
+  [
+   "23",
+   892,
+   "6701457.95"
+  ],
+  [
+   "29",
+   948,
+   "7158866.63"
+  ],
+  [
+   "30",
+   909,
+   "6808436.13"
+  ],
+  [
+   "31",
+   922,
+   "6806670.18"
+  ]
+ ],
+ "canonical": null
+}

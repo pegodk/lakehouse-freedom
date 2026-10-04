@@ -1,0 +1,20 @@
+{
+ "generator": "duckdb tpch extension (embedded TPC-H dbgen)",
+ "duckdb_version": "1.5.6",
+ "tpch_extension_version": "v1.5.6",
+ "scale_factor": 1.0,
+ "chunks": 1,
+ "raw_root": "/Volumes/portable_lakehouse/landing/raw",
+ "rows": {
+  "region": 5,
+  "nation": 25,
+  "supplier": 10000,
+  "customer": 150000,
+  "part": 200000,
+  "partsupp": 800000,
+  "orders": 1500000,
+  "lineitem": 6001215
+ },
+ "duration_s": 20.001,
+ "generated_at": "2026-10-04T20:03:36.106611+00:00"
+}

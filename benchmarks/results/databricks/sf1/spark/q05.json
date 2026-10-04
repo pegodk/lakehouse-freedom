@@ -1,0 +1,51 @@
+{
+ "platform": "databricks",
+ "engine": "spark",
+ "engine_version": "4.2.0",
+ "query": "q05",
+ "scale_factor": 1.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 1.9416,
+ "durations_s": [
+  1.9416,
+  1.9866,
+  1.8576
+ ],
+ "row_count": 5,
+ "error": null,
+ "timestamp": "2026-10-04T20:07:01.059134+00:00",
+ "environment": {
+  "engine_version": "4.2.0",
+  "platform_label": "Databricks",
+  "compute": "serverless jobs compute",
+  "databricks_runtime": "client.4.10"
+ },
+ "columns": [
+  "n_name",
+  "revenue"
+ ],
+ "rows": [
+  [
+   "INDONESIA",
+   "55502041.1697"
+  ],
+  [
+   "VIETNAM",
+   "55295086.9967"
+  ],
+  [
+   "CHINA",
+   "53724494.2566"
+  ],
+  [
+   "INDIA",
+   "52035512.0002"
+  ],
+  [
+   "JAPAN",
+   "45410175.6954"
+  ]
+ ],
+ "canonical": null
+}

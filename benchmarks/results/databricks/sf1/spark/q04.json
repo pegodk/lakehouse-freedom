@@ -1,0 +1,51 @@
+{
+ "platform": "databricks",
+ "engine": "spark",
+ "engine_version": "4.2.0",
+ "query": "q04",
+ "scale_factor": 1.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 1.0955,
+ "durations_s": [
+  1.2672,
+  1.0955,
+  1.0538
+ ],
+ "row_count": 5,
+ "error": null,
+ "timestamp": "2026-10-04T20:06:55.189464+00:00",
+ "environment": {
+  "engine_version": "4.2.0",
+  "platform_label": "Databricks",
+  "compute": "serverless jobs compute",
+  "databricks_runtime": "client.4.10"
+ },
+ "columns": [
+  "o_orderpriority",
+  "order_count"
+ ],
+ "rows": [
+  [
+   "1-URGENT",
+   10594
+  ],
+  [
+   "2-HIGH",
+   10476
+  ],
+  [
+   "3-MEDIUM",
+   10410
+  ],
+  [
+   "4-NOT SPECIFIED",
+   10556
+  ],
+  [
+   "5-LOW",
+   10487
+  ]
+ ],
+ "canonical": null
+}
