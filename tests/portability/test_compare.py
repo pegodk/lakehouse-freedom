@@ -1,4 +1,4 @@
-from portability.reporting.score import bar
+from portability.reporting.score import bar, components, portability_score
 from portability.validation.compare import diff_ratio, rows_equal, values_equal
 
 
@@ -29,3 +29,13 @@ def test_diff_ratio():
 def test_bar():
     assert bar(None).endswith("not measured")
     assert bar(0.5).startswith("█" * 10 + "░" * 10)
+
+
+def test_governance_portability_is_measured_from_obligation_coverage():
+    governance = next(component for component in components(1) if component["key"] == "governance")
+
+    assert governance["numerator"] == 1
+    assert governance["denominator"] == 2
+    assert governance["value"] == 0.5
+    assert governance["in_score"] is True
+    assert portability_score([governance]) == 0.5

@@ -21,20 +21,20 @@ Portability should be part of the design of every lakehouse from the start. Data
 TPC-H SF10 on OpenLakehouse (local Docker, 8 cores). From [`reports/portability-report.md`](reports/portability-report.md):
 
 ```
-Portability Score                   █████████████░░░░░░░   67%
+Portability Score                   ████████████░░░░░░░░   62%
 ─────────────────────────────────────────────────────
 Transformation portability      ██████████████████░░   89%   1512/1702 LOC shared
 Catalog portability             ████████████░░░░░░░░   60%   6/10 UC capabilities
 Orchestration portability       ██████████░░░░░░░░░░   51%   29/57 LOC shared
-Governance portability          ····················   not scored
+Governance portability          ██████████░░░░░░░░░░   50%   1/2 obligations enforced
 ```
 
-Every percentage is a ratio of measured counts. Governance is shown separately because the current implementation is a foundation, not a complete measured enforcement path.
+Every percentage is a ratio of measured counts. Governance measures reviewed obligation coverage in the DataFusion adapter; it does not claim that production identity integration or gateway hardening is complete.
 
 - **[Transformation portability](https://pegodk.github.io/portable-lakehouse/portability-score/#transformation-portability):** shared versus platform-specific transformation code.
 - **[Catalog portability](https://pegodk.github.io/portable-lakehouse/portability-score/#catalog-portability):** Unity Catalog capabilities supported by both implementations.
 - **[Orchestration portability](https://pegodk.github.io/portable-lakehouse/portability-score/#orchestration-portability):** shared task graph versus scheduler-specific code.
-- **[Governance portability](https://pegodk.github.io/portable-lakehouse/governance/):** portable RBAC/ABAC decisions and typed enforcement obligations using Cedar, with DataFusion as the reference enforcement point.
+- **[Governance portability](https://pegodk.github.io/portable-lakehouse/portability-score/#governance-portability):** reviewed Cedar obligations enforced by the DataFusion reference adapter.
 
 The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and separate DuckDB and Python reference implementations. See [limitations](#limitations) and the [score formulas](https://pegodk.github.io/portable-lakehouse/portability-score/).
 
@@ -54,7 +54,7 @@ The Databricks side of the workload is defined and validated but **has not been 
           PORTABILITY CHECK → PORTABILITY REPORT
 ```
 
-- **[Portability Score](https://pegodk.github.io/portable-lakehouse/portability-score/).** Measured ratios summarise shared transformation code, catalog behaviour and orchestration.
+- **[Portability Score](https://pegodk.github.io/portable-lakehouse/portability-score/).** Measured ratios summarise shared transformation code, catalog behaviour, orchestration and governance obligation coverage.
 - **[Capability coverage](https://pegodk.github.io/portable-lakehouse/platform-capability-coverage/).** Curated matrices compare native support, alternatives, workarounds and gaps across the two architectures.
 - **[Portability Benchmark](https://pegodk.github.io/portable-lakehouse/portability-benchmark/).** One TPC-H workload compares SQL compatibility and execution characteristics across Spark, DuckDB and Apache DataFusion.
 - **[Governance portability](https://pegodk.github.io/portable-lakehouse/governance/).** Cedar provides portable RBAC/ABAC decisions that map reviewed policies to typed row-filter, column-allow and column-mask obligations.

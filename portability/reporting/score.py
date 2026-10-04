@@ -8,6 +8,8 @@ Catalog portability           UC capabilities recreated in UC OSS /        repor
                               capabilities used by the workload
 Orchestration portability     shared orchestration LOC /                   portability/assessment/inventory.yaml
                               (shared + OpenLakehouse-specific LOC)
+Governance portability        obligations enforced by DataFusion /          governance/obligations.yaml
+                              reviewed obligations in the registry
 
 Portability Score = unweighted mean of the measured architecture components.
 Components that could not be measured are left out of the mean and listed as
@@ -19,7 +21,10 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import yaml
+
 from portability.assessment.inventory import measure
+from portable_lakehouse.governance.datafusion import SUPPORTED_OBLIGATIONS
 
 REPO = Path(__file__).resolve().parents[2]
 
@@ -49,6 +54,19 @@ def components(scale_factor: float) -> list[dict]:
     out.append({"key": "orchestration", "name": "Orchestration portability", "value": o["score"],
                 "numerator": o["shared_loc"], "denominator": o["shared_loc"] + o["platform_loc"],
                 "formula": "shared orchestration LOC / (shared + OpenLakehouse-specific orchestration LOC)",
+                "in_score": True})
+
+    registry = yaml.safe_load((REPO / "governance" / "obligations.yaml").read_text())
+    obligations = {
+        (obligation["kind"], obligation["name"])
+        for policy_obligations in registry.values()
+        for obligation in policy_obligations
+    }
+    enforced = obligations & SUPPORTED_OBLIGATIONS
+    out.append({"key": "governance", "name": "Governance portability",
+                "value": len(enforced) / len(obligations) if obligations else None,
+                "numerator": len(enforced), "denominator": len(obligations),
+                "formula": "obligations enforced by DataFusion / reviewed obligations in the registry",
                 "in_score": True})
     return out
 

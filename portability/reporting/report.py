@@ -315,10 +315,14 @@ def _conclusions(comps, probe, dbx_run) -> str:
         gaps = [i["capability"] for i in probe["items"] if not i["recreated"]]
         parts.append(f"**Catalog.** {probe['recreated']} of {probe['total']} Unity Catalog capabilities used by "
                      f"the workload are also supported by UC OSS. Gaps: {'; '.join(gaps)}. This is where the "
-                     f"managed catalog has the clearest capability advantage (F6).")
+                     f"managed catalog has the clearest capability advantage (P7).")
     o = c["orchestration"]
     parts.append(f"**Orchestration.** Sharing the task graph keeps both schedulers aligned, but the scheduler "
                  f"definitions themselves are platform code ({o['value'] * 100:.0f}% shared).")
+    g = c["governance"]
+    parts.append(f"**Governance.** The DataFusion adapter enforces {g['numerator']} of {g['denominator']} "
+                 "reviewed obligations. This measures obligation coverage, not production identity or "
+                 "gateway readiness.")
     if not dbx_run:
         parts.append("**Next step.** Run the Databricks bundle to replace the stand-in references with "
                      "measured Databricks output and complete the two-implementation comparison.")

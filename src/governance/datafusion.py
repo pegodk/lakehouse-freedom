@@ -6,6 +6,8 @@ from typing import Any
 
 from .policy import AccessDenied, Obligation, PolicyPlan
 
+SUPPORTED_OBLIGATIONS = frozenset({("column_mask", "mask_email")})
+
 
 def mask_email_value(value: str | None) -> str | None:
     """Mask an email while retaining one character and its routing domain.
@@ -48,7 +50,7 @@ def enforce_datafusion_obligations(dataframe: Any, plan: PolicyPlan):
     masks: dict[str, Obligation] = {}
 
     for obligation in plan.obligations:
-        if obligation.kind != "column_mask" or obligation.name != "mask_email":
+        if (obligation.kind, obligation.name) not in SUPPORTED_OBLIGATIONS:
             raise AccessDenied(
                 plan.request,
                 (f"DataFusion cannot enforce {obligation.kind}/{obligation.name}",),

@@ -11,6 +11,8 @@ Catalog portability
 ████████████░░░░░░░░  60%
 Orchestration portability
 ██████████░░░░░░░░░░  51%
+Governance portability
+██████████░░░░░░░░░░  50%
 ```
 
 *(Shape of the output; current values are in the [latest report](report.md).)*
@@ -47,10 +49,20 @@ shared orchestration LOC + OpenLakehouse-specific orchestration LOC
 
 Shared: the task graph in `src/common/pipeline.py`. Platform-specific: the Airflow DAG (OpenLakehouse) and the job YAML (Databricks).
 
+### Governance portability
+
+```
+reviewed obligations enforced by the DataFusion adapter
+───────────────────────────────────────────────────────────
+reviewed obligations in governance/obligations.yaml
+```
+
+The current registry contains tenant row isolation and email masking. The DataFusion adapter enforces email masking and fails closed for tenant isolation, so governance portability is 1/2 (50%). This metric measures the implemented obligation boundary; it does not represent production identity integration, gateway hardening, or every governance capability.
+
 ### Portability Score
 
 ```
-Portability Score = mean(transformation, catalog, orchestration)
+Portability Score = mean(transformation, catalog, orchestration, governance)
 ```
 
 An unweighted mean of the measured components. The weighting is deliberately naive. Read the components; the single number only summarises them.
