@@ -48,20 +48,12 @@ def render(scale_factor: float) -> str:
     dbx_run = _load(res / "databricks" / tag / "spark" / "run.json")
     gen = _load(res / "openlakehouse" / tag / "generator.json")
     quality = _load(res / "openlakehouse" / tag / "quality.json")
-    checks = _load(REPO / "reports" / f"freedom-check-{tag}.json") or []
     probe = _load(REPO / "reports" / "catalog-probe.json")
     comps = components(sf)
     score = freedom_score(comps)
     inv = measure()
     feature_matrix = load_feature_matrix()
     env = (ol_run or {}).get("environment", {})
-    prefer = [("databricks", "spark"), ("openlakehouse", "spark")]
-    classes = {k: compare.classify(p, e, sf, prefer) for k, (p, e) in {
-        "OpenLakehouse Spark": ("openlakehouse", "spark"),
-        "OpenLakehouse DuckDB": ("openlakehouse", "duckdb"),
-        "OpenLakehouse DataFusion": ("openlakehouse", "datafusion"),
-        "Databricks": ("databricks", "spark")}.items()}
-
     L: list[str] = []
     w = L.append
     w("# 🗽 Lakehouse Freedom Report")
@@ -75,6 +67,24 @@ def render(scale_factor: float) -> str:
           "(where they exist) and independent DuckDB oracles. Databricks columns are marked *not run*. "
           "Run the bundle in `platforms/databricks/` and `make databricks-fetch-results` to complete it.")
         w("")
+
+    w("## Freedom Score")
+    w("")
+    w("```")
+    w("Freedom Score")
+    w(bar(score))
+    w("────────────────────────────────────────────")
+    for c in comps:
+        w(c["name"])
+        w(bar(c["value"]) + (f"   ({c['numerator']}/{c['denominator']})" if c["value"] is not None else ""))
+    w("```")
+    w("")
+    w(_table(["Component", "Formula", "Included in Freedom Score"],
+             [[c["name"], c["formula"], "yes" if c["in_score"] else "no (additional engine)"] for c in comps]))
+    w("")
+    w("The score is the unweighted mean of the included, measured components. The capability coverage "
+      "later in this report provides the broader comparison of native support, alternatives, workarounds and gaps.")
+    w("")
 
     # 1
     w("## 1. Architecture tested")
@@ -94,7 +104,7 @@ def render(scale_factor: float) -> str:
     w(_table(["Platform", "Role", "Status for this report"], [
         ["Databricks", "Managed implementation (bundle in `platforms/databricks`)",
          "results available" if dbx_run else "not run"],
-        ["OpenLakehouse", "Freedom implementation (`platforms/openlakehouse`)",
+        ["OpenLakehouse", "Open-source implementation (`platforms/openlakehouse`)",
          "results available" if ol_run else "not run"],
         ["DuckDB on OpenLakehouse storage", "Second open engine on the same Delta tables",
          "results available" if duck_run else "not run"],
@@ -146,49 +156,12 @@ def render(scale_factor: float) -> str:
     w("")
 
     # 4
-    w("## 4. Portability results (Freedom Check)")
-    w("")
-    if checks:
-        w(_table(["Check", "Status", "Evidence"], [[c["title"], c["status"], c["detail"]] for c in checks]))
-    else:
-        w("Freedom Check not run for this scale factor (`make freedom-check`).")
-    w("")
-    # 5
-    w("## 5. TPC-H query compatibility")
-    w("")
-    w("Canonical SQL: `tpch/queries/qNN.sql`, written for Databricks SQL / Spark SQL. A query is "
-      "PORTABLE when the unchanged text runs and returns the reference result, ADAPTABLE when a small "
-      "dialect change (at most 20% of lines) is needed, REWRITE for larger changes, FAILED otherwise.")
-    w("")
-    summary_rows = []
-    for name, cl in classes.items():
-        if cl is None:
-            summary_rows.append([name, "not run", "", "", "", ""])
-            continue
-        c = compare.summarize(cl)
-        summary_rows.append([name, f"{c['PORTABLE']}/22", c["ADAPTABLE"], c["REWRITE"], c["FAILED"],
-                             next(iter(cl.values()))["reference"]])
-    w(_table(["Target", "Unchanged and correct", "Adaptable", "Rewrite", "Failed", "Reference"], summary_rows))
-    w("")
-    rows = []
-    for q in range(1, 23):
-        k = f"q{q:02d}"
-        rows.append([k] + [(cl[k]["classification"] if cl else "not run") for cl in classes.values()])
-    w("<details markdown=\"1\"><summary>Per-query classification</summary>")
-    w("")
-    w(_table(["Query"] + list(classes), rows))
-    w("")
-    w("</details>")
-    w("")
-
-    # 6
-    w("## 6. Benchmark results")
+    w("## 4. Benchmark results")
     w("")
     w("> **Read this before comparing numbers.** These timings come from different kinds of compute "
       "(see environments below). A laptop running Docker is not comparable to a Databricks cluster or "
       "serverless warehouse, so these numbers show that the workload runs and roughly how long it takes "
-      "in each place. They do not say which platform is faster. The primary result of this benchmark is "
-      "portability (section 5).")
+      "in each place. They do not say which platform is faster.")
     w("")
     runs = {
         "OpenLakehouse Spark": ol_run,
@@ -218,7 +191,7 @@ def render(scale_factor: float) -> str:
     w("")
 
     # 7
-    w("## 7. Platform-specific code")
+    w("## 5. Platform-specific code")
     w("")
     tot = inv["totals"]
     w(_table(["Group", "Transformation LOC", "Orchestration LOC", "Infrastructure LOC"], [
@@ -241,7 +214,7 @@ def render(scale_factor: float) -> str:
     w("")
 
     # 8
-    w("## 8. Capability mapping")
+    w("## 6. Capability mapping")
     w("")
     caps = yaml.safe_load(CAPABILITIES.read_text())
     probe_items = {i["key"]: i for i in (probe or {}).get("items", [])}
@@ -258,7 +231,7 @@ def render(scale_factor: float) -> str:
         w("")
 
     # 9
-    w("## 9. Platform capability coverage")
+    w("## 7. Platform capability coverage")
     w("")
     w("This broader, curated comparison is separate from the Freedom Score: it includes important managed "
       "features even when this workload does not use them. Outcome coverage includes native capabilities, "
@@ -300,7 +273,7 @@ def render(scale_factor: float) -> str:
     w("")
 
     # 10
-    w("## 10. Known limitations")
+    w("## 8. Known limitations")
     w("")
     lim = []
     if not dbx_run:
@@ -309,7 +282,7 @@ def render(scale_factor: float) -> str:
     lim += [
         "Performance numbers compare unlike compute and must not be read as a platform performance ranking.",
         "UC OSS runs with authorization disabled (OpenLakehouse default); grants, row filters and masks "
-        "are not migrated.",
+        "are not enabled in this reference architecture.",
         "The DuckDB `unity_catalog` extension cannot read from SeaweedFS through UC OSS credential vending "
         "(vended credentials carry no S3 endpoint); DuckDB resolves locations through UC and reads with a "
         "configured S3 secret.",
@@ -323,47 +296,17 @@ def render(scale_factor: float) -> str:
         w(f"- {item}")
     w("")
 
-    # 11
-    w("## 11. Freedom Score")
+    # 10
+    w("## 9. Conclusions")
     w("")
-    w("```")
-    w("LAKEHOUSE FREEDOM REPORT")
-    w("────────────────────────────────────────────")
-    for c in comps:
-        w(c["name"])
-        w(bar(c["value"]) + (f"   ({c['numerator']}/{c['denominator']})" if c["value"] is not None else ""))
-    w("────────────────────────────────────────────")
-    w("Freedom Score")
-    w(bar(score))
-    w("```")
-    w("")
-    w(_table(["Component", "Formula", "Included in Freedom Score"],
-             [[c["name"], c["formula"], "yes" if c["in_score"] else "no (additional engine)"] for c in comps]))
-    w("")
-    w("Freedom Score = unweighted mean of the included, measured components. Definitions: "
-      "`freedom/reporting/score.py`.")
-    w("")
-
-    # 12
-    w("## 12. Conclusions")
-    w("")
-    w(_conclusions(comps, classes, probe, dbx_run))
+    w(_conclusions(comps, probe, dbx_run))
     w("")
     return "\n".join(L)
 
 
-def _conclusions(comps, classes, probe, dbx_run) -> str:
+def _conclusions(comps, probe, dbx_run) -> str:
     c = {x["key"]: x for x in comps}
     parts = []
-    sp = classes.get("OpenLakehouse Spark")
-    dk = classes.get("OpenLakehouse DuckDB")
-    df = classes.get("OpenLakehouse DataFusion")
-    if sp:
-        s = compare.summarize(sp)
-        parts.append(f"**SQL.** {s['PORTABLE']} of 22 TPC-H queries ran unchanged on open-source Spark with "
-                     f"correct results" + (f", {compare.summarize(dk)['PORTABLE']} of 22 on DuckDB" if dk else "")
-                     + (f", and {compare.summarize(df)['PORTABLE']} of 22 on DataFusion" if df else "")
-                     + ". TPC-H is a conservative SQL subset, so treat this as an upper bound for real workloads.")
     t = c["transformation"]
     parts.append(f"**Code.** {t['value'] * 100:.0f}% of the code that runs the workload on OpenLakehouse is "
                  f"identical to the code that runs it on Databricks ({t['numerator']} of {t['denominator']} "
@@ -371,9 +314,8 @@ def _conclusions(comps, classes, probe, dbx_run) -> str:
     if probe:
         gaps = [i["capability"] for i in probe["items"] if not i["recreated"]]
         parts.append(f"**Catalog.** {probe['recreated']} of {probe['total']} Unity Catalog capabilities used by "
-                     f"the workload were recreated in UC OSS. Gaps: {'; '.join(gaps)}. This is where a "
-                     f"migration needs the most deliberate work, and where the managed catalog clearly "
-                     f"adds value (F6).")
+                     f"the workload are also supported by UC OSS. Gaps: {'; '.join(gaps)}. This is where the "
+                     f"managed catalog has the clearest capability advantage (F6).")
     o = c["orchestration"]
     parts.append(f"**Orchestration.** Sharing the task graph keeps both schedulers aligned, but the scheduler "
                  f"definitions themselves are platform code ({o['value'] * 100:.0f}% shared).")

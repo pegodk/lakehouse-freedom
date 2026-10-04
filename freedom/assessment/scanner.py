@@ -3,7 +3,7 @@
 Used two ways:
   * Freedom Check: shared code (inventory group `shared`) must contain none.
   * `freedom assess <path>`: inventory any Databricks project and estimate
-    where migration effort would go.
+    where platform-specific capabilities and alternatives differ.
 
 Every rule names the capability, the classification used in Freedom Reports
 (PORTABLE / ADAPTABLE / REWRITE / PLATFORM-SPECIFIC) and the open alternative.

@@ -54,13 +54,6 @@ make openlakehouse-down      # stop containers, keep data
 make openlakehouse-destroy   # stop containers and delete all data volumes
 ```
 
-## Tests
-
-```bash
-make test         # unit and portability tests, no stack needed (~5 s)
-make test-stack   # end to end at SF0.01 against the running stack
-```
-
 ## Smaller machines
 
 The default Spark sizing assumes 8 cores and 16 GB. For a smaller machine:

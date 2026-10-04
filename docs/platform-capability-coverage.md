@@ -1,8 +1,9 @@
 # Platform capability coverage
 
-The Freedom Score measures whether the workload can leave Databricks. Platform capability coverage answers a
-different question: how much of each managed component's curated capability surface exists in the open target?
-It is deliberately reported separately and is not averaged into the Freedom Score.
+The Freedom Score summarises measured sharing between the two reference architectures. Platform capability
+coverage answers a broader question: which outcomes are supported by each architecture, and whether support is
+native, provided by an alternative, requires a workaround, or is missing. It is reported separately because a
+curated capability comparison is different from a score calculated from workload measurements.
 
 The source of truth is
 [`freedom/assessment/feature_matrix.yaml`](../freedom/assessment/feature_matrix.yaml). The generated Freedom Report
@@ -15,13 +16,13 @@ shows two progress bars and an expandable capability table for every component p
 
 ## Status definitions
 
-| Status | Meaning | Outcome covered | Native parity |
-|---|---|---:|---:|
-| `NATIVE` | Substantially equivalent capability in the open target | yes | yes |
-| `ALTERNATIVE` | Same outcome through a different open component or approach | yes | no |
-| `WORKAROUND` | Possible with material limitations or manual work | yes | no |
-| `MISSING` | No implemented equivalent in this repository's open stack | no | no |
-| `NOT_ASSESSED` | Evidence is insufficient | excluded | excluded |
+| Status | Meaning |
+|---|---|
+| `NATIVE` | Substantially equivalent capability in the open target |
+| `ALTERNATIVE` | Same outcome through a different open component or approach |
+| `WORKAROUND` | Possible with material limitations or manual work |
+| `MISSING` | No implemented equivalent in this repository's open stack |
+| `NOT_ASSESSED` | Evidence is insufficient |
 
 This is a curated comparison, not a claim to enumerate every feature of either product. Every matrix records an
 `as_of` date and explicit target versions. A documented claim can describe a known product difference; a measured

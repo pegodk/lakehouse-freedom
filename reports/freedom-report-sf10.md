@@ -1,8 +1,30 @@
 # 🗽 Lakehouse Freedom Report
 
-Scale factor **10** (`sf10`) · generated 2026-10-04 00:12 UTC by `make freedom-report SCALE=10`
+Scale factor **10** (`sf10`) · generated 2026-10-04 00:33 UTC by `make freedom-report SCALE=10`
 
 > **Scope of this report.** The Databricks side of the workload has not been run for this scale factor, so every comparison below uses the OpenLakehouse run, the official TPC-H answers (where they exist) and independent DuckDB oracles. Databricks columns are marked *not run*. Run the bundle in `platforms/databricks/` and `make databricks-fetch-results` to complete it.
+
+## Freedom Score
+
+```
+Freedom Score
+█████████████░░░░░░░   67%
+────────────────────────────────────────────
+Transformation portability
+██████████████████░░   89%   (1512/1702)
+Catalog portability
+████████████░░░░░░░░   60%   (6/10)
+Orchestration portability
+██████████░░░░░░░░░░   51%   (29/57)
+```
+
+| Component | Formula | Included in Freedom Score |
+|---|---|---|
+| Transformation portability | shared transformation LOC / (shared + OpenLakehouse-specific transformation LOC) | yes |
+| Catalog portability | Unity Catalog capabilities recreated in UC OSS / capabilities used | yes |
+| Orchestration portability | shared orchestration LOC / (shared + OpenLakehouse-specific orchestration LOC) | yes |
+
+The score is the unweighted mean of the included, measured components. The capability coverage later in this report provides the broader comparison of native support, alternatives, workarounds and gaps.
 
 ## 1. Architecture tested
 
@@ -15,14 +37,15 @@ Scale factor **10** (`sf10`) · generated 2026-10-04 00:12 UTC by `make freedom-
           ▼                                                                ▼
    Databricks                                                     OpenLakehouse
    Spark · Delta · Unity Catalog · Workflows · Bundles            Spark Connect · Delta · UC OSS
-                                                                  DuckDB · Airflow · SeaweedFS
+                                                        DuckDB · DataFusion · Airflow · SeaweedFS
 ```
 
 | Platform | Role | Status for this report |
 |---|---|---|
 | Databricks | Managed implementation (bundle in `platforms/databricks`) | not run |
-| OpenLakehouse | Freedom implementation (`platforms/openlakehouse`) | results available |
+| OpenLakehouse | Open-source implementation (`platforms/openlakehouse`) | results available |
 | DuckDB on OpenLakehouse storage | Second open engine on the same Delta tables | results available |
+| DataFusion on OpenLakehouse storage | Third engine and future governed-query enforcement point | not run |
 
 ## 2. Software versions
 
@@ -36,6 +59,7 @@ Scale factor **10** (`sf10`) · generated 2026-10-04 00:12 UTC by `make freedom-
 | Unity Catalog Spark connector | 0.4.1 |
 | SeaweedFS (S3) | 3.80 |
 | DuckDB | 1.5.6 |
+| Apache DataFusion |  |
 | TPC-H generator | duckdb tpch extension (embedded TPC-H dbgen), tpch extension v1.5.6 |
 
 OpenLakehouse compute: Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host; executor 6 cores / 7g, driver 2g; host 8 CPUs, 13.6 GB RAM, Linux 7.2.5-3-omarchy.
@@ -55,103 +79,46 @@ TPC-H SF10, generated in 10 chunk(s) in 204 s.
 | orders | 15,000,000 | 15,000,000 | yes |
 | lineitem | 59,986,052 | 59,986,052 | yes |
 
-## 4. Portability results (Freedom Check)
+## 4. Benchmark results
 
-| Check | Status | Evidence |
-|---|---|---|
-| Delta tables readable | PASS | 19/19 tables read by Spark 4.1.0 through UC OSS |
-| Schemas compatible | PASS | 8/8 Silver tables match the canonical TPC-H schema; Databricks schemas not available |
-| Expected row counts and keys | PASS | dbgen row counts, primary keys and 7 foreign keys hold |
-| Transformation outputs equivalent | PASS | Silver equals DuckDB's independent conform of Raw for 8/8 tables; Gold equals DuckDB SQL oracle: True; Databricks fingerprints not available |
-| TPC-H results equivalent | PASS | openlakehouse/spark: 22/22 correct vs None; openlakehouse/duckdb: 22/22 correct vs openlakehouse/spark results; databricks/spark: not run |
-| Spark transformations executable | PASS | pipeline tasks ['generate', 'bronze', 'silver', 'gold', 'quality', 'incremental', 'tpch_queries'] completed on OpenLakehouse Spark; 22/22 queries ran |
-| Unity Catalog metadata accessible/recreated | PASS | UC OSS lists 8 Silver tables with DELTA format and storage location; catalog probe: 6/10 Databricks UC capabilities recreated (gaps: spark_columns, spark_properties, alter_metadata, grants) |
-| DuckDB can access selected tables | PASS | DuckDB 1.5.6 read lineitem (59,986,052 rows) via UC OSS-resolved location s3://lakehouse/freedom/tables/tpch_sf10/lineitem |
-| Incremental pipeline works | PASS | 3 batches applied incrementally; duplicate batch refused: True; replay idempotent: True |
-| SCD2 behaviour equivalent | PASS | openlakehouse: equal to the Python oracle; databricks: not run |
-| Shared code has no Databricks-specific APIs | PASS | 37 shared files scanned with 21 rules; no hits |
-| Orchestration matches the shared task graph | PASS | Databricks job: identical; Airflow DAG: generated from the shared graph |
-| Databricks reference run available | SKIP | no Databricks results for this scale factor; see platforms/databricks/README.md |
+> **Read this before comparing numbers.** These timings come from different kinds of compute (see environments below). A laptop running Docker is not comparable to a Databricks cluster or serverless warehouse, so these numbers show that the workload runs and roughly how long it takes in each place. They do not say which platform is faster.
 
-## 5. TPC-H query compatibility
-
-Canonical SQL: `tpch/queries/qNN.sql`, written for Databricks SQL / Spark SQL. A query is PORTABLE when the unchanged text runs and returns the reference result, ADAPTABLE when a small dialect change (at most 20% of lines) is needed, REWRITE for larger changes, FAILED otherwise.
-
-| Target | Unchanged and correct | Adaptable | Rewrite | Failed | Reference |
-|---|---|---|---|---|---|
-| OpenLakehouse Spark | 22/22 | 0 | 0 | 0 |  |
-| OpenLakehouse DuckDB | 22/22 | 0 | 0 | 0 | openlakehouse/spark results |
-| Databricks | not run |  |  |  |  |
-
-<details markdown="1"><summary>Per-query classification</summary>
-
-| Query | OpenLakehouse Spark | OpenLakehouse DuckDB | Databricks |
-|---|---|---|---|
-| q01 | PORTABLE | PORTABLE | not run |
-| q02 | PORTABLE | PORTABLE | not run |
-| q03 | PORTABLE | PORTABLE | not run |
-| q04 | PORTABLE | PORTABLE | not run |
-| q05 | PORTABLE | PORTABLE | not run |
-| q06 | PORTABLE | PORTABLE | not run |
-| q07 | PORTABLE | PORTABLE | not run |
-| q08 | PORTABLE | PORTABLE | not run |
-| q09 | PORTABLE | PORTABLE | not run |
-| q10 | PORTABLE | PORTABLE | not run |
-| q11 | PORTABLE | PORTABLE | not run |
-| q12 | PORTABLE | PORTABLE | not run |
-| q13 | PORTABLE | PORTABLE | not run |
-| q14 | PORTABLE | PORTABLE | not run |
-| q15 | PORTABLE | PORTABLE | not run |
-| q16 | PORTABLE | PORTABLE | not run |
-| q17 | PORTABLE | PORTABLE | not run |
-| q18 | PORTABLE | PORTABLE | not run |
-| q19 | PORTABLE | PORTABLE | not run |
-| q20 | PORTABLE | PORTABLE | not run |
-| q21 | PORTABLE | PORTABLE | not run |
-| q22 | PORTABLE | PORTABLE | not run |
-
-</details>
-
-## 6. Benchmark results
-
-> **Read this before comparing numbers.** These timings come from different kinds of compute (see environments below). A laptop running Docker is not comparable to a Databricks cluster or serverless warehouse, so these numbers show that the workload runs and roughly how long it takes in each place. They do not say which platform is faster. The primary result of this benchmark is portability (section 5).
-
-| Query (median s) | OpenLakehouse Spark | OpenLakehouse DuckDB | Databricks |
-|---|---|---|---|
-| q01 | 51.51 | 3.47 | not run |
-| q02 | 23.22 | 1.41 | not run |
-| q03 | 20.21 | 2.82 | not run |
-| q04 | 11.99 | 1.50 | not run |
-| q05 | 29.51 | 2.97 | not run |
-| q06 | 4.47 | 0.49 | not run |
-| q07 | 26.24 | 1.32 | not run |
-| q08 | 12.04 | 2.33 | not run |
-| q09 | 23.70 | 4.58 | not run |
-| q10 | 13.56 | 1.48 | not run |
-| q11 | 8.61 | 0.56 | not run |
-| q12 | 8.04 | 0.83 | not run |
-| q13 | 13.76 | 2.88 | not run |
-| q14 | 5.15 | 0.86 | not run |
-| q15 | 10.57 | 0.77 | not run |
-| q16 | 7.92 | 0.57 | not run |
-| q17 | 26.38 | 0.88 | not run |
-| q18 | 38.86 | 2.57 | not run |
-| q19 | 8.25 | 1.31 | not run |
-| q20 | 9.56 | 0.94 | not run |
-| q21 | 41.55 | 2.82 | not run |
-| q22 | 7.02 | 0.52 | not run |
-| **total** | **402.1** | **37.9** | n/a |
+| Query (median s) | OpenLakehouse Spark | OpenLakehouse DuckDB | OpenLakehouse DataFusion | Databricks |
+|---|---|---|---|---|
+| q01 | 51.51 | 3.47 | not run | not run |
+| q02 | 23.22 | 1.41 | not run | not run |
+| q03 | 20.21 | 2.82 | not run | not run |
+| q04 | 11.99 | 1.50 | not run | not run |
+| q05 | 29.51 | 2.97 | not run | not run |
+| q06 | 4.47 | 0.49 | not run | not run |
+| q07 | 26.24 | 1.32 | not run | not run |
+| q08 | 12.04 | 2.33 | not run | not run |
+| q09 | 23.70 | 4.58 | not run | not run |
+| q10 | 13.56 | 1.48 | not run | not run |
+| q11 | 8.61 | 0.56 | not run | not run |
+| q12 | 8.04 | 0.83 | not run | not run |
+| q13 | 13.76 | 2.88 | not run | not run |
+| q14 | 5.15 | 0.86 | not run | not run |
+| q15 | 10.57 | 0.77 | not run | not run |
+| q16 | 7.92 | 0.57 | not run | not run |
+| q17 | 26.38 | 0.88 | not run | not run |
+| q18 | 38.86 | 2.57 | not run | not run |
+| q19 | 8.25 | 1.31 | not run | not run |
+| q20 | 9.56 | 0.94 | not run | not run |
+| q21 | 41.55 | 2.82 | not run | not run |
+| q22 | 7.02 | 0.52 | not run | not run |
+| **total** | **402.1** | **37.9** | n/a | n/a |
 
 - **OpenLakehouse Spark**: OpenLakehouse (local Docker); Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host; repeats per query: 1; engine 4.1.0.
 - **OpenLakehouse DuckDB**: OpenLakehouse (local Docker) + DuckDB in-process on the host; DuckDB in-process, all host cores; repeats per query: 1; engine 1.5.6.
 
-## 7. Platform-specific code
+## 5. Platform-specific code
 
 | Group | Transformation LOC | Orchestration LOC | Infrastructure LOC |
 |---|---|---|---|
-| shared | 1385 | 29 | 0 |
+| shared | 1512 | 29 | 0 |
 | databricks | 42 | 66 | 64 |
-| openlakehouse | 139 | 28 | 112 |
+| openlakehouse | 190 | 28 | 112 |
 
 LOC = logical lines (no blanks, comments or docstrings). File-level detail:
 
@@ -168,6 +135,7 @@ LOC = logical lines (no blanks, comments or docstrings). File-level detail:
 | `src/transformations/scd2.py` | shared | transformation | 52 |
 | `src/transformations/silver.py` | shared | transformation | 30 |
 | `src/quality/checks.py` | shared | transformation | 56 |
+| `src/governance/policy.py` | shared | transformation | 91 |
 | `src/run.py` | shared | transformation | 82 |
 | `tpch/generator/dbgen.py` | shared | transformation | 74 |
 | `tpch/sql.py` | shared | transformation | 10 |
@@ -193,15 +161,16 @@ LOC = logical lines (no blanks, comments or docstrings). File-level detail:
 | `tpch/queries/q20.sql` | shared | transformation | 34 |
 | `tpch/queries/q21.sql` | shared | transformation | 38 |
 | `tpch/queries/q22.sql` | shared | transformation | 31 |
-| `benchmarks/runner/engines.py` | shared | transformation | 54 |
+| `benchmarks/runner/engines.py` | shared | transformation | 90 |
 | `benchmarks/runner/runner.py` | shared | transformation | 90 |
 | `src/common/pipeline.py` | shared | orchestration | 29 |
 | `platforms/databricks/entrypoint.py` | databricks | transformation | 42 |
 | `platforms/databricks/resources/lakehouse_freedom.job.yml` | databricks | orchestration | 66 |
 | `platforms/databricks/databricks.yml` | databricks | infrastructure | 42 |
 | `platforms/databricks/resources/landing.yml` | databricks | infrastructure | 22 |
+| `src/governance/datafusion.py` | openlakehouse | transformation | 42 |
 | `platforms/openlakehouse/entrypoint.py` | openlakehouse | transformation | 24 |
-| `platforms/openlakehouse/adapter.py` | openlakehouse | transformation | 103 |
+| `platforms/openlakehouse/adapter.py` | openlakehouse | transformation | 112 |
 | `platforms/openlakehouse/catalog.py` | openlakehouse | transformation | 12 |
 | `platforms/openlakehouse/airflow/dags/lakehouse_freedom.py` | openlakehouse | orchestration | 28 |
 | `platforms/openlakehouse/scripts/configure.sh` | openlakehouse | infrastructure | 31 |
@@ -213,7 +182,7 @@ LOC = logical lines (no blanks, comments or docstrings). File-level detail:
 
 Databricks-specific constructs found by the scanner in `platforms/databricks/`: 10 (spark_databricks_conf, volumes_path). In shared code: 0.
 
-## 8. Capability mapping
+## 6. Capability mapping
 
 | Capability | Databricks | OpenLakehouse | Classification | Evidence |
 |---|---|---|---|---|
@@ -249,7 +218,7 @@ Catalog probe (live, against UC OSS):
 | Volumes for raw files | yes | 1 volume(s) listed |
 | Grants (GRANT USE SCHEMA ... TO principal) | **no** | grant read back: []; server.authorization is 'disable' in the OpenLakehouse default config |
 
-## 9. Platform capability coverage
+## 7. Platform capability coverage
 
 This broader, curated comparison is separate from the Freedom Score: it includes important managed features even when this workload does not use them. Outcome coverage includes native capabilities, alternatives and workarounds; native parity counts only substantially equivalent capabilities. Matrix as of **2026-10-04**.
 
@@ -602,53 +571,21 @@ Native **2** · alternatives **2** · workarounds **2** · missing **4** · not 
 
 Definitions and maintenance rules: `docs/platform-capability-coverage.md`.
 
-## 10. Known limitations
+## 8. Known limitations
 
 - The Databricks side was not executed for this report. SQL portability is measured against the official TPC-H answers (SF ≤ 1) or the OpenLakehouse Spark run, not against Databricks output.
 - Performance numbers compare unlike compute and must not be read as a platform performance ranking.
-- UC OSS runs with authorization disabled (OpenLakehouse default); grants, row filters and masks are not migrated.
+- UC OSS runs with authorization disabled (OpenLakehouse default); grants, row filters and masks are not enabled in this reference architecture.
 - The DuckDB `unity_catalog` extension cannot read from SeaweedFS through UC OSS credential vending (vended credentials carry no S3 endpoint); DuckDB resolves locations through UC and reads with a configured S3 secret.
 - The Airflow DAG is generated from the shared graph and consistency-checked, but v1 runs the OpenLakehouse pipeline from the command line rather than from Airflow.
 - SQL portability is measured on TPC-H only. TPC-H uses a conservative SQL subset; real workloads using Databricks SQL extensions will score lower (use `freedom assess` to find them).
 - Lines-of-code ratios measure how much code is shared, not how hard the platform-specific part is to write.
 
-## 11. Freedom Score
+## 9. Conclusions
 
-```
-LAKEHOUSE FREEDOM REPORT
-────────────────────────────────────────────
-TPC-H SQL portability (Spark)
-████████████████████  100%   (22/22)
-TPC-H SQL portability (DuckDB)
-████████████████████  100%   (22/22)
-Transformation portability
-██████████████████░░   91%   (1385/1524)
-Catalog portability
-████████████░░░░░░░░   60%   (6/10)
-Orchestration portability
-██████████░░░░░░░░░░   51%   (29/57)
-────────────────────────────────────────────
-Freedom Score
-███████████████░░░░░   75%
-```
+**Code.** 89% of the code that runs the workload on OpenLakehouse is identical to the code that runs it on Databricks (1512 of 1702 LOC). The platform-specific remainder is session setup, configuration and orchestration.
 
-| Component | Formula | Included in Freedom Score |
-|---|---|---|
-| TPC-H SQL portability (Spark) | TPC-H queries running unchanged with correct results on spark / 22 | yes |
-| TPC-H SQL portability (DuckDB) | TPC-H queries running unchanged with correct results on duckdb / 22 | no (additional engine) |
-| Transformation portability | shared transformation LOC / (shared + OpenLakehouse-specific transformation LOC) | yes |
-| Catalog portability | Unity Catalog capabilities recreated in UC OSS / capabilities used | yes |
-| Orchestration portability | shared orchestration LOC / (shared + OpenLakehouse-specific orchestration LOC) | yes |
-
-Freedom Score = unweighted mean of the included, measured components. Definitions: `freedom/reporting/score.py`.
-
-## 12. Conclusions
-
-**SQL.** 22 of 22 TPC-H queries ran unchanged on open-source Spark with correct results, and 22 of 22 on DuckDB. TPC-H is a conservative SQL subset, so treat this as an upper bound for real workloads.
-
-**Code.** 91% of the code that runs the workload on OpenLakehouse is identical to the code that runs it on Databricks (1385 of 1524 LOC). The platform-specific remainder is session setup, configuration and orchestration.
-
-**Catalog.** 6 of 10 Unity Catalog capabilities used by the workload were recreated in UC OSS. Gaps: Column metadata for tables created from Spark; Custom table properties set from Spark SQL; ALTER TABLE for comments and properties; Grants (GRANT USE SCHEMA ... TO principal). This is where a migration needs the most deliberate work, and where the managed catalog clearly adds value (F6).
+**Catalog.** 6 of 10 Unity Catalog capabilities used by the workload are also supported by UC OSS. Gaps: Column metadata for tables created from Spark; Custom table properties set from Spark SQL; ALTER TABLE for comments and properties; Grants (GRANT USE SCHEMA ... TO principal). This is where the managed catalog has the clearest capability advantage (F6).
 
 **Orchestration.** Sharing the task graph keeps both schedulers aligned, but the scheduler definitions themselves are platform code (51% shared).
 
