@@ -1,9 +1,17 @@
-# Portable governance
+# Governance portability
 
 Freedom Challenge #4 uses **Cedar for authorization decisions** and **DataFusion
 as the reference query enforcement point**. Unity Catalog remains the inventory
 of catalogs, schemas, tables, columns, owners and tags. DuckDB remains an
 independent query and validation engine; it is not replaced.
+
+The model supports both **RBAC** and **ABAC**. Roles and group membership can be
+represented as principal attributes, while policies can also evaluate principal,
+resource and request-context attributes. Both approaches produce the same portable
+decision contract: allow or deny, the matched policy IDs, and typed enforcement
+obligations. Governance portability is not included in the Freedom Score until the
+identity integration and governed SQL gateway are exercised end to end on both
+reference architectures.
 
 ```mermaid
 flowchart LR
