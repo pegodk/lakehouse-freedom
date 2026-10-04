@@ -1,73 +1,59 @@
 ---
-title: Portable Lakehouse
-description: Build on Databricks. Stay open by design.
+title: Databricks vs. OpenLakehouse
+description: An evidence-based comparison of managed and open lakehouse architectures.
 ---
 
-# Portable Lakehouse
+# Databricks vs. OpenLakehouse
 
-**Build on Databricks. Stay open by design.**
+<div class="platform-marks" markdown>
+  <img src="assets/icons/databricks.svg" alt="Databricks" title="Databricks">
+  <span>compared with</span>
+  <img src="assets/icons/openlakehouse.jpg" alt="OpenLakehouse" title="OpenLakehouse">
+</div>
 
-Databricks provides a powerful managed lakehouse platform built around open technologies such as Apache Spark and Delta Lake. OpenLakehouse combines those technologies into an open-source platform with a different capability and operational profile.
+This project compares a managed Databricks lakehouse with an open-source architecture built from OpenLakehouse components.
 
-Portable Lakehouse is an open-source reference architecture, implementation pattern and portability toolkit. It demonstrates how to use the benefits of Databricks while keeping data and core workload logic portable where that matters. The same workload also runs on an open-source implementation based on [OpenLakehouse.io](https://openlakehouse.io), making supported capabilities and operational trade-offs measurable.
+It is a **comparison**, not a migration guide or a production installation guide. A shared workload runs on both architectures so claims can be backed by code, query results, and catalog probes.
+
+## The short version
+
+| Question | Finding |
+|---|---|
+| Can the data remain open? | Yes for this workload: external Delta tables were read without conversion by multiple engines. |
+| Can business logic be shared? | Mostly: 89% of measured transformation code is shared in the latest SF10 report. |
+| Is Unity Catalog OSS equivalent? | No: 6 of 10 tested catalog behaviours passed; governance and metadata gaps remain. |
+| Can OSS reproduce platform outcomes? | Often, by combining Spark, DuckDB, Airflow, MLflow, UC OSS, and other components. |
+| Is the operational experience equivalent? | No. Databricks integrates and operates capabilities that the open architecture leaves to its operator. |
+| Which is faster? | Not established. The committed runs use unlike compute and cannot support a fair platform ranking. |
 
 <div class="grid cards" markdown>
 
--   :material-gauge: **Portability Score**
+-   **Comparison**
 
     ---
 
-    A measured summary of how much workload code and catalog behaviour the two architectures share.
+    Capabilities, OSS counterparts, important gaps, and conclusions.
 
-    [:octicons-arrow-right-24: Portability Score](portability-score.md)
+    [:octicons-arrow-right-24: Read the comparison](comparison.md)
 
--   :material-table-search: **Capability coverage**
-
-    ---
-
-    Compare native capabilities, open alternatives, workarounds and gaps by platform component.
-
-    [:octicons-arrow-right-24: Capability coverage](platform-capability-coverage.md)
-
--   :material-timer-outline: **Portability Benchmark**
+-   **Evidence**
 
     ---
 
-    Compare query compatibility and timings across the engines in both architectures.
+    Measured workload results, catalog behaviour, code sharing, and limitations.
 
-    [:octicons-arrow-right-24: Portability Benchmark](portability-benchmark.md)
+    [:octicons-arrow-right-24: See the latest report](report.md)
+
+-   **Principles**
+
+    ---
+
+    Seven guidelines for preserving architectural options in any lakehouse.
+
+    [:octicons-arrow-right-24: Use the principles](portability-principles.md)
 
 </div>
 
-## What this repository compares
+## Bottom line
 
-> Which capabilities does each reference architecture support, how are equivalent outcomes implemented, and where do their tradeoffs differ?
-
-```
-                           workload
-                              │
-                    ┌─────────┴─────────┐
-                    ▼                   ▼
-               Databricks         OpenLakehouse.io
-                Delta Lake          Delta Lake 4.3.1
-                Spark               Spark 4.1.0 (Spark Connect)
-                Unity Catalog       Unity Catalog OSS 0.5.0
-                                    DuckDB 1.5.6 · SeaweedFS · Airflow
-                    └─────────┬─────────┘
-                              ▼
-                     COMPARISON EVIDENCE
-                ┌─────────────┼─────────────┐
-               Data         Logic       Performance
-                              ▼
-                     PORTABILITY REPORT
-```
-
-## The message
-
-Portability should be part of the design of every lakehouse from the start. Databricks-specific capabilities may provide substantial value even when they are not portable. The [Portability Principles](portability-principles.md) make those dependencies intentional and visible so teams can use managed capabilities confidently while preserving architectural options where they matter.
-
-## Where to start
-
-- **Run it.** [Get started](getting-started.md) brings up the OpenLakehouse side on a laptop with three `make` commands.
-- **Read the results.** The [latest Portability Report](report.md) is generated by the tooling and committed with the measurements behind it.
-- **Understand the designs.** The [Portable Lakehouse Architecture](architecture.md) describes the common workload and the platform-specific implementations.
+Open formats and interfaces make the core data workload genuinely portable. They do not recreate a managed platform. Choose Databricks when its integration, governance, elastic compute, and operational support justify the dependency. Use the principles in this project to keep that dependency deliberate and bounded.

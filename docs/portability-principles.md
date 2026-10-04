@@ -1,56 +1,47 @@
-# Portability Principles
+# Portability principles
 
-Portability should be part of the design of every lakehouse from the start. These seven principles explain how to make it an explicit architectural quality, how this repository applies each principle, and what evidence is collected.
+These guidelines apply whether a team chooses Databricks, an open stack, or both.
 
-## P1: Own the data
+## 1. Own the data
 
-Business data lives in an open table format on object storage you control. Delta Lake is the format for v1.
+Keep business data in an open table format on object storage you control where practical. Catalogs should point to the data, not become the only route to it.
 
-**In this repository.** Every Bronze, Silver and Gold table is an *external* Delta table under a `table_root` you choose (`LakehouseConfig.table_root`; on Databricks the `table_root` bundle variable, typically an `abfss://` or `s3://` external location). The catalog holds pointers, and the bytes stay where you put them.
+**Evidence here:** external Delta tables were read through Spark and DuckDB without conversion.
 
-External tables keep storage layout and ownership explicit, making the two implementations easier to compare and the data accessible to additional engines.
+## 2. Separate business logic from platform logic
 
-**Checked by.** The Portability Check reads the Delta tables through OpenLakehouse Spark and independently through DuckDB.
+Keep transformations independent from session creation, paths, credentials, compute sizing, and scheduling.
 
-## P2: Separate business logic from platform logic
+**Evidence here:** 89% of measured transformation code is shared; platform adapters contain the environment-specific code.
 
-Transformations contain as little platform-specific code as reasonably possible.
+## 3. Prefer open interfaces
 
-```python
-def conform(df: DataFrame, table: str) -> DataFrame:          # src/transformations/silver.py
-    return df.select(*[F.col(c).cast(t).alias(c) for c, t in TPCH_SCHEMA[table]])
-```
+Use stable interfaces such as Spark SQL, the PySpark DataFrame API, Delta SQL, MLflow APIs, catalog APIs, and object-storage APIs when they meet the need.
 
-Session creation, paths, catalog names, compute sizing and scheduling live in `platforms/<name>/`. The shared code receives a `SparkSession` and a `LakehouseConfig` and never asks which platform it is on.
+Open interfaces reduce dependency. They do not guarantee identical behaviour, so test the combinations you rely on.
 
-**Checked by.** `portability/assessment/inventory.yaml` assigns every workload file to `shared`, `databricks` or `openlakehouse`; the Portability Report turns that into lines-of-code ratios. `tests/portability/test_inventory.py` fails if a new file is not classified.
+## 4. Isolate managed capabilities
 
-## P3: Prefer open interfaces
+Managed features are valid architectural choices. Put their use behind clear boundaries so the benefit, dependency, and replacement cost remain visible.
 
-Where practical, use Apache Spark (SQL and DataFrame API), Delta Lake SQL, the Unity Catalog REST API, MLflow APIs and object-storage APIs inside business logic. Proprietary interfaces remain valid choices when their benefits justify the dependency.
+## 5. Test portability
 
-**In this repository.** The shared code uses Spark SQL, the PySpark DataFrame API, Delta `MERGE`, `INSERT OVERWRITE` and `CREATE TABLE ... LOCATION`. Catalog metadata is read through `/api/2.1/unity-catalog`, which Databricks and UC OSS both serve.
+A component being open source does not prove the system is portable. Execute important workloads in a second environment and compare results, metadata, and operational assumptions.
 
-**Checked by.** `portability/assessment/scanner.py` has 21 rules for Databricks-specific constructs (`dbutils`, Auto Loader, `dlt`, `/Volumes/` paths, AI functions, `spark.databricks.*` configuration, and more). The Portability Check fails if any shared file matches.
+## 6. Do not confuse portability with equivalence
 
-## P4: Isolate managed capabilities
+Preserving data and core logic is valuable even when governance, performance, or user experience differs. Judge each capability separately.
 
-Using Databricks-specific functionality is fine. Make the dependency visible and keep it in one place, so the capability and its open alternative can be compared directly.
+## 7. Allow managed services to be better
 
-**In this repository.** `platforms/databricks/entrypoint.py` is the Databricks-specific Python adapter. It reads cluster tags for the benchmark record, an intentional use that the scanner reports as `PLATFORM-SPECIFIC`. `portable-lakehouse assess <path>` applies the same assessment rules to another repository.
+Databricks may be the better choice for serverless compute, governance, observability, and integrated operations. Portability means choosing those advantages deliberately while protecting the data and logic that should outlive the platform.
 
-## P5: Portability must be tested
+## A practical review
 
-Open-source components alone do not establish portability. Evidence comes from executing the workload in another environment and comparing its behavior and results.
+For every important lakehouse capability, ask:
 
-**In this repository.** Evidence comes from separate DuckDB and Python reference implementations, catalog probes, workload fingerprints and orchestration comparisons. These checks support claims for the tested workload and environments; they are not universal guarantees.
-
-## P6: Portability does not mean equivalence
-
-The open implementation does not need to reproduce every Databricks capability. The Portability Report distinguishes reusable data and business logic from capabilities that require adaptation, reimplementation, or remain platform-specific.
-
-## P7: Managed services are allowed to be better
-
-Managed services may offer better performance, operations, developer experience, governance, autoscaling and observability. A portable design uses those advantages deliberately while keeping platform dependencies visible and preserving options around the data and business logic that matter most.
-
-**In this repository.** The capability mapping marks serverless compute, governance (grants, masks, row filters), lineage and system tables as `PLATFORM-SPECIFIC`. The catalog probe shows exactly which Unity Catalog behaviours UC OSS 0.5.0 does not reproduce. The benchmark refuses to rank platforms on unlike hardware.
+1. Who owns the data and metadata?
+2. Which interface does business logic depend on?
+3. What is platform-specific, and where is it isolated?
+4. Has the workload run elsewhere with equivalent results?
+5. Which managed benefit would be lost, and is that trade-off acceptable?
