@@ -27,7 +27,7 @@ make demo SCALE=1       # (3)!
 
 1. Initialises the OpenLakehouse submodule, creates `.venv`, writes the OpenLakehouse runtime configuration and downloads its Spark JARs.
 2. Starts SeaweedFS, PostgreSQL, Unity Catalog OSS and Spark 4.1 (master, worker, Connect server) using OpenLakehouse's own compose files.
-3. Pipeline, Freedom Benchmark, Freedom Day, Freedom Check and Freedom Report, at TPC-H scale factor 1.
+3. Pipeline, Freedom Benchmark, Freedom Check and Freedom Report, at TPC-H scale factor 1.
 
 When it finishes, open `reports/freedom-report.md`.
 
@@ -41,7 +41,6 @@ When it finishes, open `reports/freedom-report.md`.
 make generate-data     SCALE=1   # TPC-H Raw Parquet into s3://lakehouse/freedom/raw/sf1
 make pipeline          SCALE=1   # generate → bronze → silver → gold → quality → TPC-H, plus SCD2
 make freedom-benchmark SCALE=1   # 22 queries on Spark and DuckDB (REPEATS=3)
-make freedom-day       SCALE=1   # rebuild the catalog from storage only
 make freedom-check     SCALE=1   # exit code 1 if any check fails
 make freedom-report    SCALE=1   # reports/freedom-report.md
 ```
@@ -76,6 +75,6 @@ platforms/openlakehouse/scripts/stack.sh restart-spark
 | Symptom | Cause and fix |
 |---|---|
 | `Spark Connect ... timed out` during `openlakehouse-up` | The Connect server is still starting or failed. `docker logs spark-connect-41`, then `platforms/openlakehouse/scripts/stack.sh restart-spark`. |
-| `DELTA_CREATE_TABLE_WITH_NON_EMPTY_LOCATION` | A table folder exists in storage but the table is not registered in UC OSS, for example after recreating the UC container. Run `make freedom-day`, or `make openlakehouse-destroy` for a clean slate. |
+| `DELTA_CREATE_TABLE_WITH_NON_EMPTY_LOCATION` | A table folder exists in storage but the table is not registered in UC OSS, for example after recreating the UC container. Run `make openlakehouse-destroy` for a clean slate, or register the existing table location in UC OSS. |
 | Port already in use | Another local service holds one of the ports above. Stop it, or change the published port in the OpenLakehouse compose file. |
 | `No pipeline output for SF...` | Run `make pipeline SCALE=...` before the benchmark. |

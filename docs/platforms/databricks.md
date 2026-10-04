@@ -10,7 +10,7 @@ The same pipeline as OpenLakehouse, deployed as a Databricks Asset Bundle with o
   ```sql
   CREATE CATALOG IF NOT EXISTS freedom;
   ```
-* An **external location** for the Delta tables, with `CREATE EXTERNAL TABLE` granted to the deploying principal. External tables are part of the Freedom Architecture (Principle F1): they are what Freedom Day reads.
+* An **external location** for the Delta tables, with `CREATE EXTERNAL TABLE` granted to the deploying principal. This keeps table layout equivalent across both reference implementations.
 
 ## Run
 
@@ -37,16 +37,6 @@ Running the job uses Databricks compute and is billed to the workspace.
 | Schemas (job) | `freedom.tpch_sf<N>_bronze`, `freedom.tpch_sf<N>`, `freedom.tpch_sf<N>_gold`, `freedom.incremental` |
 | Tables (job) | external Delta tables under `${table_root}/<schema>/<table>` |
 | Job | `lakehouse-freedom-sf<N>` |
-
-## Freedom Day with Databricks data
-
-After a run, the Delta tables sit under `table_root`. Sync that prefix byte for byte into the OpenLakehouse bucket (or configure OpenLakehouse to read it in place) and run:
-
-```bash
-make freedom-day SCALE=1 SOURCE=s3://lakehouse/<synced-prefix>
-```
-
-The Freedom Day report then lists Databricks Runtime as the writer of each table, instead of marking the run as a rehearsal. See the [Freedom Path](../freedom-path.md).
 
 ## Status in v1
 

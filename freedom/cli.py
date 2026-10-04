@@ -3,7 +3,6 @@
     freedom generate  --scale 1           TPC-H Raw Parquet into OpenLakehouse storage
     freedom pipeline  --scale 1           run the whole pipeline on OpenLakehouse
     freedom benchmark --scale 1           TPC-H on OpenLakehouse Spark and DuckDB
-    freedom day       --scale 1           Freedom Day: rebuild the catalog from storage
     freedom check     --scale 1           Freedom Check (exit code 1 on any FAIL)
     freedom report    --scale 1           reports/freedom-report.md
     freedom assess    PATH                scan any repository for Databricks-specific code
@@ -33,9 +32,6 @@ def main(argv: list[str] | None = None) -> int:
     _scale(p)
     p.add_argument("--repeats", type=int, default=3)
     p.add_argument("--engines", nargs="*", default=["spark", "duckdb"])
-    p = sub.add_parser("day")
-    _scale(p)
-    p.add_argument("--source", default=None, help="s3:// prefix holding <schema>/<table> Delta tables")
     p = sub.add_parser("check")
     _scale(p)
     p.add_argument("--no-probe", action="store_true", help="skip the live catalog probe")
@@ -64,14 +60,6 @@ def main(argv: list[str] | None = None) -> int:
             total = sum(q["duration_s"] or 0 for q in run["queries"].values())
             print(f"{engine:7} {ok}/22 queries succeeded, {total:.1f} s total (median of {args.repeats})")
         return 0
-
-    if args.cmd == "day":
-        from freedom.day import run
-
-        print("FREEDOM DAY: Databricks is switched off. Rebuilding from storage only.")
-        report = run(args.scale, args.source)
-        print(f"Freedom Day {'PASSED' if report['passed'] else 'FAILED'} in {report['duration_s']} s")
-        return 0 if report["passed"] else 1
 
     if args.cmd == "check":
         from freedom.validation.check import FAIL, run

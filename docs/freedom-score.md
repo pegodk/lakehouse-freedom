@@ -5,8 +5,6 @@ Every component of the Freedom Score is a ratio of measured counts, and the inpu
 ```
 LAKEHOUSE FREEDOM REPORT
 ────────────────────────────────
-Data portability
-████████████████████ 100%
 TPC-H SQL portability (Spark)
 ████████████████████ 100%
 Transformation portability
@@ -20,16 +18,6 @@ Orchestration portability
 *(Shape of the output; current values are in the [latest report](report.md).)*
 
 ## Formulas
-
-### Data portability
-
-```
-Delta tables read by OSS Spark and DuckDB with identical row counts after re-registration from storage
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-Delta tables
-```
-
-Source: `reports/freedom-day-sf<N>.json`. Covers Bronze, Silver, Gold and the incremental tables (19 at present).
 
 ### TPC-H SQL portability
 
@@ -74,7 +62,7 @@ Shared: the task graph in `src/common/pipeline.py`. Platform-specific: the Airfl
 ### Freedom Score
 
 ```
-Freedom Score = mean(data, SQL (Spark), transformation, catalog, orchestration)
+Freedom Score = mean(SQL (Spark), transformation, catalog, orchestration)
 ```
 
 An unweighted mean of the measured components. The weighting is deliberately naive. Read the components; the single number only summarises them.

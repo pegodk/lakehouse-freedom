@@ -36,7 +36,7 @@ class FreedomConfig:
     table_root: str | None = None
     """Root for external Delta table locations. None means catalog-managed tables.
     The Freedom Architecture uses external tables so the data stays readable
-    from storage when the catalog is gone (Freedom Day)."""
+    consistently by both reference implementations."""
 
     catalog: str = "freedom"
 

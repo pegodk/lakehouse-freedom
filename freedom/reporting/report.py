@@ -48,7 +48,6 @@ def render(scale_factor: float) -> str:
     gen = _load(res / "openlakehouse" / tag / "generator.json")
     quality = _load(res / "openlakehouse" / tag / "quality.json")
     checks = _load(REPO / "reports" / f"freedom-check-{tag}.json") or []
-    day = _load(REPO / "reports" / f"freedom-day-{tag}.json")
     probe = _load(REPO / "reports" / "catalog-probe.json")
     comps = components(sf)
     score = freedom_score(comps)
@@ -97,8 +96,6 @@ def render(scale_factor: float) -> str:
          "results available" if ol_run else "not run"],
         ["DuckDB on OpenLakehouse storage", "Second open engine on the same Delta tables",
          "results available" if duck_run else "not run"],
-        ["Freedom Day", "Catalog rebuilt from storage only",
-         ("passed" if day and day["passed"] else "failed") if day else "not run"],
     ]))
     w("")
 
@@ -151,20 +148,6 @@ def render(scale_factor: float) -> str:
     else:
         w("Freedom Check not run for this scale factor (`make freedom-check`).")
     w("")
-    if day:
-        writers = ", ".join(day["writers"])
-        kind = f"rehearsal, tables written by {writers}" if day["rehearsal"] else f"tables written by {writers}"
-        dp = day["data_portability"]
-        w(f"**Freedom Day** ({kind}): {dp['portable_tables']}/{dp['total_tables']} tables re-registered "
-          f"from storage into an empty catalog and read by Spark and DuckDB; storage objects changed: "
-          f"{'none' if day['data_unchanged'] else 'SOME'}.")
-        w("")
-        feats = sorted({f for t in day["tables"] for f in t["table_features"]})
-        w(f"Delta protocol across these tables: reader version "
-          f"{sorted({t['min_reader_version'] for t in day['tables']})}, writer version "
-          f"{sorted({t['min_writer_version'] for t in day['tables']})}, table features {feats}.")
-        w("")
-
     # 5
     w("## 5. TPC-H query compatibility")
     w("")
@@ -313,10 +296,6 @@ def render(scale_factor: float) -> str:
     if not dbx_run:
         lim.append("The Databricks side was not executed for this report. SQL portability is measured against "
                    "the official TPC-H answers (SF ≤ 1) or the OpenLakehouse Spark run, not against Databricks output.")
-    if day and day.get("rehearsal"):
-        lim.append("Freedom Day ran as a rehearsal on tables written by OSS Spark. Tables written by Databricks "
-                   "may carry additional Delta table features (for example deletion vectors or row tracking); "
-                   "the Freedom Day report lists the features it actually found.")
     lim += [
         "Performance numbers compare unlike compute and must not be read as a platform performance ranking.",
         "UC OSS runs with authorization disabled (OpenLakehouse default); grants, row filters and masks "
@@ -358,20 +337,14 @@ def render(scale_factor: float) -> str:
     # 12
     w("## 12. Conclusions")
     w("")
-    w(_conclusions(comps, classes, day, probe, dbx_run))
+    w(_conclusions(comps, classes, probe, dbx_run))
     w("")
     return "\n".join(L)
 
 
-def _conclusions(comps, classes, day, probe, dbx_run) -> str:
+def _conclusions(comps, classes, probe, dbx_run) -> str:
     c = {x["key"]: x for x in comps}
     parts = []
-    if day:
-        parts.append(
-            f"**Data.** {day['data_portability']['portable_tables']} of "
-            f"{day['data_portability']['total_tables']} Delta tables were readable by two open engines after "
-            f"the catalog was rebuilt from storage alone, and no stored object was rewritten. Keeping tables "
-            f"external, in an open format, on storage you control (F1) is what makes this possible.")
     sp = classes.get("OpenLakehouse Spark")
     dk = classes.get("OpenLakehouse DuckDB")
     if sp:
@@ -394,8 +367,7 @@ def _conclusions(comps, classes, day, probe, dbx_run) -> str:
                  f"definitions themselves are platform code ({o['value'] * 100:.0f}% shared).")
     if not dbx_run:
         parts.append("**Next step.** Run the Databricks bundle to replace the stand-in references with "
-                     "measured Databricks output, and run Freedom Day against a sync of the Databricks "
-                     "external location.")
+                     "measured Databricks output and complete the two-implementation comparison.")
     return "\n\n".join(parts)
 
 

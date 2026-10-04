@@ -48,7 +48,6 @@ benchmarks/results/
 │   ├── duckdb/q01.json … q22.json, run.json
 │   ├── generator.json  quality.json  gold.json
 ├── databricks/sf10/…            # after make databricks-fetch-results
-└── freedom_day/sf10/{spark,duckdb}/…
 ```
 
 Each `qNN.json` records:

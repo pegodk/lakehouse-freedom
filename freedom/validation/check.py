@@ -264,16 +264,6 @@ def run(scale_factor: float, probe_catalog: bool = True) -> list[Check]:
         add("databricks", "Databricks reference run available", PASS if ok == 22 else FAIL,
             f"{ok}/22 queries succeeded on Databricks ({dbx['environment'].get('compute')})")
 
-    # 14. Freedom Day
-    day = _load(REPO / "reports" / f"freedom-day-{tag}.json")
-    if day is None:
-        add("freedom_day", "Freedom Day", SKIP, "not run for this scale factor (make freedom-day)")
-    else:
-        add("freedom_day", "Freedom Day", PASS if day["passed"] else FAIL,
-            f"{day['data_portability']['portable_tables']}/{day['data_portability']['total_tables']} tables "
-            f"re-registered from storage and read by Spark and DuckDB; data unchanged: {day['data_unchanged']}"
-            + (" (rehearsal: tables written by OSS Spark)" if day.get("rehearsal") else ""))
-
     out = REPO / "reports" / f"freedom-check-{tag}.json"
     out.parent.mkdir(exist_ok=True)
     out.write_text(json.dumps([asdict(c) for c in checks], indent=1))

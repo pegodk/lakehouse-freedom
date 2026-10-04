@@ -8,9 +8,9 @@ Business data lives in an open table format on object storage you control. Delta
 
 **In this repository.** Every Bronze, Silver and Gold table is an *external* Delta table under a `table_root` you choose (`FreedomConfig.table_root`; on Databricks the `table_root` bundle variable, typically an `abfss://` or `s3://` external location). The catalog holds pointers, and the bytes stay where you put them.
 
-External tables are the recommended default here for one reason: on Freedom Day, the only thing that is certain to survive is storage. A table whose location and commit protocol are owned by a managed catalog can be harder to read without that catalog.
+External tables keep storage layout and ownership explicit, making the two implementations easier to compare and the data accessible to additional engines.
 
-**Checked by.** Freedom Day (`make freedom-day`) re-registers every table from its `_delta_log` into an empty catalog, reads it with two engines, and verifies that no stored object changed.
+**Checked by.** The Freedom Check reads the Delta tables through OpenLakehouse Spark and independently through DuckDB.
 
 ## F2: Separate business logic from platform logic
 
@@ -43,7 +43,7 @@ Using Databricks-specific functionality is fine. Make the dependency visible and
 
 A workload is not portable because its components are open source. It is portable when it has been run somewhere else and produced the same answers.
 
-**In this repository.** `make freedom-check` runs 14 checks against the live OpenLakehouse stack: tables readable, schemas, row counts and keys, transformation output against an independent DuckDB oracle, TPC-H answers, Unity Catalog metadata, DuckDB access, incremental loads, SCD2 against a pure-Python oracle, shared-code scan, orchestration consistency, Databricks reference run, and Freedom Day. Failures are reported as failures. No check falls back to a platform-specific workaround.
+**In this repository.** `make freedom-check` runs 13 checks across the reference implementations: tables readable, schemas, row counts and keys, transformation output against an independent DuckDB oracle, TPC-H answers, Unity Catalog metadata, DuckDB access, incremental loads, SCD2 against a pure-Python oracle, shared-code scan, orchestration consistency and the Databricks reference run. Failures are reported as failures. No check falls back to a platform-specific workaround.
 
 ## F6: Managed services are allowed to be better
 

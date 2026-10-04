@@ -2,7 +2,7 @@
 #
 #   make setup                       one-off: submodule, Python env, OpenLakehouse config and JARs
 #   make openlakehouse-up            start SeaweedFS, PostgreSQL, Unity Catalog OSS, Spark 4.1
-#   make demo SCALE=1                pipeline, benchmark, Freedom Day, check and report
+#   make demo SCALE=1                pipeline, benchmark, check and report
 #
 # Individual steps take SCALE (TPC-H scale factor, default 1) and REPEATS.
 
@@ -19,7 +19,7 @@ DBX     := databricks $(if $(DATABRICKS_PROFILE),-p $(DATABRICKS_PROFILE),)
 .DEFAULT_GOAL := help
 .PHONY: help setup venv openlakehouse-configure openlakehouse-up openlakehouse-down \
         openlakehouse-destroy openlakehouse-status generate-data pipeline freedom-benchmark \
-        freedom-check freedom-day freedom-report freedom-assess demo test test-stack lint docs-serve docs-build \
+        freedom-check freedom-report freedom-assess demo test test-stack lint docs-serve docs-build \
         databricks-validate databricks-deploy databricks-run databricks-fetch-results clean-results
 
 help:
@@ -60,9 +60,6 @@ ifneq ($(DATABRICKS_PROFILE),)
 	$(MAKE) databricks-run databricks-fetch-results
 endif
 
-freedom-day: ## Freedom Day: rebuild the catalog from storage and query with Spark + DuckDB (SCALE=, SOURCE=)
-	$(FREEDOM) day --scale $(SCALE) $(if $(SOURCE),--source $(SOURCE),)
-
 freedom-check: ## Freedom Check: validate the workload without Databricks (SCALE=)
 	$(FREEDOM) check --scale $(SCALE)
 
@@ -75,7 +72,6 @@ freedom-assess: ## Scan a repository for Databricks-specific code (REPO_PATH=)
 demo: ## Everything, end to end, on OpenLakehouse (SCALE=)
 	$(MAKE) pipeline SCALE=$(SCALE)
 	$(MAKE) freedom-benchmark SCALE=$(SCALE)
-	$(MAKE) freedom-day SCALE=$(SCALE)
 	-$(MAKE) freedom-check SCALE=$(SCALE)
 	$(MAKE) freedom-report SCALE=$(SCALE)
 
@@ -110,4 +106,4 @@ databricks-fetch-results: ## Copy Databricks results from the results volume int
 	$(DBX) fs cp -r --overwrite dbfs:/Volumes/freedom/landing/results/databricks benchmarks/results/databricks
 
 clean-results: ## Delete local benchmark results and reports (not the data)
-	rm -rf benchmarks/results/openlakehouse benchmarks/results/freedom_day reports/*.json reports/*.md
+	rm -rf benchmarks/results/openlakehouse reports/*.json reports/*.md
