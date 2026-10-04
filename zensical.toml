@@ -23,7 +23,7 @@ nav = [
   { "Concepts" = [
     { "Freedom Principles" = "freedom-principles.md" },
     { "Freedom Architecture" = "freedom-architecture.md" },
-    { "Portable Governance" = "governance.md" },
+    { "Governance portability" = "governance.md" },
   ] },
   { "Measure" = [
     { "Platform capability coverage" = "platform-capability-coverage.md" },

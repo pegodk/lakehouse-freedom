@@ -22,9 +22,17 @@ Freedom Score                   █████████████░░░
 Transformation portability      ██████████████████░░   89%   1512/1702 LOC shared
 Catalog portability             ████████████░░░░░░░░   60%   6/10 UC capabilities
 Orchestration portability       ██████████░░░░░░░░░░   51%   29/57 LOC shared
+Governance portability          ····················   not scored
 ```
 
-Every percentage is a ratio of measured counts ([formulas](https://pegodk.github.io/lakehouse-freedom/freedom-score/)). The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and independent DuckDB and Python oracles. See [limitations](#limitations).
+Every percentage is a ratio of measured counts. Governance is shown separately because the current implementation is a foundation, not a complete measured enforcement path.
+
+- **[Transformation portability](https://pegodk.github.io/lakehouse-freedom/freedom-score/#transformation-portability):** shared versus platform-specific transformation code.
+- **[Catalog portability](https://pegodk.github.io/lakehouse-freedom/freedom-score/#catalog-portability):** Unity Catalog capabilities supported by both implementations.
+- **[Orchestration portability](https://pegodk.github.io/lakehouse-freedom/freedom-score/#orchestration-portability):** shared task graph versus scheduler-specific code.
+- **[Governance portability](https://pegodk.github.io/lakehouse-freedom/governance/):** portable RBAC/ABAC decisions and typed enforcement obligations using Cedar, with DataFusion as the reference enforcement point.
+
+The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and independent DuckDB and Python oracles. See [limitations](#limitations) and the [score formulas](https://pegodk.github.io/lakehouse-freedom/freedom-score/).
 
 ## What it does
 
@@ -42,11 +50,11 @@ Every percentage is a ratio of measured counts ([formulas](https://pegodk.github
           CAPABILITY COMPARISON → FREEDOM REPORT
 ```
 
-- **Freedom Score.** Measured ratios summarise shared transformation code, catalog behaviour, orchestration and SQL compatibility.
-- **Capability coverage.** Curated matrices compare native support, alternatives, workarounds and gaps across the two architectures.
-- **Freedom Benchmark.** One TPC-H workload compares SQL compatibility and execution characteristics across Spark, DuckDB and Apache DataFusion.
-- **Portable governance foundation.** Cedar decisions map reviewed policy IDs to typed row-filter, column-allow and column-mask obligations without treating policy text as SQL.
-- **Freedom Assess.** `make freedom-assess REPO_PATH=...` scans any Databricks project for platform-specific constructs.
+- **[Freedom Score](https://pegodk.github.io/lakehouse-freedom/freedom-score/).** Measured ratios summarise shared transformation code, catalog behaviour and orchestration.
+- **[Capability coverage](https://pegodk.github.io/lakehouse-freedom/platform-capability-coverage/).** Curated matrices compare native support, alternatives, workarounds and gaps across the two architectures.
+- **[Freedom Benchmark](https://pegodk.github.io/lakehouse-freedom/freedom-benchmark/).** One TPC-H workload compares SQL compatibility and execution characteristics across Spark, DuckDB and Apache DataFusion.
+- **[Governance portability](https://pegodk.github.io/lakehouse-freedom/governance/).** Cedar provides portable RBAC/ABAC decisions that map reviewed policies to typed row-filter, column-allow and column-mask obligations.
+- **[Freedom Assess](https://pegodk.github.io/lakehouse-freedom/reference/commands/#workload-and-measurements).** `make freedom-assess REPO_PATH=...` scans any Databricks project for platform-specific constructs.
 
 ## Quickstart
 
