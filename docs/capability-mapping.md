@@ -16,15 +16,15 @@ benchmark). `documented` is a reasoned statement that is not tested automaticall
 
 | Capability | Databricks | OpenLakehouse | Classification | Evidence |
 |---|---|---|---|---|
-| Table format | Delta Lake (Databricks Runtime) | Delta Lake 4.3.1 (delta-spark), delta-kernel-rs (DuckDB) | **PORTABLE** | measured:delta_readable |
+| Table format | Delta Lake (Databricks Runtime) | Delta Lake 4.3.1 (delta-spark), delta-kernel-rs (DuckDB and DataFusion) | **PORTABLE** | measured:delta_readable |
 | Batch compute | Apache Spark on serverless or classic compute (Photon optional) | Apache Spark 4.1.0 standalone, clients via Spark Connect | **PORTABLE** | measured:spark_executable |
-| SQL analytics | Databricks SQL / Spark SQL | Spark SQL; DuckDB for single-node analytics | **PORTABLE** | measured:tpch_results |
+| SQL analytics | Databricks SQL / Spark SQL | Spark SQL; DuckDB and DataFusion for single-node analytics | **PORTABLE** | measured:tpch_results |
 | DataFrame transformations | PySpark DataFrame API | PySpark DataFrame API over Spark Connect | **PORTABLE** | measured:transformations |
 | Incremental upserts / SCD2 | Delta MERGE INTO | Delta MERGE INTO (OSS Delta) | **PORTABLE** | measured:scd2 |
 | Full refresh of an external table | CREATE OR REPLACE TABLE ... LOCATION ... AS SELECT | create once, then INSERT OVERWRITE | **ADAPTABLE** | measured:delta_io |
 | Table and column metadata changes | ALTER TABLE ... SET TBLPROPERTIES / COMMENT | set comments and properties at creation time | **ADAPTABLE** | measured:catalog_probe.alter_metadata |
 | Catalog (namespaces, external tables, volumes) | Unity Catalog | Unity Catalog OSS 0.5.0 | **ADAPTABLE** | measured:catalog_probe |
-| Access control | Unity Catalog grants, row filters, column masks | UC OSS permissions require server.authorization=enable plus an identity provider | **PLATFORM-SPECIFIC** | measured:catalog_probe.grants |
+| Access control | Unity Catalog grants, row filters, column masks | UC OSS metadata and grants; Cedar decisions; DataFusion enforcement foundation | **PLATFORM-SPECIFIC** | measured:catalog_probe.grants |
 | Non-Spark engine access through the catalog | credential vending to DuckDB, Trino, ... (UC external access) | UC OSS resolves the location; DuckDB reads with its own S3 secret | **ADAPTABLE** | measured:duckdb_access |
 | Raw file landing | Unity Catalog Volumes (/Volumes FUSE path) | S3 prefix on SeaweedFS (UC OSS volumes exist as metadata) | **ADAPTABLE** | measured:spark_executable |
 | Orchestration | Lakeflow Jobs (Workflows) defined in an Asset Bundle | Apache Airflow 3.1.6 DAG generated from the same task graph | **ADAPTABLE** | measured:orchestration |
@@ -39,7 +39,7 @@ benchmark). `documented` is a reasoned statement that is not tested automaticall
 - **Batch compute.** Same PySpark code; only session creation differs (entrypoint.py).
 - **Full refresh of an external table.** The UC OSS 0.5 Spark connector rejects CREATE OR REPLACE with a location. The INSERT OVERWRITE idiom works on both platforms and is what the shared code uses.
 - **Catalog (namespaces, external tables, volumes).** Catalogs, schemas, external Delta tables, comments and volumes recreate. Column metadata and custom properties of Spark-created tables are not stored by UC OSS; registering through the REST API keeps them.
-- **Access control.** OpenLakehouse ships with authorization disabled; grants are not stored. Freedom Challenge
+- **Access control.** OpenLakehouse ships with authorization disabled; grants are not stored. Freedom Challenge #4 adds a Cedar decision contract and makes DataFusion the reference enforcement point; end-to-end gateway enforcement remains to be measured.
 - **Non-Spark engine access through the catalog.** UC OSS vends credentials without an S3 endpoint, so DuckDB's unity_catalog extension sends requests to AWS instead of SeaweedFS. Location lookup through the catalog plus delta_scan works.
 - **Raw file landing.** The path is configuration (FreedomConfig.raw_root); the generator handles both.
 - **Orchestration.** The task graph is shared; each scheduler definition is platform code. The Airflow DAG is checked for consistency but not executed in v1.

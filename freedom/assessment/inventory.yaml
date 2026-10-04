@@ -22,6 +22,7 @@ shared:
     - src/ingestion/*.py
     - src/transformations/*.py
     - src/quality/*.py
+    - src/governance/policy.py
     - src/run.py
     - tpch/generator/*.py
     - tpch/sql.py
@@ -41,6 +42,7 @@ databricks:
 
 openlakehouse:
   transformation:
+    - src/governance/datafusion.py
     - platforms/openlakehouse/entrypoint.py
     - platforms/openlakehouse/adapter.py
     - platforms/openlakehouse/catalog.py

@@ -13,7 +13,7 @@ lakehouse-freedom/
 │   ├── queries/              q01–q22 canonical SQL; adapted/<engine>/ when needed
 │   └── expected/             official answers for SF 0.01, 0.1 and 1
 ├── benchmarks/
-│   ├── runner/               query runner, Spark and DuckDB engines → lakehouse_freedom.benchmarks
+│   ├── runner/               query runner: Spark, DuckDB, DataFusion → lakehouse_freedom.benchmarks
 │   └── results/              one JSON per query / platform / engine / scale
 ├── platforms/                                                → freedom_platforms
 │   ├── databricks/           Asset Bundle, job, entrypoint.py

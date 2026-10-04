@@ -1,7 +1,7 @@
 # Freedom Benchmark
 
 ```bash
-make freedom-benchmark SCALE=10            # OpenLakehouse: Spark and DuckDB
+make freedom-benchmark SCALE=10            # OpenLakehouse: Spark, DuckDB, DataFusion
 make freedom-benchmark SCALE=10 DATABRICKS_PROFILE=<profile> TABLE_ROOT=abfss://...   # + Databricks
 ```
 
@@ -27,6 +27,7 @@ The benchmark runs the 22 TPC-H queries on each engine, stores every result, and
     | Databricks | Spark (Databricks Runtime, serverless job) | Unity Catalog |
     | OpenLakehouse | Apache Spark 4.1.0 via Spark Connect | Unity Catalog OSS |
     | OpenLakehouse | DuckDB 1.5.6, in-process on the host | location from UC OSS, `delta_scan` |
+    | OpenLakehouse | Apache DataFusion, in-process on the host | location from UC OSS, delta-rs Arrow dataset |
 
 ## Query compatibility classification
 
@@ -46,6 +47,7 @@ benchmarks/results/
 ├── openlakehouse/sf10/
 │   ├── spark/q01.json … q22.json, run.json
 │   ├── duckdb/q01.json … q22.json, run.json
+│   ├── datafusion/q01.json … q22.json, run.json
 │   ├── generator.json  quality.json  gold.json
 ├── databricks/sf10/…            # after make databricks-fetch-results
 ```

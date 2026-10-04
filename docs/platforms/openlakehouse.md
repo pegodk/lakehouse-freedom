@@ -14,6 +14,7 @@ Versions are read from the pinned submodule at run time (`adapter.discover_versi
 | SeaweedFS | 3.80 | S3-compatible storage on `:8333`, bucket `lakehouse` |
 | PostgreSQL | 16 | started by the storage compose file (OpenLakehouse metastore) |
 | DuckDB | 1.5.6 (pinned in `pyproject.toml`) | generator, second query engine, validation oracle |
+| Apache DataFusion | 50–54 (bounded in `pyproject.toml`) | third query engine; reference governance enforcement point |
 | Airflow | 3.1.6 (OpenLakehouse, optional) | DAG in `airflow/dags/`, not executed in v1 |
 
 OpenLakehouse also provides Kafka, MLflow, Iceberg, Jupyter and a dashboard. They are not needed for Freedom Challenge #1 and are not started.

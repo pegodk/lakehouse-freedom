@@ -50,6 +50,8 @@ Every percentage is a ratio of measured counts ([formulas](https://pegodk.github
 
 - **Freedom Benchmark.** The 22 TPC-H queries, written once for Databricks SQL / Spark SQL, run on each engine and are compared with the official answers.
 - **Freedom Check.** 13 PASS/FAIL/SKIP checks across the reference implementations: data, schemas, keys, transformation output, TPC-H answers, catalog, DuckDB access, incremental loads, SCD2, shared-code scan and orchestration.
+- **Multi-engine SQL.** The canonical queries run on Spark, DuckDB and Apache DataFusion. DuckDB remains the independent validation oracle; DataFusion is the reference enforcement point for the Cedar governance challenge.
+- **Portable governance foundation.** Cedar decisions map reviewed policy IDs to typed row-filter, column-allow and column-mask obligations without treating policy text as SQL.
 - **Freedom Assess.** `make freedom-assess REPO_PATH=...` scans any Databricks project for platform-specific constructs.
 
 ## Quickstart

@@ -1,0 +1,14 @@
+# Stable Cedar policy-store ID -> reviewed, engine-neutral enforcement actions.
+# Values are names and parameters, never fragments of SQL.
+public-reader: []
+tenant-reader:
+  - kind: row_filter
+    name: tenant_isolation
+    parameters:
+      principal_attribute: tenant
+      resource_attribute: tenantColumn
+pii-reader:
+  - kind: column_mask
+    name: mask_email
+    parameters:
+      columns: [email]

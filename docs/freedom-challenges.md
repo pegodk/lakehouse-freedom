@@ -6,10 +6,10 @@ v1 of Lakehouse Freedom is **Freedom Challenge #1**. Each later challenge asks t
 
 | # | Challenge | Databricks capability | Open counterpart to measure | Status |
 |---|---|---|---|---|
-| 1 | TPC-H / SQL / Delta | Spark, Delta Lake, Databricks SQL, Unity Catalog | Spark 4.1, Delta 4.3.1, DuckDB, UC OSS 0.5.0 | **v1** |
+| 1 | TPC-H / SQL / Delta | Spark, Delta Lake, Databricks SQL, Unity Catalog | Spark 4.1, Delta 4.3.1, DuckDB, DataFusion, UC OSS 0.5.0 | **v1 + DataFusion** |
 | 2 | Streaming + Auto Loader | Auto Loader, Structured Streaming | Structured Streaming file source; Kafka (in OpenLakehouse) | planned |
 | 3 | Lakeflow Declarative Pipelines | `dlt`, streaming tables, materialized views | Spark Declarative Pipelines (Spark 4.1, in OpenLakehouse) | planned |
-| 4 | Unity Catalog governance | grants, row filters, column masks, tags | UC OSS with authorization enabled; engine-side policies | planned |
+| 4 | Unity Catalog governance | grants, row filters, column masks, tags | UC OSS metadata, Cedar decisions, DataFusion enforcement | foundation |
 | 5 | MLflow / ML workloads | Managed MLflow, Model Serving | MLflow 3.14 (in OpenLakehouse) | planned |
 | 6 | Databricks SQL / BI | SQL warehouses, dashboards | Spark Connect / Thrift, DuckDB, open BI tools | planned |
 | 7 | AI / Vector Search / Agents | AI functions, Vector Search, Agent Framework | open models, vector stores, MLflow tracing | planned |
