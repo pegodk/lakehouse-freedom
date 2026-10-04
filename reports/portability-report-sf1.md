@@ -1,6 +1,6 @@
 # 🗽 Portable Lakehouse Report
 
-Scale factor **1** (`sf1`) · generated 2026-10-04 20:25 UTC by `make portability-report SCALE=1`
+Scale factor **1** (`sf1`) · generated 2026-10-04 20:42 UTC by `make portability-report SCALE=1`
 
 ## Portability Score
 
@@ -65,11 +65,9 @@ The score is the unweighted mean of the included, measured components. The capab
 | Databricks Spark | 4.2.0 |
 | Databricks runtime | client.4.10 |
 
-OpenLakehouse compute: Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host; executor 6 cores / 7g, driver 2g; host 8 CPUs, 13.6 GB RAM, Linux 7.2.5-3-omarchy.
-
 ## 3. Dataset scale
 
-TPC-H SF1, generated in 1 chunk(s) in 14 s.
+TPC-H SF1, generated in 1 chunk(s).
 
 | Table | Rows | Expected (dbgen) | Primary key unique |
 |---|---|---|---|
@@ -82,39 +80,16 @@ TPC-H SF1, generated in 1 chunk(s) in 14 s.
 | orders | 1,500,000 | 1,500,000 | yes |
 | lineitem | 6,001,215 | 6,001,215 | yes |
 
-## 4. Benchmark results
+## 4. SQL compatibility
 
-> **Read this before comparing numbers.** These timings come from different kinds of compute (see environments below). A laptop running Docker is not comparable to a Databricks cluster or serverless warehouse, so these numbers show that the workload runs and roughly how long it takes in each place. They do not say which platform is faster.
+| Engine | Canonical queries passed | Adapted queries | Failed queries |
+|---|---|---|---|
+| OpenLakehouse Spark | 22 | 0 | 0 |
+| OpenLakehouse DuckDB | 22 | 0 | 0 |
+| OpenLakehouse DataFusion | not run | not run | not run |
+| Databricks | 22 | 0 | 0 |
 
-| Query (median s) | OpenLakehouse Spark | OpenLakehouse DuckDB | OpenLakehouse DataFusion | Databricks |
-|---|---|---|---|---|
-| q01 | 4.57 | 0.25 | not run | 1.02 |
-| q02 | 3.56 | 0.39 | not run | 2.51 |
-| q03 | 2.55 | 0.25 | not run | 1.51 |
-| q04 | 2.02 | 0.18 | not run | 1.10 |
-| q05 | 5.10 | 0.34 | not run | 1.94 |
-| q06 | 0.82 | 0.08 | not run | 0.87 |
-| q07 | 4.87 | 0.38 | not run | 2.10 |
-| q08 | 4.53 | 0.42 | not run | 1.92 |
-| q09 | 4.57 | 0.49 | not run | 1.82 |
-| q10 | 3.99 | 0.33 | not run | 1.63 |
-| q11 | 2.98 | 0.25 | not run | 1.47 |
-| q12 | 2.15 | 0.19 | not run | 1.04 |
-| q13 | 2.97 | 0.42 | not run | 1.00 |
-| q14 | 1.57 | 0.16 | not run | 0.99 |
-| q15 | 2.35 | 0.11 | not run | 1.42 |
-| q16 | 2.12 | 0.23 | not run | 1.29 |
-| q17 | 3.37 | 0.19 | not run | 1.47 |
-| q18 | 5.70 | 0.38 | not run | 1.62 |
-| q19 | 1.92 | 0.23 | not run | 1.03 |
-| q20 | 3.18 | 0.27 | not run | 1.81 |
-| q21 | 6.62 | 0.56 | not run | 1.66 |
-| q22 | 2.60 | 0.21 | not run | 1.16 |
-| **total** | **74.1** | **6.3** | n/a | **32.4** |
-
-- **OpenLakehouse Spark**: OpenLakehouse (local Docker); Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host; repeats per query: 3; engine 4.1.0.
-- **OpenLakehouse DuckDB**: OpenLakehouse (local Docker) + DuckDB in-process on the host; DuckDB in-process, all host cores; repeats per query: 3; engine 1.5.6.
-- **Databricks**: Databricks; serverless jobs compute; repeats per query: 3; engine 4.2.0.
+Canonical SQL is attempted first and results are checked against reference answers. TPC-H is a conservative analytical workload, so this establishes compatibility for the tested queries and versions rather than complete SQL dialect parity.
 
 ## 5. Platform-specific code
 
@@ -590,7 +565,6 @@ Definitions and maintenance rules: `docs/platform-capability-coverage.md`.
 
 ## 8. Known limitations
 
-- Performance numbers compare unlike compute and must not be read as a platform performance ranking.
 - UC OSS runs with authorization disabled (OpenLakehouse default); grants, row filters and masks are not enabled in this reference architecture.
 - The DuckDB `unity_catalog` extension cannot read from SeaweedFS through UC OSS credential vending (vended credentials carry no S3 endpoint); DuckDB resolves locations through UC and reads with a configured S3 secret.
 - The Airflow DAG is generated from the shared graph and consistency-checked, but v1 runs the OpenLakehouse pipeline from the command line rather than from Airflow.

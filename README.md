@@ -20,7 +20,7 @@ The executable workload provides evidence for the comparison.
 - **Core workload logic travels well.** 89% of measured transformation code is shared in the latest SF10 report.
 - **Catalog compatibility is partial.** 6 of 10 catalog behaviours used by the workload passed against Unity Catalog OSS 0.5.0.
 - **Open alternatives reproduce outcomes, not the managed experience.** Airflow, Spark, DuckDB, DataFusion, MLflow OSS, SeaweedFS, and Cedar cover useful parts of the platform, but require integration and operation.
-- **Performance is inconclusive across platforms.** The committed Databricks and local OpenLakehouse results use unlike compute. They prove execution and expose engine characteristics; they do not establish which platform is faster.
+- **SQL compatibility is high for the tested workload.** All 22 TPC-H queries ran with canonical SQL and returned the expected results in the committed Databricks Spark, OpenLakehouse Spark, and DuckDB runs.
 - **Databricks' strongest advantage is integration.** Serverless compute, elastic operations, governance, lineage, BI, and platform-wide user experience are not reproduced by assembling the tested OSS stack.
 
 ## Open-source capability map

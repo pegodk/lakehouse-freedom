@@ -36,10 +36,6 @@ def _table(headers: list[str], rows: list[list]) -> str:
     return "\n".join(out)
 
 
-def _fmt_s(v) -> str:
-    return "" if v is None else f"{v:.2f}"
-
-
 def render(scale_factor: float) -> str:
     sf, tag = scale_factor, scale_tag(scale_factor)
     res = compare.RESULTS
@@ -143,17 +139,11 @@ def render(scale_factor: float) -> str:
                  ["Databricks runtime", de.get("databricks_runtime") or de.get("sparkVersion")]]
     w(_table(["Component", "Version"], rows))
     w("")
-    sc = env.get("spark_conf", {})
-    w(f"OpenLakehouse compute: {env.get('compute', 'n/a')}; executor {sc.get('spark.executor.cores')} cores / "
-      f"{sc.get('spark.executor.memory')}, driver {sc.get('spark.driver.memory')}; host "
-      f"{env.get('host_cpus')} CPUs, {env.get('host_memory_gb')} GB RAM, {env.get('host_os')}.")
-    w("")
-
     # 3
     w("## 3. Dataset scale")
     w("")
     if gen and quality:
-        w(f"TPC-H SF{sf:g}, generated in {gen['chunks']} chunk(s) in {gen['duration_s']:.0f} s.")
+        w(f"TPC-H SF{sf:g}, generated in {gen['chunks']} chunk(s).")
         w("")
         w(_table(["Table", "Rows", "Expected (dbgen)", "Primary key unique"],
                  [[t, f"{quality['tables'][t]['rows']:,}",
@@ -164,12 +154,7 @@ def render(scale_factor: float) -> str:
     w("")
 
     # 4
-    w("## 4. Benchmark results")
-    w("")
-    w("> **Read this before comparing numbers.** These timings come from different kinds of compute "
-      "(see environments below). A laptop running Docker is not comparable to a Databricks cluster or "
-      "serverless warehouse, so these numbers show that the workload runs and roughly how long it takes "
-      "in each place. They do not say which platform is faster.")
+    w("## 4. SQL compatibility")
     w("")
     runs = {
         "OpenLakehouse Spark": ol_run,
@@ -178,24 +163,20 @@ def render(scale_factor: float) -> str:
         "Databricks": dbx_run,
     }
     rows = []
-    for q in range(1, 23):
-        k = f"q{q:02d}"
-        rows.append([k] + [(_fmt_s(r["queries"][k]["duration_s"]) if r and r["queries"][k]["success"]
-                            else ("fail" if r else "not run")) for r in runs.values()])
-    totals = []
-    for r in runs.values():
-        if r and all(v["success"] for v in r["queries"].values()):
-            totals.append(f"**{sum(v['duration_s'] for v in r['queries'].values()):.1f}**")
-        else:
-            totals.append("n/a")
-    rows.append(["**total**"] + totals)
-    w(_table(["Query (median s)"] + list(runs), rows))
-    w("")
     for name, r in runs.items():
         if r:
-            e = r["environment"]
-            w(f"- **{name}**: {e.get('platform_label')}; {e.get('compute')}; repeats per query: {r['repeats']}; "
-              f"engine {e.get('engine_version')}.")
+            queries = r["queries"].values()
+            canonical = sum(q["success"] and q["variant"] == "canonical" for q in queries)
+            adapted = sum(q["success"] and q["variant"] != "canonical" for q in queries)
+            failed = sum(not q["success"] for q in queries)
+            rows.append([name, canonical, adapted, failed])
+        else:
+            rows.append([name, "not run", "not run", "not run"])
+    w(_table(["Engine", "Canonical queries passed", "Adapted queries", "Failed queries"], rows))
+    w("")
+    w("Canonical SQL is attempted first and results are checked against reference answers. "
+      "TPC-H is a conservative analytical workload, so this establishes compatibility for the tested queries "
+      "and versions rather than complete SQL dialect parity.")
     w("")
 
     # 7
@@ -316,7 +297,6 @@ def render(scale_factor: float) -> str:
         lim.append("The Databricks side was not executed for this report. SQL portability is measured against "
                    "the official TPC-H answers (SF ≤ 1) or the OpenLakehouse Spark run, not against Databricks output.")
     lim += [
-        "Performance numbers compare unlike compute and must not be read as a platform performance ranking.",
         "UC OSS runs with authorization disabled (OpenLakehouse default); grants, row filters and masks "
         "are not enabled in this reference architecture.",
         "The DuckDB `unity_catalog` extension cannot read from SeaweedFS through UC OSS credential vending "

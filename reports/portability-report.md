@@ -1,6 +1,6 @@
 # 🗽 Portable Lakehouse Report
 
-Scale factor **10** (`sf10`) · generated 2026-10-04 20:25 UTC by `make portability-report SCALE=10`
+Scale factor **10** (`sf10`) · generated 2026-10-04 20:42 UTC by `make portability-report SCALE=10`
 
 ## Portability Score
 
@@ -65,11 +65,9 @@ The score is the unweighted mean of the included, measured components. The capab
 | Databricks Spark | 4.2.0 |
 | Databricks runtime | client.4.10 |
 
-OpenLakehouse compute: Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host; executor 6 cores / 7g, driver 2g; host 8 CPUs, 13.6 GB RAM, Linux 7.2.5-3-omarchy.
-
 ## 3. Dataset scale
 
-TPC-H SF10, generated in 10 chunk(s) in 204 s.
+TPC-H SF10, generated in 10 chunk(s).
 
 | Table | Rows | Expected (dbgen) | Primary key unique |
 |---|---|---|---|
@@ -82,39 +80,16 @@ TPC-H SF10, generated in 10 chunk(s) in 204 s.
 | orders | 15,000,000 | 15,000,000 | yes |
 | lineitem | 59,986,052 | 59,986,052 | yes |
 
-## 4. Benchmark results
+## 4. SQL compatibility
 
-> **Read this before comparing numbers.** These timings come from different kinds of compute (see environments below). A laptop running Docker is not comparable to a Databricks cluster or serverless warehouse, so these numbers show that the workload runs and roughly how long it takes in each place. They do not say which platform is faster.
+| Engine | Canonical queries passed | Adapted queries | Failed queries |
+|---|---|---|---|
+| OpenLakehouse Spark | 22 | 0 | 0 |
+| OpenLakehouse DuckDB | 22 | 0 | 0 |
+| OpenLakehouse DataFusion | not run | not run | not run |
+| Databricks | 22 | 0 | 0 |
 
-| Query (median s) | OpenLakehouse Spark | OpenLakehouse DuckDB | OpenLakehouse DataFusion | Databricks |
-|---|---|---|---|---|
-| q01 | 51.51 | 3.47 | not run | 1.47 |
-| q02 | 23.22 | 1.41 | not run | 2.94 |
-| q03 | 20.21 | 2.82 | not run | 2.29 |
-| q04 | 11.99 | 1.50 | not run | 1.41 |
-| q05 | 29.51 | 2.97 | not run | 2.83 |
-| q06 | 4.47 | 0.49 | not run | 0.89 |
-| q07 | 26.24 | 1.32 | not run | 2.48 |
-| q08 | 12.04 | 2.33 | not run | 2.42 |
-| q09 | 23.70 | 4.58 | not run | 3.31 |
-| q10 | 13.56 | 1.48 | not run | 3.34 |
-| q11 | 8.61 | 0.56 | not run | 1.51 |
-| q12 | 8.04 | 0.83 | not run | 1.15 |
-| q13 | 13.76 | 2.88 | not run | 1.50 |
-| q14 | 5.15 | 0.86 | not run | 1.26 |
-| q15 | 10.57 | 0.77 | not run | 1.79 |
-| q16 | 7.92 | 0.57 | not run | 1.88 |
-| q17 | 26.38 | 0.88 | not run | 1.86 |
-| q18 | 38.86 | 2.57 | not run | 3.80 |
-| q19 | 8.25 | 1.31 | not run | 1.29 |
-| q20 | 9.56 | 0.94 | not run | 2.02 |
-| q21 | 41.55 | 2.82 | not run | 3.08 |
-| q22 | 7.02 | 0.52 | not run | 1.33 |
-| **total** | **402.1** | **37.9** | n/a | **45.8** |
-
-- **OpenLakehouse Spark**: OpenLakehouse (local Docker); Spark standalone: 1 master, 1 worker, Spark Connect server, all on one host; repeats per query: 1; engine 4.1.0.
-- **OpenLakehouse DuckDB**: OpenLakehouse (local Docker) + DuckDB in-process on the host; DuckDB in-process, all host cores; repeats per query: 1; engine 1.5.6.
-- **Databricks**: Databricks; serverless jobs compute; repeats per query: 3; engine 4.2.0.
+Canonical SQL is attempted first and results are checked against reference answers. TPC-H is a conservative analytical workload, so this establishes compatibility for the tested queries and versions rather than complete SQL dialect parity.
 
 ## 5. Platform-specific code
 
@@ -590,7 +565,6 @@ Definitions and maintenance rules: `docs/platform-capability-coverage.md`.
 
 ## 8. Known limitations
 
-- Performance numbers compare unlike compute and must not be read as a platform performance ranking.
 - UC OSS runs with authorization disabled (OpenLakehouse default); grants, row filters and masks are not enabled in this reference architecture.
 - The DuckDB `unity_catalog` extension cannot read from SeaweedFS through UC OSS credential vending (vended credentials carry no S3 endpoint); DuckDB resolves locations through UC and reads with a configured S3 secret.
 - The Airflow DAG is generated from the shared graph and consistency-checked, but v1 runs the OpenLakehouse pipeline from the command line rather than from Airflow.

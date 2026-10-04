@@ -40,15 +40,11 @@ Airflow can represent the same task graph, and Python wheels plus Compose can de
 
 MLflow tracking uses the same public API with a different backend. Managed registry governance, feature engineering, serving, BI, vector search, and agent services either need separate products or remain gaps in this repository.
 
-## Performance
+## SQL compatibility
 
-At SF10, the committed totals are 402.1 seconds for local OpenLakehouse Spark, 37.9 seconds for local DuckDB, and 45.8 seconds for Databricks serverless Spark. These numbers are **not a platform ranking**: hardware, engine, cache state, and repetitions differ.
+All 22 canonical TPC-H queries completed with the expected results in the committed Databricks Spark, OpenLakehouse Spark, and DuckDB runs. No engine-specific SQL variants were needed for those runs. DataFusion remains unmeasured at SF10.
 
-The defensible conclusions are narrower:
-
-- all 22 queries completed with correct results on the recorded Spark and DuckDB runs;
-- engine choice can matter substantially for this analytical workload;
-- a fair Databricks-versus-OpenLakehouse performance study still requires controlled, comparable compute and repeated runs.
+This evidence covers a conservative analytical SQL workload. It establishes compatibility for the tested queries, not universal SQL dialect parity.
 
 ## What the comparison means
 

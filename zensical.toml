@@ -23,7 +23,7 @@ nav = [
   { "Evidence" = [
     { "Latest report" = "report.md" },
     { "Capability coverage" = "platform-capability-coverage.md" },
-    { "Performance and compatibility" = "portability-benchmark.md" },
+    { "SQL compatibility" = "sql-compatibility.md" },
     { "Portability score" = "portability-score.md" },
     { "Detailed capability mapping" = "capability-mapping.md" },
   ] },

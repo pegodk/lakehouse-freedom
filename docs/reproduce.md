@@ -14,7 +14,7 @@ make openlakehouse-up
 make demo SCALE=1
 ```
 
-The last command runs the workload, benchmark, checks, and report generation. Use `SCALE=0.01` for a smoke test or `SCALE=10` for the reference scale. Results are written to `reports/portability-report.md`.
+The last command runs the workload, SQL compatibility checks, capability checks, and report generation. Use `SCALE=0.01` for a smoke test or `SCALE=10` for the reference scale. Results are written to `reports/portability-report.md`.
 
 Databricks execution requires an authenticated CLI profile, a Unity Catalog catalog, an external storage location, and billed compute. See [Databricks reference](platforms/databricks.md).
 
