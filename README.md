@@ -36,7 +36,7 @@ Every percentage is a ratio of measured counts. Governance measures reviewed obl
 - **[Orchestration portability](https://pegodk.github.io/portable-lakehouse/portability-score/#orchestration-portability):** shared task graph versus scheduler-specific code.
 - **[Governance portability](https://pegodk.github.io/portable-lakehouse/report/#governance-portability-details):** see which reviewed features—currently tenant row filtering and email column masking—are enforced by the DataFusion adapter.
 
-The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and separate DuckDB and Python reference implementations. See [limitations](#limitations) and the [score formulas](https://pegodk.github.io/portable-lakehouse/portability-score/).
+The Databricks workload has been run at SF1 and SF10 on serverless jobs compute. The committed results include all 22 TPC-H queries, table-quality and fingerprint evidence, and the incremental SCD2 scenario. See [limitations](#limitations) and the [score formulas](https://pegodk.github.io/portable-lakehouse/portability-score/).
 
 ## What it does
 
@@ -92,7 +92,6 @@ Portability is a design requirement for architectural optionality. It should be 
 
 ## Limitations
 
-- The Databricks job has not been run for the committed results (see above).
 - Timings come from unlike compute (a laptop vs. a managed service) and are not a platform performance comparison.
 - TPC-H is a conservative SQL subset; other workloads may require more adaptation.
 - Measured Unity Catalog OSS 0.5.0 gaps: no column metadata or custom properties for Spark-created tables, no `ALTER TABLE` via the Spark connector, no grants while authorization is disabled (OpenLakehouse default).

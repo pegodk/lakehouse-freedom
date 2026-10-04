@@ -1,0 +1,41 @@
+{
+ "platform": "databricks",
+ "engine": "spark",
+ "engine_version": "4.2.0",
+ "query": "q15",
+ "scale_factor": 10.0,
+ "variant": "canonical",
+ "success": true,
+ "duration_s": 1.7904,
+ "durations_s": [
+  2.0036,
+  1.7776,
+  1.7904
+ ],
+ "row_count": 1,
+ "error": null,
+ "timestamp": "2026-10-04T20:22:53.330294+00:00",
+ "environment": {
+  "engine_version": "4.2.0",
+  "platform_label": "Databricks",
+  "compute": "serverless jobs compute",
+  "databricks_runtime": "client.4.10"
+ },
+ "columns": [
+  "s_suppkey",
+  "s_name",
+  "s_address",
+  "s_phone",
+  "total_revenue"
+ ],
+ "rows": [
+  [
+   69998,
+   "Supplier#000069998",
+   "117W54YtKASNfzkZRS8P32856BMj0HKf895vdukw",
+   "16-386-278-9829",
+   "2194132.8166"
+  ]
+ ],
+ "canonical": null
+}

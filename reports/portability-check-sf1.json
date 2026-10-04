@@ -9,7 +9,7 @@
   "key": "schemas",
   "title": "Schemas compatible",
   "status": "PASS",
-  "detail": "8/8 Silver tables match the canonical TPC-H schema; Databricks schemas not available"
+  "detail": "8/8 Silver tables match the canonical TPC-H schema; Databricks vs OpenLakehouse schemas match for 8/8"
  },
  {
   "key": "row_counts",
@@ -21,13 +21,13 @@
   "key": "transformations",
   "title": "Transformation outputs equivalent",
   "status": "PASS",
-  "detail": "Silver matches DuckDB's separate Raw conformance check for 8/8 tables; Gold matches the DuckDB SQL reference: True; Databricks fingerprints not available"
+  "detail": "Silver matches DuckDB's separate Raw conformance check for 8/8 tables; Gold matches the DuckDB SQL reference: True; Databricks fingerprints match for 8/8"
  },
  {
   "key": "tpch_results",
   "title": "TPC-H results equivalent",
   "status": "PASS",
-  "detail": "openlakehouse/spark: 22/22 correct vs TPC-H answers (DuckDB tpch_answers); openlakehouse/duckdb: 22/22 correct vs TPC-H answers (DuckDB tpch_answers); databricks/spark: not run"
+  "detail": "openlakehouse/spark: 22/22 correct vs TPC-H answers (DuckDB tpch_answers); openlakehouse/duckdb: 22/22 correct vs TPC-H answers (DuckDB tpch_answers); databricks/spark: 22/22 correct vs TPC-H answers (DuckDB tpch_answers)"
  },
  {
   "key": "spark_executable",
@@ -57,7 +57,7 @@
   "key": "scd2",
   "title": "SCD2 behaviour equivalent",
   "status": "PASS",
-  "detail": "openlakehouse: equal to the Python oracle; databricks: not run"
+  "detail": "openlakehouse: equal to the Python oracle; databricks: equal to the Python oracle"
  },
  {
   "key": "shared_code",
@@ -74,7 +74,7 @@
  {
   "key": "databricks",
   "title": "Databricks reference run available",
-  "status": "SKIP",
-  "detail": "no Databricks results for this scale factor; see platforms/databricks/README.md"
+  "status": "PASS",
+  "detail": "22/22 queries succeeded on Databricks (serverless jobs compute)"
  }
 ]
