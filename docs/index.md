@@ -13,7 +13,7 @@ description: An evidence-based comparison of managed and open lakehouse architec
 
 This project compares a managed Databricks lakehouse with an open-source architecture built from OpenLakehouse components.
 
-It is a **comparison**, not a migration guide or a production installation guide. A shared workload runs on both architectures so claims can be backed by code, query results, and catalog probes.
+A shared workload runs on both architectures so the comparison is backed by code, query results, and catalog probes.
 
 ## The short version
 
@@ -24,7 +24,7 @@ It is a **comparison**, not a migration guide or a production installation guide
 | Is Unity Catalog OSS equivalent? | No: 6 of 10 tested catalog behaviours passed; governance and metadata gaps remain. |
 | Can OSS reproduce platform outcomes? | Often, by combining Spark, DuckDB, Airflow, MLflow, UC OSS, and other components. |
 | Is the operational experience equivalent? | No. Databricks integrates and operates capabilities that the open architecture leaves to its operator. |
-| Which is faster? | Not established. The committed runs use unlike compute and cannot support a fair platform ranking. |
+| Does the same SQL run? | Yes for this workload: all 22 canonical TPC-H queries passed on the recorded Databricks Spark, OpenLakehouse Spark, and DuckDB runs. |
 
 <div class="grid cards" markdown>
 

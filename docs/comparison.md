@@ -13,7 +13,7 @@ The same TPC-H batch workload runs on two reference architectures:
 | <img class="tech-icon" src="assets/icons/apache-airflow.svg" alt="Apache Airflow"> | Orchestration | Lakeflow Jobs | Apache Airflow 3.1.6 |
 | <img class="tech-icon" src="assets/icons/mlflow.svg" alt="MLflow"> | ML tracking | Managed MLflow | MLflow OSS 3.14 |
 | <img class="tech-icon" src="assets/icons/seaweedfs.svg" alt="SeaweedFS"> <img class="tech-icon" src="assets/icons/postgresql.svg" alt="PostgreSQL"> | Storage services | Cloud external location and managed metadata | SeaweedFS S3 and PostgreSQL in the local test environment |
-| <img class="tech-icon" src="assets/icons/cedar.svg" alt="Cedar"> | Governance | Integrated platform controls | UC OSS metadata plus a Cedar/DataFusion prototype |
+| <img class="tech-icon" src="assets/icons/cedar.png" alt="Cedar"> | Governance | Integrated platform controls | UC OSS metadata plus a Cedar/DataFusion prototype |
 | <img class="tech-icon" src="assets/icons/python.svg" alt="Python"> | Workload language | Python wheel | The same Python wheel |
 
 The workload includes Raw-to-Bronze-to-Silver-to-Gold transformations, all 22 TPC-H queries, data-quality checks, and an incremental SCD2 merge.
@@ -40,15 +40,11 @@ Airflow can represent the same task graph, and Python wheels plus Compose can de
 
 MLflow tracking uses the same public API with a different backend. Managed registry governance, feature engineering, serving, BI, vector search, and agent services either need separate products or remain gaps in this repository.
 
-## Performance
+## SQL compatibility
 
-At SF10, the committed totals are 402.1 seconds for local OpenLakehouse Spark, 37.9 seconds for local DuckDB, and 45.8 seconds for Databricks serverless Spark. These numbers are **not a platform ranking**: hardware, engine, cache state, and repetitions differ.
+All 22 canonical TPC-H queries completed with the expected results in the committed Databricks Spark, OpenLakehouse Spark, and DuckDB runs. No engine-specific SQL variants were needed for those runs. DataFusion remains unmeasured at SF10.
 
-The defensible conclusions are narrower:
-
-- all 22 queries completed with correct results on the recorded Spark and DuckDB runs;
-- engine choice can matter substantially for this analytical workload;
-- a fair Databricks-versus-OpenLakehouse performance study still requires controlled, comparable compute and repeated runs.
+This evidence covers a conservative analytical SQL workload. It establishes compatibility for the tested queries, not universal SQL dialect parity.
 
 ## What the comparison means
 

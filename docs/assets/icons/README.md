@@ -9,13 +9,13 @@ These icons identify technologies discussed in the comparison. Their names and m
 | `delta-lake.svg` | [Delta Lake repository favicon](https://github.com/delta-io/delta/blob/master/docs/public/favicon.svg) |
 | `apache-spark.svg` | [Simple Icons: Apache Spark](https://simpleicons.org/?q=apache+spark) |
 | `duckdb.svg` | [Simple Icons: DuckDB](https://simpleicons.org/?q=duckdb) |
-| `datafusion.svg` | [Apache DataFusion primary mark](https://github.com/apache/datafusion/tree/main/docs/logos/primary_mark) |
-| `unity-catalog.png` | [Unity Catalog documentation logo](https://github.com/unitycatalog/unitycatalog/blob/main/docs/assets/images/uc-logo.png) |
+| `datafusion.svg` | [Apache DataFusion standalone logo](https://github.com/apache/datafusion/tree/main/docs/logos/standalone_logo) |
+| `unity-catalog.png` | [Unity Catalog documentation mark](https://github.com/unitycatalog/unitycatalog/blob/main/docs/assets/images/uc-logo-mark-reverse.png) |
 | `apache-airflow.svg` | [Simple Icons: Apache Airflow](https://simpleicons.org/?q=apache+airflow) |
 | `mlflow.svg` | [Simple Icons: MLflow](https://simpleicons.org/?q=mlflow) |
 | `seaweedfs.svg` | [SeaweedFS repository icon](https://github.com/seaweedfs/seaweedfs/blob/master/note/icon.svg) |
 | `postgresql.svg` | [Simple Icons: PostgreSQL](https://simpleicons.org/?q=postgresql) |
-| `cedar.svg` | [Cedar repository logo](https://github.com/cedar-policy/cedar/blob/main/logo.svg) |
+| `cedar.png` | [Cedar GitHub organization avatar](https://github.com/cedar-policy) |
 | `docker.svg` | [Simple Icons: Docker](https://simpleicons.org/?q=docker) |
 | `python.svg` | [Simple Icons: Python](https://simpleicons.org/?q=python) |
 

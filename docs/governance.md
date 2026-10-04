@@ -11,7 +11,7 @@ The repository explores a portable policy boundary:
 | | Role | Open component |
 |---|---|---|
 | <img class="tech-icon tech-icon-wide" src="assets/icons/unity-catalog.png" alt="Unity Catalog"> | Resource metadata | Unity Catalog OSS |
-| <img class="tech-icon" src="assets/icons/cedar.svg" alt="Cedar"> | Authorization decision | Cedar |
+| <img class="tech-icon" src="assets/icons/cedar.png" alt="Cedar"> | Authorization decision | Cedar |
 | <img class="tech-icon" src="assets/icons/datafusion.svg" alt="Apache DataFusion"> | Query enforcement | DataFusion prototype |
 | <img class="tech-icon" src="assets/icons/delta-lake.svg" alt="Delta Lake"> | Data | Delta tables on object storage |
 

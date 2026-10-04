@@ -30,7 +30,7 @@ A component being open source does not prove the system is portable. Execute imp
 
 ## 6. Do not confuse portability with equivalence
 
-Preserving data and core logic is valuable even when governance, performance, or user experience differs. Judge each capability separately.
+Preserving data and core logic is valuable even when governance or user experience differs. Judge each capability separately.
 
 ## 7. Allow managed services to be better
 

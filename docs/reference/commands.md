@@ -19,12 +19,12 @@ All `make` targets accept `SCALE` (TPC-H scale factor, default `1`). Each one wr
 |---|---|---|
 | `make generate-data` | `portable-lakehouse generate --scale N` | TPC-H Raw Parquet into `s3://lakehouse/portable-lakehouse/raw/sf<N>` |
 | `make pipeline` | `portable-lakehouse pipeline --scale N [--task KEY]` | all tasks, or one task, on OpenLakehouse |
-| `make portability-benchmark` | `portable-lakehouse benchmark --scale N --repeats R` | 22 queries on Spark, DuckDB and DataFusion (`REPEATS`, default 3); adds Databricks when `DATABRICKS_PROFILE` is set |
+| `make portability-benchmark` | `portable-lakehouse benchmark --scale N --repeats R` | check 22 canonical queries on Spark, DuckDB and DataFusion; adds Databricks when `DATABRICKS_PROFILE` is set |
 | `make portability-check` | `portable-lakehouse check --scale N [--no-probe]` | portability checks, including MLflow evidence; exit code 1 on any FAIL |
 | `make portability-report` | `portable-lakehouse report --scale N` | `reports/portability-report.md` and `reports/portability-report-sf<N>.md` |
 | `make portability-assess` | `portable-lakehouse assess PATH [--json]` | identify Databricks-specific constructs and possible alternatives (`REPO_PATH=`) |
 | `make mlflow-smoke` | `portable-lakehouse mlflow [--tracking-uri URI]` | log and read back a portable MLflow run; writes `reports/mlflow-tracking.json` |
-| `make demo` | | pipeline → benchmark → check → report |
+| `make demo` | | pipeline → SQL compatibility → capability checks → report |
 
 Pipeline task keys: `generate`, `bronze`, `silver`, `gold`, `quality`, `incremental`, `tpch_queries`.
 
