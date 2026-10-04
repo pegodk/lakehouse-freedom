@@ -25,7 +25,6 @@ Results are written to `reports/freedom-check-sf<N>.json` and shown in section 4
 | 11 | Shared code has no Databricks-specific APIs | 21 scanner rules find nothing in shared code | static scan |
 | 12 | Orchestration matches the shared task graph | Databricks job and Airflow DAG implement `src/common/pipeline.py` exactly | static check |
 | 13 | Databricks reference run available | Databricks results present and all queries succeeded | SKIP until run |
-| 14 | Freedom Day | Freedom Day passed for this scale factor | `freedom-day-sf<N>.json` |
 
 ## Independent oracles
 

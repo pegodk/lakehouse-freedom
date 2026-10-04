@@ -8,15 +8,15 @@
 #   PLATFORM-SPECIFIC  managed capability with no drop-in OSS equivalent here
 #
 # evidence: `measured:<source>` is checked on every run (Freedom Check, catalog
-# probe, Freedom Day, benchmark); `documented` is a reasoned statement that
+# probe, benchmark); `documented` is a reasoned statement that
 # this repository does not test automatically.
 
 - capability: Table format
   databricks: Delta Lake (Databricks Runtime)
   openlakehouse: Delta Lake 4.3.1 (delta-spark), delta-kernel-rs (DuckDB)
   classification: PORTABLE
-  evidence: measured:freedom_day
-  notes: Tables are re-registered from their _delta_log and read without conversion.
+  evidence: measured:delta_readable
+  notes: The OpenLakehouse implementation reads the workload's external Delta tables through Unity Catalog OSS.
 
 - capability: Batch compute
   databricks: Apache Spark on serverless or classic compute (Photon optional)

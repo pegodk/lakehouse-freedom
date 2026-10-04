@@ -35,7 +35,7 @@ benchmarks/runner/         shared   query runner and engines
 platforms/databricks/      Databricks   entrypoint.py, Asset Bundle, job definition
 platforms/openlakehouse/   OpenLakehouse adapter.py, entrypoint.py, catalog.py, Airflow DAG,
                                         config overlay, stack scripts, pinned submodule
-freedom/                   tooling  assessment, validation, reporting, Freedom Day
+freedom/                   tooling  assessment, validation and reporting
 ```
 
 The contract between the two halves is small:

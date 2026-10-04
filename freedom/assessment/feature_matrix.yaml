@@ -18,7 +18,7 @@ profiles:
     source: Databricks Delta Lake
     target: Delta Lake OSS 4.3.1
     features:
-      - {capability: ACID transaction log, area: Core format, status: NATIVE, workload: required, evidence: measured:freedom_day}
+      - {capability: ACID transaction log, area: Core format, status: NATIVE, workload: required, evidence: measured:delta_readable}
       - {capability: Schema enforcement and evolution, area: Core format, status: NATIVE, workload: required, evidence: measured:schema}
       - {capability: Time travel and table history, area: Core format, status: NATIVE, workload: not_used, evidence: documented}
       - {capability: MERGE / UPDATE / DELETE, area: DML, status: NATIVE, workload: required, evidence: measured:scd2}
@@ -36,7 +36,7 @@ profiles:
     features:
       - {capability: Spark SQL and DataFrame execution, area: Runtime, status: NATIVE, workload: required, evidence: measured:spark_executable}
       - {capability: PySpark and Spark Connect, area: Runtime, status: NATIVE, workload: required, evidence: measured:spark_executable}
-      - {capability: Delta Lake integration, area: Runtime, status: NATIVE, workload: required, evidence: measured:freedom_day}
+      - {capability: Delta Lake integration, area: Runtime, status: NATIVE, workload: required, evidence: measured:delta_readable}
       - {capability: Cluster libraries and custom code, area: Runtime, status: NATIVE, workload: required, evidence: measured:transformations}
       - {capability: Autoscaling workers, area: Elasticity, status: WORKAROUND, workload: not_used, evidence: documented, gap: Requires an external cluster manager; the tested stack has fixed workers.}
       - {capability: Serverless provisioning, area: Operations, status: MISSING, workload: not_used, evidence: documented, gap: Compute must be provisioned and operated by the user.}

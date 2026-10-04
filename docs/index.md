@@ -9,7 +9,7 @@ description: Build managed. Stay open. Keep your freedom.
 
 Databricks provides a powerful managed lakehouse platform built around open technologies such as Apache Spark and Delta Lake. But how portable is a real Databricks solution?
 
-Lakehouse Freedom is an executable reference architecture. It shows how to design Databricks workloads with portability in mind, and runs the same workload on a fully open-source lakehouse built on [OpenLakehouse.io](https://openlakehouse.io). It doesn't argue about vendor lock-in in the abstract: it runs the workload and measures how much freedom you keep.
+Lakehouse Freedom provides two executable reference lakehouse implementations: Databricks and a fully open-source stack built on [OpenLakehouse.io](https://openlakehouse.io). It runs the same workload on both and compares capabilities, correctness, portability and operational tradeoffs.
 
 <div class="grid cards" markdown>
 
@@ -17,7 +17,7 @@ Lakehouse Freedom is an executable reference architecture. It shows how to desig
 
     ---
 
-    Fourteen checks against a live open stack: data, schemas, transformations, TPC-H answers, catalog, incremental loads and SCD2.
+    Thirteen checks across the reference implementations: data, schemas, transformations, TPC-H answers, catalog, incremental loads and SCD2.
 
     [:octicons-arrow-right-24: Freedom Check](freedom-check.md)
 
@@ -28,14 +28,6 @@ Lakehouse Freedom is an executable reference architecture. It shows how to desig
     The 22 TPC-H queries, written once, run on Databricks, open-source Spark and DuckDB, with results compared automatically.
 
     [:octicons-arrow-right-24: Freedom Benchmark](freedom-benchmark.md)
-
--   :material-power-plug-off: **Freedom Day**
-
-    ---
-
-    Databricks is switched off. An empty catalog is rebuilt from storage alone, and not one data file is rewritten.
-
-    [:octicons-arrow-right-24: Freedom Day](freedom-day.md)
 
 -   :material-gauge: **Freedom Score**
 

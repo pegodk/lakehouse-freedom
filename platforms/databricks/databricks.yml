@@ -37,7 +37,7 @@ variables:
     description: >
       External location URL under which Delta tables are written
       (abfss://..., s3://..., gs://...). External tables are part of the
-      Freedom Architecture: the data stays readable from storage on Freedom Day.
+      Lakehouse Freedom reference implementation using external Delta tables.
       Leave empty to fall back to catalog-managed tables (not recommended here).
     default: ""
   reader_group:

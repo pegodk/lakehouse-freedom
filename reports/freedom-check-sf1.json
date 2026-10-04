@@ -76,11 +76,5 @@
   "title": "Databricks reference run available",
   "status": "SKIP",
   "detail": "no Databricks results for this scale factor; see platforms/databricks/README.md"
- },
- {
-  "key": "freedom_day",
-  "title": "Freedom Day",
-  "status": "PASS",
-  "detail": "19/19 tables re-registered from storage and read by Spark and DuckDB; data unchanged: True (rehearsal: tables written by OSS Spark)"
  }
 ]

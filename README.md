@@ -10,7 +10,7 @@ Databricks provides a powerful managed lakehouse platform built around open tech
 
 But how portable is a real Databricks solution?
 
-Lakehouse Freedom is an executable reference architecture demonstrating how to design Databricks workloads with portability in mind, and how those workloads can run on a fully open-source lakehouse using [OpenLakehouse.io](https://openlakehouse.io).
+Lakehouse Freedom provides two executable reference lakehouse implementations: Databricks and a fully open-source stack built on [OpenLakehouse.io](https://openlakehouse.io). It runs the same workload on both and compares their capabilities, correctness, portability and operational tradeoffs.
 
 No theoretical arguments about vendor lock-in. We run the workload and measure the freedom.
 
@@ -21,17 +21,16 @@ No theoretical arguments about vendor lock-in. We run the workload and measure t
 TPC-H SF10 on OpenLakehouse (local Docker, 8 cores). From [`reports/freedom-report.md`](reports/freedom-report.md):
 
 ```
-Data portability                ████████████████████  100%   19/19 tables
 TPC-H SQL portability (Spark)   ████████████████████  100%   22/22 queries
 TPC-H SQL portability (DuckDB)  ████████████████████  100%   22/22 queries
 Transformation portability      ██████████████████░░   91%   1385/1524 LOC shared
 Catalog portability             ████████████░░░░░░░░   60%   6/10 UC capabilities
 Orchestration portability       ██████████░░░░░░░░░░   51%   29/57 LOC shared
 ─────────────────────────────────────────────────────
-Freedom Score                   ████████████████░░░░   80%
+Freedom Score                   ███████████████░░░░░   75%
 ```
 
-Every percentage is a ratio of measured counts ([formulas](https://pegodk.github.io/lakehouse-freedom/freedom-score/)). The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and independent DuckDB and Python oracles, and Freedom Day is a rehearsal on tables written by open-source Spark. See [limitations](#limitations).
+Every percentage is a ratio of measured counts ([formulas](https://pegodk.github.io/lakehouse-freedom/freedom-score/)). The Databricks side of the workload is defined and validated but **has not been run** for these results. Until it is, comparisons use the official TPC-H answers and independent DuckDB and Python oracles. See [limitations](#limitations).
 
 ## What it does
 
@@ -50,8 +49,7 @@ Every percentage is a ratio of measured counts ([formulas](https://pegodk.github
 ```
 
 - **Freedom Benchmark.** The 22 TPC-H queries, written once for Databricks SQL / Spark SQL, run on each engine and are compared with the official answers.
-- **Freedom Check.** 14 PASS/FAIL checks against a live open stack: data, schemas, keys, transformation output, TPC-H answers, catalog, DuckDB access, incremental loads, SCD2, shared-code scan, orchestration.
-- **Freedom Day.** Databricks is switched off. An empty Unity Catalog OSS catalog is rebuilt from the Delta folders in storage, Spark and DuckDB query them, and the run proves that no stored object changed.
+- **Freedom Check.** 13 PASS/FAIL/SKIP checks across the reference implementations: data, schemas, keys, transformation output, TPC-H answers, catalog, DuckDB access, incremental loads, SCD2, shared-code scan and orchestration.
 - **Freedom Assess.** `make freedom-assess REPO_PATH=...` scans any Databricks project for platform-specific constructs.
 
 ## Quickstart
@@ -63,7 +61,7 @@ git clone --recurse-submodules https://github.com/pegodk/lakehouse-freedom.git
 cd lakehouse-freedom
 make setup              # Python env, OpenLakehouse config, Spark JARs
 make openlakehouse-up   # SeaweedFS, PostgreSQL, Unity Catalog OSS, Spark 4.1 + Connect
-make demo SCALE=1       # pipeline → benchmark → Freedom Day → Freedom Check → report
+make demo SCALE=1       # pipeline → benchmark → Freedom Check → report
 ```
 
 `SCALE=0.01` is a one-minute smoke run; `SCALE=10` is the larger reference size. More in [Get started](https://pegodk.github.io/lakehouse-freedom/getting-started/) and [Commands](https://pegodk.github.io/lakehouse-freedom/reference/commands/).

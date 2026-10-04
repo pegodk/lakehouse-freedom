@@ -14,7 +14,7 @@ v1 of Lakehouse Freedom is **Freedom Challenge #1**. Each later challenge asks t
 | 6 | Databricks SQL / BI | SQL warehouses, dashboards | Spark Connect / Thrift, DuckDB, open BI tools | planned |
 | 7 | AI / Vector Search / Agents | AI functions, Vector Search, Agent Framework | open models, vector stores, MLflow tracing | planned |
 | 8 | Observability | system tables, lineage | OpenLineage, Spark event logs | planned |
-| 9 | Disaster recovery / Freedom Day | managed DR | Freedom Day against a replicated bucket | partly in v1 |
+| 9 | Disaster recovery | managed DR | Backup and restore validation against a replicated bucket | not implemented |
 
 ## How a challenge plugs in
 

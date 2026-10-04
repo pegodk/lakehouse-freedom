@@ -11,12 +11,12 @@ renders it next to the live catalog probe, and `tests/portability/test_docs.py` 
 | **REWRITE** | The same outcome is reachable, but the code has to be rewritten |
 | **PLATFORM-SPECIFIC** | A managed capability with no drop-in open equivalent in this stack |
 
-Evidence `measured:<x>` is checked on every run (Freedom Check key, catalog probe item, Freedom Day,
+Evidence `measured:<x>` is checked on every run (Freedom Check key, catalog probe item,
 benchmark). `documented` is a reasoned statement that is not tested automatically.
 
 | Capability | Databricks | OpenLakehouse | Classification | Evidence |
 |---|---|---|---|---|
-| Table format | Delta Lake (Databricks Runtime) | Delta Lake 4.3.1 (delta-spark), delta-kernel-rs (DuckDB) | **PORTABLE** | measured:freedom_day |
+| Table format | Delta Lake (Databricks Runtime) | Delta Lake 4.3.1 (delta-spark), delta-kernel-rs (DuckDB) | **PORTABLE** | measured:delta_readable |
 | Batch compute | Apache Spark on serverless or classic compute (Photon optional) | Apache Spark 4.1.0 standalone, clients via Spark Connect | **PORTABLE** | measured:spark_executable |
 | SQL analytics | Databricks SQL / Spark SQL | Spark SQL; DuckDB for single-node analytics | **PORTABLE** | measured:tpch_results |
 | DataFrame transformations | PySpark DataFrame API | PySpark DataFrame API over Spark Connect | **PORTABLE** | measured:transformations |

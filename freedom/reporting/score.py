@@ -2,8 +2,6 @@
 
 Component                     Formula                                                  Source
 ----------------------------  -------------------------------------------------------  ---------------------------------
-Data portability              Delta tables read by OSS Spark AND DuckDB with equal      reports/freedom-day-<sf>.json
-                              row counts after re-registration from storage / tables
 TPC-H SQL portability (Spark) queries PORTABLE on OpenLakehouse Spark / 22              benchmarks/results/.../spark
 TPC-H SQL portability (DuckDB) queries PORTABLE on DuckDB / 22                          benchmarks/results/.../duckdb
 Transformation portability    shared transformation LOC /                              freedom/assessment/inventory.yaml
@@ -26,7 +24,6 @@ from pathlib import Path
 
 from freedom.assessment.inventory import measure
 from freedom.validation import compare
-from lakehouse_freedom.common.config import scale_tag
 
 REPO = Path(__file__).resolve().parents[2]
 
@@ -36,17 +33,8 @@ def _load(path: Path):
 
 
 def components(scale_factor: float) -> list[dict]:
-    tag = scale_tag(scale_factor)
     inv = measure()
     out = []
-
-    day = _load(REPO / "reports" / f"freedom-day-{tag}.json")
-    dp = day["data_portability"] if day else None
-    out.append({"key": "data", "name": "Data portability",
-                "value": dp["portable_tables"] / dp["total_tables"] if dp else None,
-                "numerator": dp and dp["portable_tables"], "denominator": dp and dp["total_tables"],
-                "formula": "Delta tables read by OSS Spark and DuckDB after re-registration / Delta tables",
-                "in_score": True})
 
     prefer = [("databricks", "spark"), ("openlakehouse", "spark")]
     for engine, label, in_score in (("spark", "TPC-H SQL portability (Spark)", True),

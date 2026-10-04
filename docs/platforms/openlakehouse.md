@@ -10,7 +10,7 @@ Versions are read from the pinned submodule at run time (`adapter.discover_versi
 |---|---|---|
 | Apache Spark | 4.1.0 (`apache/spark:4.1.0-scala2.13-java21-python3-r-ubuntu`) | all pipeline tasks, via Spark Connect on `:15002` |
 | Delta Lake | 4.3.1 (`delta-spark_2.13`) | table format |
-| Unity Catalog OSS | server v0.5.0, Spark connector 0.4.1 | catalog `freedom` (and `freedom_day`) on `:8081` |
+| Unity Catalog OSS | server v0.5.0, Spark connector 0.4.1 | catalog `freedom` on `:8081` |
 | SeaweedFS | 3.80 | S3-compatible storage on `:8333`, bucket `lakehouse` |
 | PostgreSQL | 16 | started by the storage compose file (OpenLakehouse metastore) |
 | DuckDB | 1.5.6 (pinned in `pyproject.toml`) | generator, second query engine, validation oracle |
@@ -26,7 +26,7 @@ All paths are relative to `platforms/openlakehouse/`.
 |---|---|
 | `stack/` | the OpenLakehouse submodule (do not edit; runtime config is gitignored there) |
 | `config/freedom.env` | becomes `stack/.env` |
-| `config/spark-defaults.freedom.conf` | appended to the stack's Spark example: `freedom` / `freedom_day` UC catalogs, laptop sizing |
+| `config/spark-defaults.freedom.conf` | appended to the stack's Spark example: `freedom` UC catalog, laptop sizing |
 | `scripts/configure.sh` | writes `stack/.env`, `stack/config/spark/spark-defaults.conf`, `stack/config/unity-catalog/server.properties` |
 | `scripts/stack.sh` | `up` / `down` / `destroy` / `status` / `restart-spark` for the services above |
 | `adapter.py` | endpoints, credentials, storage roots, version discovery |
